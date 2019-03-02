@@ -1,6 +1,6 @@
 import {createStackNavigator, createAppContainer} from 'react-navigation';
-import Scan from './Scan.js'
-import Home from './Home.js'
+import Scan from './screens/Scan.js'
+import Home from './screens/Home.js'
 
 const MainNavigator = createStackNavigator({
   Home: {screen: Home},
