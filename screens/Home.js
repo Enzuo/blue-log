@@ -1,17 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { Button } from 'react-native';
+import { connect } from 'react-redux'
+
+import { toggleTodo } from '../actions'
 
 
-export default class App extends React.Component {
+
+class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       filterText: '',
       inStockOnly: false,
-      items: [{ key : 'bob'}, 
-              {'key' : 'pomme'},
-              { key : 'caramel'}]
     };
   }
 
@@ -27,8 +28,9 @@ export default class App extends React.Component {
       <View style={styles.container}>
         <Text>Home screen</Text>
         <FlatList
-          data={this.state.items}
-          renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+          data={this.props.items}
+          renderItem={({item}) => <Text style={styles.item}>Text : {item.text}</Text>}
+          keyExtractor={(item, index) => index.toString()}
         />
         <Button
           onPress={this.launchScan}
@@ -40,6 +42,19 @@ export default class App extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  items: state.todos
+})
+
+const mapDispatchToProps = dispatch => ({
+  toggleTodo: id => dispatch(toggleTodo(id))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home)
 
 const styles = StyleSheet.create({
   container: {
