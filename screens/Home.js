@@ -29,7 +29,7 @@ class Home extends React.Component {
         <Text>Home screen</Text>
         <FlatList
           data={this.props.items}
-          renderItem={({item}) => <Text style={styles.item}>Text : {item.text}</Text>}
+          renderItem={({item}) => <Text style={styles.item}>Text : {item.name}</Text>}
           keyExtractor={(item, index) => index.toString()}
         />
         <Button
@@ -44,7 +44,7 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  items: state.todos
+  items: state.logs
 })
 
 const mapDispatchToProps = dispatch => ({

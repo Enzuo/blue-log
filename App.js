@@ -5,10 +5,12 @@ import React from 'react';
 import { store } from './store.js'
 import Scan from './screens/Scan.js'
 import Home from './screens/Home.js'
+import Search from './screens/Search.js'
 
 const MainNavigator = createStackNavigator({
   Home: {screen: Home},
   Scan: {screen: Scan},
+  Search: {screen: Search},
 },   {
   initialRouteName: "Home"
 });

@@ -1,4 +1,13 @@
 let nextTodoId = 0
+
+export const ADD_LOG = 'ADD_LOG';
+
+export const addLog = productLog => ({
+  type: ADD_LOG,
+  id: nextTodoId++,
+  name: productLog.name
+})
+
 export const addTodo = text => ({
   type: 'ADD_TODO',
   id: nextTodoId++,

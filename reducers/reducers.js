@@ -36,9 +36,10 @@ const todos = (state = [], action) => {
   }
 }
 
+import logs from './logs'
+
 const todoApp = combineReducers({
-  visibilityFilter,
-  todos
+  logs,
 })
 
 export default todoApp

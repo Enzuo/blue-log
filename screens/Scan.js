@@ -36,6 +36,9 @@ export default class BarcodeScannerExample extends React.Component {
 
     const {navigate} = this.props.navigation;
 
-    navigate('Home')
+    // remove from navigation stack otherwise it'll keep scanning
+    this.props.navigation.pop()
+
+    navigate('Search', { itemId : data});
   }
 }
