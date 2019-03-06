@@ -19,7 +19,7 @@ class Home extends React.Component {
   launchScan = (event) => {
     const {navigate} = this.props.navigation;
 
-    navigate('Scan', {name: 'Jane'})
+    navigate('SearchProduct', {name: 'Jane'})
   }
 
   render() {
