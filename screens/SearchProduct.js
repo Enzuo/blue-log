@@ -1,47 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 
-import Scanner from '../components/scanner'
+import Scanner from '../components/scanner';
 
 
-
-class SearchProduct extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { text: 'Search here' };
-  }
-
-  componentDidMount() {
-    this.nameInput.focus()
-
-    setTimeout(() => this.nameInput.focus(), 1000);
-
-  }
-
-  onItemScanned (itemRef) {
-    this.setState({
-      itemId : itemRef,
-      scanDisabled: true,
-    })
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <Scanner onItemScanned={(itemRef) => this.onItemScanned(itemRef)} disabled={this.state.scanDisabled}></Scanner>
-        <TextInput
-          style={ styles.searchbox }
-          onChangeText={(text) => this.setState({ text })}
-          value={this.state.text}
-          autoFocus={true}
-          ref={x => this.nameInput = x}
-        />
-        <Text>Searching for {this.state.itemId} on open food fact...</Text>
-        <Text>Name : {this.state.itemLabel}</Text>
-      </View>
-    );
-  }
-}
+/* StyleSheet
+============================================================================= */
 
 const styles = StyleSheet.create({
   container: {
@@ -57,13 +21,53 @@ const styles = StyleSheet.create({
   },
   searchbox: {
     backgroundColor: 'white',
-    height: 40, 
-    borderColor: 'gray', 
+    height: 40,
+    borderColor: 'gray',
     borderWidth: 1,
-  }
+  },
 });
 
 
+/* SearchProduct
+============================================================================= */
+
+class SearchProduct extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { text: 'Search here' };
+  }
+
+  componentDidMount() {
+    this.nameInput.focus();
+
+    setTimeout(() => this.nameInput.focus(), 1000);
+  }
+
+  onItemScanned(itemRef) {
+    this.setState({
+      itemId: itemRef,
+      scanDisabled: true,
+    });
+  }
+
+  render() {
+    const { scanDisabled, text, itemId, itemLabel } = this.state;
+    return (
+      <View style={styles.container}>
+        <Scanner onItemScanned={itemRef => this.onItemScanned(itemRef)} disabled={scanDisabled} />
+        <TextInput
+          style={styles.searchbox}
+          onChangeText={txt => this.setState({ text: txt })}
+          value={text}
+          autoFocus
+          ref={(x) => { this.nameInput = x; }}
+        />
+        <Text>Searching for {itemId} on open food fact...</Text>
+        <Text>Name : {itemLabel}</Text>
+      </View>
+    );
+  }
+}
 
 
-export default SearchProduct
+export default SearchProduct;
