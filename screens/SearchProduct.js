@@ -18,9 +18,9 @@ class SearchProduct extends React.Component {
 
   }
 
-  onItemScanned (id) {
+  onItemScanned (itemRef) {
     this.setState({
-      itemId : id,
+      itemId : itemRef,
       scanDisabled: true,
     })
   }
@@ -28,7 +28,7 @@ class SearchProduct extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Scanner onItemScanned={(item) => this.onItemScanned(item)} disabled={this.state.scanDisabled}></Scanner>
+        <Scanner onItemScanned={(itemRef) => this.onItemScanned(itemRef)} disabled={this.state.scanDisabled}></Scanner>
         <TextInput
           style={ styles.searchbox }
           onChangeText={(text) => this.setState({ text })}
