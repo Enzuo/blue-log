@@ -1,0 +1,16 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "react/jsx-filename-extension": "off",
+    "react/prop-types": "off",
+    "object-curly-newline":"off",
+    "react/jsx-one-expression-per-line": "off"
+  },
+  "globals": {
+    "fetch": false
+  }
+}
