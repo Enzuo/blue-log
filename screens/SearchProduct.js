@@ -48,6 +48,13 @@ class SearchProduct extends React.Component {
       itemId: itemRef,
       scanDisabled: true,
     });
+
+    this.selectProduct({ ref: itemRef });
+  }
+
+  selectProduct(product) {
+    const { navigation } = this.props;
+    navigation.navigate('ProductLogEntry', product);
   }
 
   render() {
