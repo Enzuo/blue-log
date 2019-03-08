@@ -8,7 +8,7 @@ import { addLog } from '../actions';
 /* StyleSheet
 ============================================================================= */
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
 
 
 /* Helpers
@@ -25,16 +25,24 @@ async function getItemFromOpenFoodFact(code) {
       const error = { responseJson };
       throw error;
     }
-    console.log(responseJson);
     return responseJson;
   } catch (error) {
-    console.error(error);
+    console.log(error);
     throw error;
   }
 }
 
-function linkToOpenFoodFact(code) {
-  return `https://world.openfoodfacts.org/product/${code}`;
+function LinkOpenFoodFact({ code }) {
+  if (!code) {
+    return null;
+  }
+  const linkOpenFF = `https://world.openfoodfacts.org/product/${code}`;
+  return (
+    <Button
+      title="Edit on open food fact"
+      onPress={() => { Linking.openURL(linkOpenFF); }}
+    />
+  );
 }
 
 
@@ -52,11 +60,16 @@ class ProductLogEntry extends React.Component {
 
     this.setState({ ref });
 
-    const productOpenFF = await getItemFromOpenFoodFact(ref);
-
-    this.setState({
-      name: productOpenFF.product.product_name,
-    });
+    try {
+      const productOpenFF = await getItemFromOpenFoodFact(ref);
+      this.setState({
+        name: productOpenFF.product.product_name,
+      });
+    } catch (err) {
+      this.setState({
+        error: 'got an error' + err.statusText,
+      });
+    }
   }
 
   submit = () => {
@@ -68,21 +81,19 @@ class ProductLogEntry extends React.Component {
   }
 
   render() {
-    const { ref, name } = this.state;
+    const { ref, name, error } = this.state;
     return (
       <View>
         <Text>Ref : {ref}</Text>
         <Text>Name : {name}</Text>
+        <Text>Error : {error}</Text>
         <Button
           onPress={this.submit}
           title="Submit"
           color="#841584"
           accessibilityLabel="Submit"
         />
-        <Button
-          title="Edit on open food fact"
-          onPress={() => { Linking.openURL(linkToOpenFoodFact(ref)); }}
-        />
+        <LinkOpenFoodFact code={ref} />
       </View>
     );
   }
