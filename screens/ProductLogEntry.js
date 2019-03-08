@@ -92,6 +92,9 @@ class ProductLogEntry extends React.Component {
     const { addLogProduct } = this.props;
     const productLog = this.state;
     addLogProduct(productLog);
+
+    const { navigation } = this.props;
+    navigation.popToTop();
   }
 
   render() {
