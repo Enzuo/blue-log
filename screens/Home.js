@@ -29,7 +29,7 @@ class Home extends React.Component {
         <Text>Home screen</Text>
         <FlatList
           data={this.props.items}
-          renderItem={({item}) => <Text style={styles.item}>Text : {item.name}</Text>}
+          renderItem={({item}) => <Text style={styles.item}>Name : {item.productLog.name}</Text>}
           keyExtractor={(item, index) => index.toString()}
         />
         <Button

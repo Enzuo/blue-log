@@ -45,13 +45,30 @@ function LinkOpenFoodFact({ code }) {
   );
 }
 
+function mapOpenFFAPI(response) {
+  const { product } = response;
+  return {
+    // code : product.code,
+    name: product.product_name,
+    serving: product.serving_quantity,
+    energy: product.nutriments.energy_value,
+    fat: product.nutriments.energy_value,
+    saturatedFat: product.nutriments['saturated-fat_value'],
+    carboyhydrates: product.nutriments.carbohydrates_value,
+    sugar: product.nutriments.sugar_value,
+    fiber: product.nutriments.fiber_value,
+    proteins: product.nutriments.proteins_value,
+  };
+}
+
 
 /* ProductLogEntry
 ============================================================================= */
 
 class ProductLogEntry extends React.Component {
   state = {
-
+    date: Date.now(),
+    qty: 100,
   }
 
   async componentDidMount() {
@@ -61,10 +78,9 @@ class ProductLogEntry extends React.Component {
     this.setState({ ref });
 
     try {
-      const productOpenFF = await getItemFromOpenFoodFact(ref);
-      this.setState({
-        name: productOpenFF.product.product_name,
-      });
+      const openFFResponse = await getItemFromOpenFoodFact(ref);
+      const product = mapOpenFFAPI(openFFResponse);
+      this.setState(product);
     } catch (err) {
       this.setState({
         error: 'got an error' + err.statusText,
@@ -74,18 +90,20 @@ class ProductLogEntry extends React.Component {
 
   submit = () => {
     const { addLogProduct } = this.props;
-    const { ref, name } = this.state;
-    addLogProduct({
-      ref, name,
-    });
+    const productLog = this.state;
+    addLogProduct(productLog);
   }
 
   render() {
-    const { ref, name, error } = this.state;
+    const { qty, date, ref, name, energy, error } = this.state;
     return (
       <View>
+
+        <Text>Quantity : {qty}</Text>
+        <Text>Date : {date}</Text>
         <Text>Ref : {ref}</Text>
         <Text>Name : {name}</Text>
+        <Text>Energy : {energy}</Text>
         <Text>Error : {error}</Text>
         <Button
           onPress={this.submit}

@@ -5,7 +5,7 @@ export const ADD_LOG = 'ADD_LOG';
 export const addLog = productLog => ({
   type: ADD_LOG,
   id: nextTodoId++,
-  name: productLog.name
+  productLog,
 })
 
 export const addTodo = text => ({

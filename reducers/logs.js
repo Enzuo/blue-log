@@ -1,6 +1,6 @@
 import {
-  ADD_LOG 
-} from '../actions'
+  ADD_LOG,
+} from '../actions';
 
 const logs = (state = [], action) => {
   switch (action.type) {
@@ -9,15 +9,12 @@ const logs = (state = [], action) => {
         ...state,
         {
           id: action.id,
-          date: action.date,
-          qty: action.qty,
-          name: action.name,
-          energy: action.energy
-        }
-      ]
+          productLog: action.productLog,
+        },
+      ];
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default logs
+export default logs;
