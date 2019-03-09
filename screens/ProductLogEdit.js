@@ -66,25 +66,30 @@ function mapOpenFFAPI(response) {
 ============================================================================= */
 
 class ProductLogEntry extends React.Component {
-  state = {
-    date: Date.now(),
-    qty: 100,
+  constructor(props) {
+    super(props);
+    this.state = {
+      date: Date.now(),
+      qty: 100,
+    };
   }
 
   async componentDidMount() {
     const { navigation } = this.props;
-    const ref = navigation.getParam('ref', null);
+    const productLog = navigation.getParam('productLog', null);
 
-    this.setState({ ref });
+    this.setState(productLog);
 
-    try {
-      const openFFResponse = await getItemFromOpenFoodFact(ref);
-      const product = mapOpenFFAPI(openFFResponse);
-      this.setState(product);
-    } catch (err) {
-      this.setState({
-        error: 'got an error' + err.statusText,
-      });
+    if (productLog.isIncomplete) {
+      try {
+        const openFFResponse = await getItemFromOpenFoodFact(productLog.code);
+        const product = mapOpenFFAPI(openFFResponse);
+        this.setState(product);
+      } catch (err) {
+        this.setState({
+          error: 'got an error' + err.statusText,
+        });
+      }
     }
   }
 
@@ -98,13 +103,13 @@ class ProductLogEntry extends React.Component {
   }
 
   render() {
-    const { qty, date, ref, name, energy, error } = this.state;
+    const { qty, date, code, name, energy, error } = this.state;
     return (
       <View>
 
         <Text>Quantity : {qty}</Text>
         <Text>Date : {date}</Text>
-        <Text>Ref : {ref}</Text>
+        <Text>Code : {code}</Text>
         <Text>Name : {name}</Text>
         <Text>Energy : {energy}</Text>
         <Text>Error : {error}</Text>
@@ -114,7 +119,7 @@ class ProductLogEntry extends React.Component {
           color="#841584"
           accessibilityLabel="Submit"
         />
-        <LinkOpenFoodFact code={ref} />
+        <LinkOpenFoodFact code={code} />
       </View>
     );
   }

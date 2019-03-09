@@ -9,7 +9,7 @@ const logs = (state = [], action) => {
         ...state,
         {
           id: action.id,
-          productLog: action.productLog,
+          ...action.productLog,
         },
       ];
     default:

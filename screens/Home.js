@@ -36,9 +36,8 @@ class Home extends React.Component {
   }
 
   launchScan = (event) => {
-    const { navigate } = this.props.navigation;
-
-    navigate('SearchProduct');
+    const { navigation } = this.props;
+    navigation.navigate('SearchProduct');
   }
 
   selectItem = (data) => {
@@ -56,7 +55,8 @@ class Home extends React.Component {
         onPress={() => this.openItem(data)}
         onLongPress={() => this.selectItem(data)}
       >
-        <Text>Name : {data.item.productLog.name}</Text>
+        <Text>Name : {data.item.name}</Text>
+        <Text>Qty : {data.item.qty}</Text>
       </TouchableHighlight>
     );
   }
@@ -88,16 +88,14 @@ class Home extends React.Component {
 ============================================================================= */
 
 const mapStateToProps = state => ({
-  items: state.logs
-})
+  items: state.logs,
+});
 
 const mapDispatchToProps = dispatch => ({
-  toggleTodo: id => dispatch(toggleTodo(id))
-})
+  toggleTodo: id => dispatch(toggleTodo(id)),
+});
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(Home)
-
-
+  mapDispatchToProps,
+)(Home);

@@ -43,25 +43,25 @@ class SearchProduct extends React.Component {
     setTimeout(() => this.nameInput.focus(), 1000);
   }
 
-  onItemScanned(itemRef) {
+  onItemScanned(itemCode) {
     this.setState({
-      itemId: itemRef,
+      itemCode,
       scanDisabled: true,
     });
 
-    this.selectProduct({ ref: itemRef });
+    this.openProductLog({ code: itemCode, isIncomplete: true });
   }
 
-  selectProduct(product) {
+  openProductLog(product) {
     const { navigation } = this.props;
-    navigation.navigate('ProductLogEdit', product);
+    navigation.navigate('ProductLogEdit', { productLog: product });
   }
 
   render() {
-    const { scanDisabled, text, itemId, itemLabel } = this.state;
+    const { scanDisabled, text, itemCode, itemLabel } = this.state;
     return (
       <View style={styles.container}>
-        <Scanner onItemScanned={itemRef => this.onItemScanned(itemRef)} disabled={scanDisabled} />
+        <Scanner onItemScanned={code => this.onItemScanned(code)} disabled={scanDisabled} />
         <TextInput
           style={styles.searchbox}
           onChangeText={txt => this.setState({ text: txt })}
@@ -69,7 +69,7 @@ class SearchProduct extends React.Component {
           autoFocus
           ref={(x) => { this.nameInput = x; }}
         />
-        <Text>Searching for {itemId} on open food fact...</Text>
+        <Text>Searching for {itemCode} on open food fact...</Text>
         <Text>Name : {itemLabel}</Text>
       </View>
     );
