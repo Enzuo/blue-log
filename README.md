@@ -23,5 +23,5 @@ To use them install the [Project Snippets](https://marketplace.visualstudio.com/
 
 #### Git config
 Make sure file are commited as lf line endings
-> git config core.autocrlf false
+> git config --global core.autocrlf false
 See [explanation](https://stackoverflow.com/questions/1249932/git-1-6-4-beta-on-windows-msysgit-unix-or-dos-line-termination/1250133#1250133) for the choice
