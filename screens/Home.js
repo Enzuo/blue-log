@@ -1,60 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableHighlight, Button } from 'react-native';
 import { connect } from 'react-redux'
 
 import { toggleTodo } from '../actions'
 
 
-
-class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filterText: '',
-      inStockOnly: false,
-    };
-  }
-
-  launchScan = (event) => {
-    const {navigate} = this.props.navigation;
-
-    navigate('SearchProduct', {name: 'Jane'})
-  }
-
-  render() {
-
-    return (
-      <View style={styles.container}>
-        <Text>Home screen</Text>
-        <FlatList
-          data={this.props.items}
-          renderItem={({item}) => <Text style={styles.item}>Name : {item.productLog.name}</Text>}
-          keyExtractor={(item, index) => index.toString()}
-        />
-        <Button
-          onPress={this.launchScan}
-          title="Scan"
-          color="#841584"
-          accessibilityLabel="Scan product"
-        />
-      </View>
-    );
-  }
-}
-
-const mapStateToProps = state => ({
-  items: state.logs
-})
-
-const mapDispatchToProps = dispatch => ({
-  toggleTodo: id => dispatch(toggleTodo(id))
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home)
+/* StyleSheet
+============================================================================= */
 
 const styles = StyleSheet.create({
   container: {
@@ -69,3 +21,83 @@ const styles = StyleSheet.create({
     height: 44,
   },
 });
+
+
+/* Home
+============================================================================= */
+
+class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterText: '',
+      inStockOnly: false,
+    };
+  }
+
+  launchScan = (event) => {
+    const { navigate } = this.props.navigation;
+
+    navigate('SearchProduct');
+  }
+
+  selectItem = (data) => {
+    data.item.isSelect = !data.item.isSelect;
+  }
+
+  openItem = (data) => {
+    const { navigation } = this.props;
+    navigation.navigate('ProductLogEdit', { productLog: data.item });
+  }
+
+  renderItem = (data) => {
+    return (
+      <TouchableHighlight
+        onPress={() => this.openItem(data)}
+        onLongPress={() => this.selectItem(data)}
+      >
+        <Text>Name : {data.item.productLog.name}</Text>
+      </TouchableHighlight>
+    );
+  }
+
+  render() {
+    const { items } = this.props;
+
+    return (
+      <View style={styles.container}>
+        <Text>Home screen</Text>
+        <FlatList
+          data={items}
+          renderItem={item => this.renderItem(item)}
+          keyExtractor={(item, index) => index.toString()}
+        />
+        <Button
+          onPress={this.launchScan}
+          title="Scan"
+          color="#841584"
+          accessibilityLabel="Scan product"
+        />
+      </View>
+    );
+  }
+}
+
+
+/* Exports
+============================================================================= */
+
+const mapStateToProps = state => ({
+  items: state.logs
+})
+
+const mapDispatchToProps = dispatch => ({
+  toggleTodo: id => dispatch(toggleTodo(id))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home)
+
+

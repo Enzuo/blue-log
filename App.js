@@ -7,14 +7,14 @@ import Scan from './screens/Scan';
 import Home from './screens/Home';
 import Search from './screens/Search';
 import SearchProduct from './screens/SearchProduct';
-import ProductLogEntry from './screens/ProductLogEntry';
+import ProductLogEdit from './screens/ProductLogEdit';
 
 const MainNavigator = createStackNavigator({
   Home: { screen: Home },
   Scan: { screen: Scan },
   Search: { screen: Search },
   SearchProduct: { screen: SearchProduct },
-  ProductLogEntry: { screen: ProductLogEntry },
+  ProductLogEdit: { screen: ProductLogEdit },
 }, {
   initialRouteName: 'Home',
 });

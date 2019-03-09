@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
-import Scanner from '../components/scanner';
+import Scanner from '../components/Scanner';
 
 
 /* StyleSheet
@@ -54,7 +54,7 @@ class SearchProduct extends React.Component {
 
   selectProduct(product) {
     const { navigation } = this.props;
-    navigation.navigate('ProductLogEntry', product);
+    navigation.navigate('ProductLogEdit', product);
   }
 
   render() {
