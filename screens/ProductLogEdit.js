@@ -98,9 +98,9 @@ class ProductLogEntry extends React.Component {
   }
 
   submit = () => {
-    const { addLogProduct } = this.props;
+    const { addProductLog } = this.props;
     const productLog = this.state;
-    addLogProduct(productLog);
+    addProductLog(productLog);
 
     const { navigation } = this.props;
     navigation.popToTop();
@@ -135,5 +135,5 @@ class ProductLogEntry extends React.Component {
 
 export default connect(
   null,
-  { addLogProduct: addLog },
+  { addProductLog: addLog },
 )(ProductLogEntry);
