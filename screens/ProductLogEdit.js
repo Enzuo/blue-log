@@ -47,11 +47,15 @@ function LinkOpenFoodFact({ code }) {
 
 function mapOpenFFAPI(response) {
   const { product } = response;
+
+  const energyComputed = product.nutriments.energy_unit === 'kJ'
+    ? (product.nutriments.energy_value / 4.184).toFixed(0) : product.nutriments.energy_value;
+
   return {
     // code : product.code,
     name: product.product_name,
     serving: product.serving_quantity,
-    energy: product.nutriments.energy_value,
+    energy: energyComputed,
     fat: product.nutriments.energy_value,
     saturatedFat: product.nutriments['saturated-fat_value'],
     carboyhydrates: product.nutriments.carbohydrates_value,
