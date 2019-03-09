@@ -55,8 +55,10 @@ class Home extends React.Component {
         onPress={() => this.openItem(data)}
         onLongPress={() => this.selectItem(data)}
       >
-        <Text>Name : {data.item.name}</Text>
-        <Text>Qty : {data.item.qty}</Text>
+        <View>
+          <Text>Name : {data.item.name}</Text>
+          <Text>Qty : {data.item.qty}</Text>
+        </View>
       </TouchableHighlight>
     );
   }
