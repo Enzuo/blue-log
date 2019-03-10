@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { Searchbar } from 'react-native-paper';
+
 
 import Scanner from '../components/Scanner';
-
 
 /* StyleSheet
 ============================================================================= */
@@ -32,15 +33,37 @@ const styles = StyleSheet.create({
 ============================================================================= */
 
 class SearchProduct extends React.Component {
+  static navigationOptions = ({ props, state, navigation }) => {
+    const onSearch = navigation.getParam('onSearch');
+    const ref = React.createRef();
+    // navigation.setParams({ refSearchBar: ref });
+    return {
+    // headerTitle instead of title
+      headerTitle: (
+        <Searchbar
+          style={styles.searchBar}
+          placeholder="Search"
+          onChangeText={onSearch}
+          ref={ref}
+          autoFocus
+        />
+      ),
+    };
+  };
+
   constructor(props) {
     super(props);
     this.state = { text: 'Search here' };
   }
 
   componentDidMount() {
-    this.nameInput.focus();
+    const { navigation } = this.props;
+    navigation.setParams({ onSearch: this.onSearch });
+  }
 
-    setTimeout(() => this.nameInput.focus(), 1000);
+  onSearch = (query) => {
+    console.log('search', query);
+    this.setState({ text: query });
   }
 
   onItemScanned(itemCode) {
@@ -57,19 +80,13 @@ class SearchProduct extends React.Component {
     navigation.navigate('ProductLogEdit', { productLog: product });
   }
 
+
   render() {
-    const { scanDisabled, text, itemCode, itemLabel } = this.state;
+    const { scanDisabled, text, itemLabel } = this.state;
     return (
       <View style={styles.container}>
         <Scanner onItemScanned={code => this.onItemScanned(code)} disabled={scanDisabled} />
-        <TextInput
-          style={styles.searchbox}
-          onChangeText={txt => this.setState({ text: txt })}
-          value={text}
-          autoFocus
-          ref={(x) => { this.nameInput = x; }}
-        />
-        <Text>Searching for {itemCode} on open food fact...</Text>
+        <Text>Searching for {text}</Text>
         <Text>Name : {itemLabel}</Text>
       </View>
     );

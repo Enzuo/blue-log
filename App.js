@@ -1,6 +1,7 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Provider } from 'react-redux';
 import React from 'react';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import { store } from './store';
 import Home from './screens/Home';
@@ -18,12 +19,12 @@ const MainNavigator = createStackNavigator({
 const AppContainer = createAppContainer(MainNavigator);
 
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
+export default function Main() {
+  return (
+    <Provider store={store}>
+      <PaperProvider>
         <AppContainer />
-      </Provider>
-    );
-  }
+      </PaperProvider>
+    </Provider>
+  );
 }

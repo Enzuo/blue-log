@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableHighlight, Button } from 'react-native';
 import { connect } from 'react-redux';
+import { FAB } from 'react-native-paper';
 
 
 /* StyleSheet
@@ -64,11 +65,12 @@ class Home extends React.Component {
           renderItem={item => this.renderItem(item)}
           keyExtractor={(item, index) => index.toString()}
         />
-        <Button
+        <FAB
+          style={styles.fab}
+          title="Add"
+          icon="add"
           onPress={this.launchScan}
-          title="Scan"
-          color="#841584"
-          accessibilityLabel="Scan product"
+          accessibilityLabel="Add log"
         />
       </View>
     );
