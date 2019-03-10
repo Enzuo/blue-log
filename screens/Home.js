@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableHighlight, Button } from 'react-native';
-import { connect } from 'react-redux'
-
-import { toggleTodo } from '../actions'
+import { connect } from 'react-redux';
 
 
 /* StyleSheet
@@ -27,14 +25,6 @@ const styles = StyleSheet.create({
 ============================================================================= */
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filterText: '',
-      inStockOnly: false,
-    };
-  }
-
   launchScan = (event) => {
     const { navigation } = this.props;
     navigation.navigate('SearchProduct');
@@ -93,11 +83,6 @@ const mapStateToProps = state => ({
   items: state.logs,
 });
 
-const mapDispatchToProps = dispatch => ({
-  toggleTodo: id => dispatch(toggleTodo(id)),
-});
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
 )(Home);
