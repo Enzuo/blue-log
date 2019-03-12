@@ -58,7 +58,7 @@ function mapOpenFFAPI(response) {
     energy: energyComputed,
     fat: product.nutriments.energy_value,
     saturatedFat: product.nutriments['saturated-fat_value'],
-    carboyhydrates: product.nutriments.carbohydrates_value,
+    carbohydrates: product.nutriments.carbohydrates_value,
     sugar: product.nutriments.sugar_value,
     fiber: product.nutriments.fiber_value,
     proteins: product.nutriments.proteins_value,
