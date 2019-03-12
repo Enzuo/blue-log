@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Button, Text, Linking } from 'react-native';
 import { connect } from 'react-redux';
+import { TextInput } from 'react-native-paper';
 
 import { addLog } from '../actions';
 
@@ -110,8 +111,23 @@ class ProductLogEntry extends React.Component {
     const { qty, date, code, name, energy, error } = this.state;
     return (
       <View>
-
-        <Text>Quantity : {qty}</Text>
+        <TextInput
+          label="Quantity (g)"
+          value={qty}
+          keyboardType="numeric"
+          autoFocus
+          onChangeText={val => this.setState({ qty: val })}
+          maxLength={3}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.inputName.focus(); }}
+          blurOnSubmit={false}
+        />
+        <TextInput
+          label="Name"
+          value={name}
+          onChangeText={val => this.setState({ name: val })}
+          ref={(c) => { this.inputName = c; }}
+        />
         <Text>Date : {date}</Text>
         <Text>Code : {code}</Text>
         <Text>Name : {name}</Text>
