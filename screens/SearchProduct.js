@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { Animated, StyleSheet, Text, View, FlatList, Easing } from 'react-native';
 import { Searchbar, List, Surface } from 'react-native-paper';
 import searchProduct from '../utils/mockSearch';
 
@@ -60,7 +60,11 @@ class SearchProduct extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { text: 'Search here' };
+    // var {height, width} = Dimensions.get('window');
+    this.state = {
+      text: 'Search here',
+      spacerAnim: new Animated.Value(300),
+    };
   }
 
   componentDidMount() {
@@ -72,6 +76,21 @@ class SearchProduct extends React.Component {
     this.setState({ text: query });
     const products = searchProduct(query);
     this.setState({ searchResult: products });
+
+    const { spacerAnim } = this.state;
+
+    if (products) {
+      return Animated.timing(spacerAnim, {
+        toValue: 100,
+        easing: Easing.out(Easing.ease),
+        duration: 300,
+      }).start();
+    }
+    Animated.timing(spacerAnim, {
+      toValue: 300,
+      easing: Easing.in(Easing.ease),
+      duration: 300,
+    }).start();
   }
 
   onItemScanned(itemCode) {
@@ -103,13 +122,13 @@ class SearchProduct extends React.Component {
 
 
   render() {
-    const { scanDisabled, text, itemLabel, searchResult } = this.state;
+    const { scanDisabled, text, itemLabel, searchResult, spacerAnim } = this.state;
     return (
       <View style={styles.container}>
         <Scanner onItemScanned={code => this.onItemScanned(code)} disabled={scanDisabled} />
         <Text>Searching for {text}</Text>
         <Text>Name : {itemLabel}</Text>
-        <View style={styles.spacer} />
+        <Animated.View style={{ height: spacerAnim }} />
         <Surface style={styles.surface}>
           <FlatList
             data={searchResult}
