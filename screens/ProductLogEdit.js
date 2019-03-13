@@ -85,15 +85,17 @@ class ProductLogEntry extends React.Component {
 
   async componentDidMount() {
     const { navigation } = this.props;
-    const productLog = navigation.getParam('productLog', null);
+    const productLogParam = navigation.getParam('productLog', null);
 
-    this.setState({ productLog });
+    const { productLog } = this.state;
+    const productLogMerge = { ...productLog, ...productLogParam };
+    this.setState({ productLog: productLogMerge });
 
-    if (productLog.isIncomplete) {
+    if (productLogMerge.isIncomplete) {
       try {
-        const openFFResponse = await getItemFromOpenFoodFact(productLog.code);
-        const product = mapOpenFFAPI(openFFResponse);
-        this.setState(product);
+        const openFFResponse = await getItemFromOpenFoodFact(productLogMerge.code);
+        const productOpenFF = mapOpenFFAPI(openFFResponse);
+        this.setState({ productLog: { ...productLogMerge, ...productOpenFF } });
       } catch (err) {
         this.setState({
           error: 'got an error' + err.statusText,
