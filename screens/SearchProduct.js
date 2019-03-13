@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { Searchbar, List, Surface } from 'react-native-paper';
+import searchProduct from '../utils/mockSearch';
 
 
 import Scanner from '../components/Scanner';
@@ -12,13 +13,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    // alignItems: 'center',
     // justifyContent: 'center',
   },
   item: {
     padding: 10,
     fontSize: 18,
     height: 44,
+  },
+  spacer: {
+    height: 100,
+  },
+  surface: {
+    flex: 1,
   },
   searchbox: {
     backgroundColor: 'white',
@@ -62,8 +69,9 @@ class SearchProduct extends React.Component {
   }
 
   onSearch = (query) => {
-    console.log('search', query);
     this.setState({ text: query });
+    const products = searchProduct(query);
+    this.setState({ searchResult: products });
   }
 
   onItemScanned(itemCode) {
@@ -80,14 +88,34 @@ class SearchProduct extends React.Component {
     navigation.navigate('ProductLogEdit', { productLog: product });
   }
 
+  renderSearchItem = (data) => {
+    const { item } = data;
+    console.log(item);
+    const desc = `${item.energy} kcal`;
+    return (
+      <List.Item
+        title={item.name}
+        description={desc}
+        left={props => <List.Icon {...props} icon="folder" />}
+      />
+    );
+  }
+
 
   render() {
-    const { scanDisabled, text, itemLabel } = this.state;
+    const { scanDisabled, text, itemLabel, searchResult } = this.state;
     return (
       <View style={styles.container}>
         <Scanner onItemScanned={code => this.onItemScanned(code)} disabled={scanDisabled} />
         <Text>Searching for {text}</Text>
         <Text>Name : {itemLabel}</Text>
+        <View style={styles.spacer} />
+        <Surface style={styles.surface}>
+          <FlatList
+            data={searchResult}
+            renderItem={item => this.renderSearchItem(item)}
+          />
+        </Surface>
       </View>
     );
   }
