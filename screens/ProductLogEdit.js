@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Button, Text, Linking } from 'react-native';
+import { StyleSheet, View, Button, Text, Linking, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { TextInput } from 'react-native-paper';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+
 
 import { addLog } from '../actions';
 
@@ -74,8 +76,11 @@ class ProductLogEntry extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      date: Date.now(),
-      qty: 100,
+      productLog: {
+        date: Date.now(),
+        qty: 100,
+      },
+      isDateTimePickerVisible: false,
     };
   }
 
@@ -83,7 +88,7 @@ class ProductLogEntry extends React.Component {
     const { navigation } = this.props;
     const productLog = navigation.getParam('productLog', null);
 
-    this.setState(productLog);
+    this.setState({ productLog });
 
     if (productLog.isIncomplete) {
       try {
@@ -98,9 +103,19 @@ class ProductLogEntry extends React.Component {
     }
   }
 
+  showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+
+  hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+
+  handleDatePicked = (date) => {
+    const { productLog } = this.state;
+    this.setState({ productLog: { ...productLog, date: date.getTime() } });
+    this.hideDateTimePicker();
+  }
+
   submit = () => {
     const { addProductLog } = this.props;
-    const productLog = this.state;
+    const { productLog } = this.state;
     addProductLog(productLog);
 
     const { navigation } = this.props;
@@ -108,7 +123,8 @@ class ProductLogEntry extends React.Component {
   }
 
   render() {
-    const { qty, date, code, name, energy, error } = this.state;
+    const { productLog, error, isDateTimePickerVisible } = this.state;
+    const { qty, date, code, name, energy } = productLog;
     return (
       <View>
         <TextInput
@@ -116,7 +132,7 @@ class ProductLogEntry extends React.Component {
           value={qty}
           keyboardType="numeric"
           autoFocus
-          onChangeText={val => this.setState({ qty: val })}
+          onChangeText={val => this.setState({ productLog: { ...productLog, qty: val } })}
           maxLength={3}
           returnKeyType="next"
           onSubmitEditing={() => { this.inputName.focus(); }}
@@ -125,7 +141,7 @@ class ProductLogEntry extends React.Component {
         <TextInput
           label="Name"
           value={name}
-          onChangeText={val => this.setState({ name: val })}
+          onChangeText={val => this.setState({ productLog: { ...productLog, name: val } })}
           ref={(c) => { this.inputName = c; }}
         />
         <Text>Date : {date}</Text>
@@ -140,6 +156,17 @@ class ProductLogEntry extends React.Component {
           accessibilityLabel="Submit"
         />
         <LinkOpenFoodFact code={code} />
+        <TouchableOpacity onPress={this.showDateTimePicker}>
+          <Text>Show DatePicker</Text>
+        </TouchableOpacity>
+        <DateTimePicker
+          isVisible={isDateTimePickerVisible}
+          onConfirm={this.handleDatePicked}
+          date={date}
+          is24Hour
+          mode="time"
+          onCancel={this.hideDateTimePicker}
+        />
       </View>
     );
   }
