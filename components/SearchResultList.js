@@ -1,15 +1,29 @@
 import React from 'react';
-import { StyleSheet, View, Animated, FlatList, Easing } from 'react-native';
-import { Surface, Colors, List, TouchableRipple } from 'react-native-paper';
-
+import { StyleSheet, View, Animated, FlatList, Easing, ScrollView } from 'react-native';
+import { Surface, Colors, List, TouchableRipple, Button } from 'react-native-paper';
 
 /* StyleSheet
 ============================================================================= */
 
 const styles = StyleSheet.create({
-  // surface: {
-  //   flex: 1,
-  // },
+  container: {
+    flex:1,
+    // flexDirection:'row',
+    backgroundColor: 'rgba(0.5,0,0.5,0.5)',
+  },
+  contentContainer: {
+    flexDirection: 'column',
+    // alignItems:'stretch',
+  },
+  surface: {
+    flex: 1,
+    flexGrow: 1,
+    backgroundColor:'#F0F',
+    // width:'100%',
+  },
+  bottom: {
+    marginBottom: '48dp',
+  },
 });
 
 
@@ -29,6 +43,9 @@ function getColorForSource(sourceType) {
   }
 }
 
+function spacerElem(){
+  return ;
+}
 
 /* SearchResultList
 ============================================================================= */
@@ -90,21 +107,32 @@ class SearchResultList extends React.Component {
     );
   }
 
+  renderFooter = () => {
+    return (
+      <View>
+        <Button>Create</Button>
+      </View>
+    )
+  }
+
   render() {
     const { results } = this.props;
     const { spacerAnim } = this.state;
 
     return (
-      <View>
+      <ScrollView keyboardShouldPersistTaps="handled" style={styles.container} contentContainerStyle={styles.contentContainer}>
         <Animated.View style={{ height: spacerAnim }} />
         <Surface style={styles.surface}>
           <FlatList
             data={results}
             renderItem={item => this.renderProduct(item)}
             keyboardShouldPersistTaps="handled"
+            scrollEnabled={false}
+            ListFooterComponent={this.renderFooter}
           />
         </Surface>
-      </View>
+      </ScrollView>
+
     );
   }
 }
