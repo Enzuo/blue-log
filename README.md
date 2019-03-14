@@ -1,18 +1,18 @@
 # Blue Log
 
-# Concept
+## Concept
 
 What - what does it do
 Why - The problem it resolve
 Project philopshy
 
 
-# Install
+## Install
 
 
 
 
-# Contributing
+## Contributing
 
 #### Projects snippets for vs code
 To use them install the [Project Snippets](https://marketplace.visualstudio.com/items?itemName=rebornix.project-snippets) extension
