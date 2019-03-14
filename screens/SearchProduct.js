@@ -1,10 +1,11 @@
 import React from 'react';
-import { Animated, StyleSheet, Text, View, FlatList, Easing } from 'react-native';
-import { Searchbar, List, Surface, Colors } from 'react-native-paper';
+import { StyleSheet, Text, View } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 import searchProduct from '../utils/mockSearch';
 
 
 import Scanner from '../components/Scanner';
+import SearchResultList from '../components/SearchResultList';
 
 /* StyleSheet
 ============================================================================= */
@@ -21,12 +22,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     height: 44,
   },
-  spacer: {
-    height: 100,
-  },
-  surface: {
-    flex: 1,
-  },
   searchbox: {
     backgroundColor: 'white',
     height: 40,
@@ -38,20 +33,6 @@ const styles = StyleSheet.create({
 
 /* Helpers
 ============================================================================= */
-
-function getColorForSource (sourceType) {
-  switch (sourceType) {
-    case 1: // previous logs
-      return Colors.blue500;
-    case 2: // ingredient base
-      return Colors.orange500;
-    case 3: // recipes
-      return Colors.green500;
-    default:
-      return null;
-  }
-
-}
 
 
 /* SearchProduct
@@ -81,7 +62,6 @@ class SearchProduct extends React.Component {
     // var {height, width} = Dimensions.get('window');
     this.state = {
       text: 'Search here',
-      spacerAnim: new Animated.Value(300),
     };
   }
 
@@ -93,31 +73,19 @@ class SearchProduct extends React.Component {
   onSearch = (query) => {
     this.setState({ text: query });
     const products = searchProduct(query);
-    this.setState({ searchResult: products });
-
-    const { spacerAnim } = this.state;
-
-    if (products) {
-      return Animated.timing(spacerAnim, {
-        toValue: 100,
-        easing: Easing.out(Easing.ease),
-        duration: 300,
-      }).start();
-    }
-    Animated.timing(spacerAnim, {
-      toValue: 300,
-      easing: Easing.in(Easing.ease),
-      duration: 300,
-    }).start();
+    this.setState({ searchResults: products });
   }
 
-  onItemScanned(itemCode) {
+  onProductScanned(itemCode) {
     this.setState({
-      itemCode,
       scanDisabled: true,
     });
 
     this.openProductLog({ code: itemCode, isIncomplete: true });
+  }
+
+  onProductPicked(product) {
+    this.openProductLog(product);
   }
 
   openProductLog(product) {
@@ -125,36 +93,17 @@ class SearchProduct extends React.Component {
     navigation.navigate('ProductLogEdit', { productLog: product });
   }
 
-  renderSearchItem = (data) => {
-    const { item } = data;
-    console.log(item);
-    const desc = `${item.energy} kcal`;
-    const color = getColorForSource(item.source);
-    return (
-      <List.Item
-        title={item.name}
-        description={desc}
-        right={props => <List.Icon style={{ fontSize: 5 }} {...props} icon="lens" color={color} />}
-      />
-    );
-  }
-
-
-
   render() {
-    const { scanDisabled, text, itemLabel, searchResult, spacerAnim } = this.state;
+    const { scanDisabled, text, itemLabel, searchResults } = this.state;
     return (
       <View style={styles.container}>
-        <Scanner onItemScanned={code => this.onItemScanned(code)} disabled={scanDisabled} />
+        <Scanner onProductScanned={code => this.onProductScanned(code)} disabled={scanDisabled} />
         <Text>Searching for {text}</Text>
         <Text>Name : {itemLabel}</Text>
-        <Animated.View style={{ height: spacerAnim }} />
-        <Surface style={styles.surface}>
-          <FlatList
-            data={searchResult}
-            renderItem={item => this.renderSearchItem(item)}
-          />
-        </Surface>
+        <SearchResultList
+          results={searchResults}
+          onResultClick={result => this.onProductPicked(result)}
+        />
       </View>
     );
   }
