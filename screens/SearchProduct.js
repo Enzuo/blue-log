@@ -1,6 +1,6 @@
 import React from 'react';
 import { Animated, StyleSheet, Text, View, FlatList, Easing } from 'react-native';
-import { Searchbar, List, Surface } from 'react-native-paper';
+import { Searchbar, List, Surface, Colors } from 'react-native-paper';
 import searchProduct from '../utils/mockSearch';
 
 
@@ -34,6 +34,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
 });
+
+
+/* Helpers
+============================================================================= */
+
+function getColorForSource (sourceType) {
+  switch (sourceType) {
+    case 1: // previous logs
+      return Colors.blue500;
+    case 2: // ingredient base
+      return Colors.orange500;
+    case 3: // recipes
+      return Colors.green500;
+    default:
+      return null;
+  }
+
+}
 
 
 /* SearchProduct
@@ -111,14 +129,16 @@ class SearchProduct extends React.Component {
     const { item } = data;
     console.log(item);
     const desc = `${item.energy} kcal`;
+    const color = getColorForSource(item.source);
     return (
       <List.Item
         title={item.name}
         description={desc}
-        left={props => <List.Icon {...props} icon="folder" />}
+        right={props => <List.Icon style={{ fontSize: 5 }} {...props} icon="lens" color={color} />}
       />
     );
   }
+
 
 
   render() {
