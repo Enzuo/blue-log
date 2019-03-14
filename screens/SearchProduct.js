@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
-import searchProduct from '../utils/mockSearch';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
+import searchProduct from '../utils/mockSearch';
 
 import Scanner from '../components/Scanner';
 import SearchResultList from '../components/SearchResultList';
+
 
 /* StyleSheet
 ============================================================================= */
@@ -95,6 +97,7 @@ class SearchProduct extends React.Component {
 
   render() {
     const { scanDisabled, text, itemLabel, searchResults } = this.state;
+
     return (
       <View style={styles.container}>
         <Scanner onProductScanned={code => this.onProductScanned(code)} disabled={scanDisabled} />
@@ -104,6 +107,7 @@ class SearchProduct extends React.Component {
           results={searchResults}
           onResultClick={result => this.onProductPicked(result)}
         />
+        <KeyboardSpacer />
       </View>
     );
   }
