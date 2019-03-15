@@ -12,12 +12,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0.5,0,0.5,0.5)',
   },
   contentContainer: {
-    flexDirection: 'column',
+    paddingTop:20,
+    // flexDirection: 'column',
     // alignItems:'stretch',
   },
   surface: {
     flex: 1,
-    flexGrow: 1,
+    elevation:4,
+    // flexGrow: 1,
     backgroundColor:'#F0F',
     // width:'100%',
   },
@@ -47,6 +49,9 @@ function spacerElem(){
   return ;
 }
 
+// var spacerAnim = new Animated.Value(300);
+
+
 /* SearchResultList
 ============================================================================= */
 
@@ -54,8 +59,8 @@ class SearchResultList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      spacerAnim: new Animated.Value(300),
       openList: false,
+      spacerAnim: new Animated.Value(300),
     };
   }
 
@@ -74,6 +79,7 @@ class SearchResultList extends React.Component {
           toValue: 100,
           easing: Easing.out(Easing.ease),
           duration: 300,
+          useNativeDriver: true,
         }).start();
         // eslint-disable-next-line react/no-did-update-set-state
         this.setState({ openList: true });
@@ -83,6 +89,7 @@ class SearchResultList extends React.Component {
           toValue: 300,
           easing: Easing.in(Easing.ease),
           duration: 300,
+          useNativeDriver: true,
         }).start();
         // eslint-disable-next-line react/no-did-update-set-state
         this.setState({ openList: false });
@@ -115,23 +122,51 @@ class SearchResultList extends React.Component {
     )
   }
 
+  onScroll = (event, b) => {
+    const { spacerAnim, openList } = this.state;
+
+    // console.log(event, b)
+    // var newSpacer = 100 - event.nativeEvent.contentOffset.y;
+    // if(newSpacer<0) newSpacer = 0;
+    // this.setState({spacerAnim: newSpacer})
+    if(event.nativeEvent.contentOffset.y > 1){
+      Animated.timing(spacerAnim, {
+        toValue: 0,
+        easing: Easing.linear(Easing.ease),
+        duration: 100,
+        useNativeDriver: true,
+      }).start();
+    }
+  }
+
   render() {
     const { results } = this.props;
     const { spacerAnim } = this.state;
 
     return (
-      <ScrollView keyboardShouldPersistTaps="handled" style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <Animated.View style={{ height: spacerAnim }} />
-        <Surface style={styles.surface}>
-          <FlatList
-            data={results}
-            renderItem={item => this.renderProduct(item)}
-            keyboardShouldPersistTaps="handled"
-            scrollEnabled={false}
-            ListFooterComponent={this.renderFooter}
-          />
-        </Surface>
-      </ScrollView>
+      <View style={styles.container}>
+        <Animated.View
+          style={{
+            height: 300,
+            transform: [{
+              translateY: spacerAnim,
+            }],
+            backgroundColor:'#00F',
+          }}
+        >
+          <Surface style={styles.surface}>
+            <FlatList
+              contentContainerStyle={styles.contentContainer}
+              data={results}
+              renderItem={item => this.renderProduct(item)}
+              keyboardShouldPersistTaps="handled"
+              scrollEnabled={true}
+              ListFooterComponent={this.renderFooter}
+              onScroll={this.onScroll}
+            />
+          </Surface>
+        </Animated.View>
+      </View>
 
     );
   }
