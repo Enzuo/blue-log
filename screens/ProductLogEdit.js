@@ -68,12 +68,13 @@ function mapOpenFFAPI(response) {
     name: product.product_name,
     serving: product.serving_quantity,
     energy: energyComputed,
-    fat: product.nutriments.energy_value,
+    fat: product.nutriments.fat_value,
     saturatedFat: product.nutriments['saturated-fat_value'],
     carbohydrates: product.nutriments.carbohydrates_value,
-    sugar: product.nutriments.sugar_value,
+    sugar: product.nutriments.sugars_value,
     fiber: product.nutriments.fiber_value,
     proteins: product.nutriments.proteins_value,
+    salt: product.nutriments.salt_value,
   };
 }
 
@@ -127,37 +128,39 @@ class ProductLogEntry extends React.Component {
     const { qty, date, code, name, energy, fat, saturatedFat, carbohydrates, sugar } = productLog;
     return (
       <View style={{flex: 1}}>
-        <ScrollView style={{flex:1, margin:15, padding:5, backgroundColor:'#F0F'}}>
-          <TextInput
-            label="Quantity (g)"
-            value={qty}
-            keyboardType="numeric"
-            autoFocus
-            onChangeText={val => this.setState({ productLog: { ...productLog, qty: val } })}
-            maxLength={3}
-            returnKeyType="next"
-            onSubmitEditing={() => { this.inputProductRef.focus(); }}
-            blurOnSubmit={false}
-          />
-          <DateTime
-            date={date}
-            onChange={val => this.setState({ productLog: { ...productLog, date: val } })}
-          />
-          <ProductEdit
-            {...productLog}
-            ref={(c) => { this.inputProductRef = c; }}
-            onChange={val => this.setState({ productLog: { ...productLog, ...val } })}
-          />
+        <View style={{flex: 1}}>
+          <ScrollView style={{flex:1, padding:5, backgroundColor:'#F0F'}}>
+            <TextInput
+              label="Quantity (g)"
+              value={qty}
+              keyboardType="numeric"
+              autoFocus
+              onChangeText={val => this.setState({ productLog: { ...productLog, qty: val } })}
+              maxLength={3}
+              returnKeyType="next"
+              onSubmitEditing={() => { this.inputProductRef.focus(); }}
+              blurOnSubmit={false}
+            />
+            <DateTime
+              date={date}
+              onChange={val => this.setState({ productLog: { ...productLog, date: val } })}
+            />
+            <ProductEdit
+              {...productLog}
+              ref={(c) => { this.inputProductRef = c; }}
+              onChange={val => this.setState({ productLog: { ...productLog, ...val } })}
+            />
 
-          <Text>Error : {error}</Text>
+            <Text>Error : {error}</Text>
+            <LinkOpenFoodFact code={code} />
+          </ScrollView>
           <FAB
             style={styles.fab}
             icon="done"
             onPress={this.submit}
             accessibilityLabel="Submit"
           />
-          <LinkOpenFoodFact code={code} />
-        </ScrollView>
+        </View>
         <KeyboardSpacer />
       </View>
     );
