@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableHighlight, Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
-import { FAB, IconButton } from 'react-native-paper';
+import { FAB, IconButton, List } from 'react-native-paper';
 
 
 /* StyleSheet
@@ -14,10 +14,18 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
   },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
+  itemQty: {
+    margin: 8,
+    height: 40,
+    width: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  itemQtyNb: {
+    marginRight: 5,
+    fontWeight: 'bold',
+    color: '#3498db',
   },
   groupActionContainer: {
     backgroundColor: '#EEE',
@@ -70,22 +78,28 @@ class Home extends React.Component {
       return this.selectItem(data);
     }
     const { navigation } = this.props;
-    navigation.navigate('ProductLogEdit', { productLog: data.item });
+    return navigation.navigate('ProductLogEdit', { productLog: data.item });
   }
 
   renderItem = (data) => {
     const { selectedList } = this.state;
 
     const isSelected = !!selectedList.get(data.index);
+    const itemIcon = isSelected ? 'check-box' : 'restaurant-menu';
+    const description = data.item.energy ? `${data.item.energy} kcal` : null;
     return (
       <TouchableHighlight
         onPress={() => this.pressItem(data)}
         onLongPress={() => this.selectItem(data)}
+        underlayColor="#00F"
       >
-        <View style={{backgroundColor: isSelected ? '#F0F' : null }}>
-          <Text>Name : {data.item.name}</Text>
-          <Text>Qty : {data.item.qty}</Text>
-        </View>
+        <List.Item
+          title={data.item.name}
+          description={description}
+          style={{ backgroundColor: isSelected ? '#DDD' : '#FFF' }}
+          left={props => <List.Icon animated {...props} icon={itemIcon} />}
+          right={() => <View style={styles.itemQty}><Text style={styles.itemQtyNb}>{data.item.qty}</Text><Text>g</Text></View>}
+        />
       </TouchableHighlight>
     );
   }
@@ -96,7 +110,6 @@ class Home extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text>Home screen</Text>
         <FlatList
           style={styles.list}
           data={items}
@@ -107,17 +120,15 @@ class Home extends React.Component {
         <View style={styles.groupActionContainer}>
           <IconButton
             icon="delete"
-            // color={Colors.red500}
             size={24}
             disabled={!selectMode}
-            onPress={() => console.log('Clear')}
+            onPress={() => console.log('Delete')}
           />
           <IconButton
             icon="add-to-photos"
-            // color={Colors.red500}
             size={24}
             disabled={!selectMode}
-            onPress={() => console.log('Clear')}
+            onPress={() => console.log('Create group')}
           />
         </View>
 
