@@ -5,9 +5,9 @@ import { TextInput, FAB } from 'react-native-paper';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 
-
 import { addLog } from '../actions';
 import DateTime from '../components/DateTime';
+import ProductEdit from '../components/ProductEdit';
 
 
 /* StyleSheet
@@ -136,66 +136,19 @@ class ProductLogEntry extends React.Component {
             onChangeText={val => this.setState({ productLog: { ...productLog, qty: val } })}
             maxLength={3}
             returnKeyType="next"
-            onSubmitEditing={() => { this.inputNameRef.focus(); }}
+            onSubmitEditing={() => { this.inputProductRef.focus(); }}
             blurOnSubmit={false}
           />
           <DateTime
             date={date}
             onChange={val => this.setState({ productLog: { ...productLog, date: val } })}
           />
-          <TextInput
-            label="Name"
-            value={name}
-            onChangeText={val => this.setState({ productLog: { ...productLog, name: val } })}
-            ref={(c) => { this.inputNameRef = c; }}
+          <ProductEdit
+            {...productLog}
+            ref={(c) => { this.inputProductRef = c; }}
+            onChange={val => this.setState({ productLog: { ...productLog, ...val } })}
           />
-          <Text>Code : {code}</Text>
-          <TextInput
-            label="Energy"
-            value={energy}
-            keyboardType="numeric"
-            maxLength={3}
-            onChangeText={val => this.setState({ productLog: { ...productLog, energy: val } })}
-            ref={(c) => { this.inputEnergyRef = c; }}
-          />
-          <TextInput
-            label="Fat"
-            value={fat}
-            keyboardType="numeric"
-            maxLength={3}
-            onChangeText={val => this.setState({ productLog: { ...productLog, fat: val } })}
-            ref={(c) => { this.inputFatRef = c; }}
-          />
-          <TextInput
-            label="Saturated Fat (g)"
-            value={saturatedFat}
-            keyboardType="numeric"
-            maxLength={3}
-            onChangeText={val => this.setState({ productLog: { ...productLog, saturatedFat: val } })}
-            ref={(c) => { this.inputSatFatRef = c; }}
-            returnKeyType="next"
-            onSubmitEditing={() => { this.inputCarbsRef.focus(); }}
-            blurOnSubmit={false}
-          />
-          <TextInput
-            label="Carbohydrates (g)"
-            value={carbohydrates}
-            keyboardType="numeric"
-            maxLength={3}
-            onChangeText={val => this.setState({ productLog: { ...productLog, carbohydrates: val } })}
-            ref={(c) => { this.inputCarbsRef = c; }}
-            returnKeyType="next"
-            onSubmitEditing={() => { this.inputSugarRef.focus(); }}
-            blurOnSubmit={false}
-          />
-          <TextInput
-            label="Sugar (g)"
-            value={sugar}
-            keyboardType="numeric"
-            maxLength={3}
-            onChangeText={val => this.setState({ productLog: { ...productLog, sugar: val } })}
-            ref={(c) => { this.inputSugarRef = c; }}
-          />
+
           <Text>Error : {error}</Text>
           <FAB
             style={styles.fab}
