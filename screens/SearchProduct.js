@@ -63,7 +63,7 @@ class SearchProduct extends React.Component {
     super(props);
     // var {height, width} = Dimensions.get('window');
     this.state = {
-      text: 'Search here',
+      searchQuery: 'Search here',
     };
   }
 
@@ -73,7 +73,7 @@ class SearchProduct extends React.Component {
   }
 
   onSearch = (query) => {
-    this.setState({ text: query });
+    this.setState({ searchQuery: query });
     const products = searchProduct(query);
     this.setState({ searchResults: products });
   }
@@ -90,23 +90,30 @@ class SearchProduct extends React.Component {
     this.openProductLog(product);
   }
 
+  createProduct = () => {
+    const { searchQuery } = this.state;
+    const product = { name: searchQuery };
+    this.openProductLog(product);
+  }
+
   openProductLog(product) {
     const { navigation } = this.props;
     navigation.navigate('ProductLogEdit', { productLog: product });
   }
 
   render() {
-    const { scanDisabled, text, itemLabel, searchResults } = this.state;
+    const { scanDisabled, searchQuery, itemLabel, searchResults } = this.state;
 
     return (
       <View style={styles.container}>
         <Scanner onProductScanned={code => this.onProductScanned(code)} disabled={scanDisabled} />
-        <Text>Searching for {text}</Text>
+        <Text>Searching for {searchQuery}</Text>
         <Text>Name : {itemLabel}</Text>
         <SearchResultList
           results={searchResults}
-          search={text}
+          search={searchQuery}
           onResultClick={result => this.onProductPicked(result)}
+          onCreateClick={this.createProduct}
         />
         <KeyboardSpacer />
       </View>

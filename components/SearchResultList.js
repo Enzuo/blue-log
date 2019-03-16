@@ -158,6 +158,7 @@ class SearchResultList extends React.Component {
       <ScrollView
         onScroll={this.onScroll}
         contentContainerStyle={styles.contentContainer}
+        keyboardShouldPersistTaps="handled"
         onMomentumScrollEnd={this.onScrollEndSnapToEdge}
         ref={(scrollView) => { this.scrollView = scrollView; }}
       >
@@ -172,11 +173,9 @@ class SearchResultList extends React.Component {
         >
           <Surface style={styles.surface}>
             <FlatList
-              // contentContainerStyle={styles.contentContainer}
               data={results}
               renderItem={item => this.renderProduct(item)}
               keyboardShouldPersistTaps="handled"
-              scrollEnabled={false}
               ListFooterComponent={this.renderFooter}
               onScroll={this.onScroll}
             />
