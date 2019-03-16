@@ -1,15 +1,28 @@
-import { createStore } from 'redux'
-import todoApp from './reducers/reducers'
+import { createStore } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+// defaults to localStorage for web and AsyncStorage for react-native
+import storage from 'redux-persist/lib/storage';
+
+import blueLogReducers from './reducers/reducers';
 import {
   addLog,
-} from './actions'
+} from './actions';
 
-export const store = createStore(todoApp)
 
-const unsubscribe = store.subscribe(() => console.log(store.getState()))
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+const persistedReducer = persistReducer(persistConfig, blueLogReducers);
+const store = createStore(persistedReducer);
+const persistor = persistStore(store);
 
-store.dispatch(addLog({ name : 'test', qty : 250}))
-store.dispatch(addLog({ name : 'Carrote', energy : 450 }))
-store.dispatch(addLog({ name : 'Patate', qty : 25 }))
-store.dispatch(addLog({ name : 'Un truc avec un nom super super long quoi comment ca se fait', qty : 25 }))
 
+const unsubscribe = store.subscribe(() => console.log(store.getState()));
+
+store.dispatch(addLog({ name: 'test', qty: 250 }));
+store.dispatch(addLog({ name: 'Carrote', energy: 450 }));
+store.dispatch(addLog({ name: 'Patate', qty: 25 }));
+store.dispatch(addLog({ name: 'Un truc avec un nom super super long quoi comment ca se fait', qty: 25 }));
+
+export { store, persistor };
