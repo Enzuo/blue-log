@@ -1,27 +1,31 @@
 import React from 'react';
 import { StyleSheet, View, Animated, FlatList, Easing, ScrollView } from 'react-native';
-import { Surface, Colors, List, TouchableRipple, Button } from 'react-native-paper';
+import { Surface, Colors, List, TouchableRipple } from 'react-native-paper';
 
 /* StyleSheet
 ============================================================================= */
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    // flex:1,
     // flexDirection:'row',
-    backgroundColor: 'rgba(0.5,0,0.5,0.5)',
+    // backgroundColor: 'rgba(0.5,0,0.5,0.5)',
   },
   contentContainer: {
-    paddingTop:20,
-    // flexDirection: 'column',
-    // alignItems:'stretch',
+    flexGrow: 1,
+    // backgroundColor: '#0F0',
   },
   surface: {
-    flex: 1,
-    elevation:4,
-    // flexGrow: 1,
-    backgroundColor:'#F0F',
+    // flex: 0,
+    // minHeight:'100%',
+    elevation: 8,
+    // paddingTop:70,
+    flexGrow: 1,
+    // backgroundColor: 'rgba(1,0,1,0.5)',
     // width:'100%',
+  },
+  topGap: {
+    height: 100,
   },
   bottom: {
     marginBottom: '48dp',
@@ -45,27 +49,24 @@ function getColorForSource(sourceType) {
   }
 }
 
-function spacerElem(){
-  return ;
-}
-
-// var spacerAnim = new Animated.Value(300);
-
-
 /* SearchResultList
 ============================================================================= */
 
 class SearchResultList extends React.Component {
+  scrollView = null;
+
   constructor(props) {
     super(props);
     this.state = {
       openList: false,
-      spacerAnim: new Animated.Value(300),
+      panelOffsetAnim: new Animated.Value(300),
+      topGapHeight: 100,
     };
   }
 
+
   componentDidUpdate(prevProps) {
-    const { spacerAnim, openList } = this.state;
+    const { panelOffsetAnim, openList } = this.state;
     const { results: prevResults } = prevProps;
     const { results } = this.props;
 
@@ -75,8 +76,8 @@ class SearchResultList extends React.Component {
       const shouldClose = !results && openList;
 
       if (shouldOpen) {
-        Animated.timing(spacerAnim, {
-          toValue: 100,
+        Animated.timing(panelOffsetAnim, {
+          toValue: 0,
           easing: Easing.out(Easing.ease),
           duration: 300,
           useNativeDriver: true,
@@ -85,7 +86,7 @@ class SearchResultList extends React.Component {
         this.setState({ openList: true });
       }
       if (shouldClose) {
-        Animated.timing(spacerAnim, {
+        Animated.timing(panelOffsetAnim, {
           toValue: 300,
           easing: Easing.in(Easing.ease),
           duration: 300,
@@ -99,7 +100,6 @@ class SearchResultList extends React.Component {
 
   renderProduct = (data) => {
     const { item } = data;
-    console.log(item);
     const desc = `${item.energy} kcal`;
     const color = getColorForSource(item.source);
     const { onResultClick } = this.props;
@@ -115,59 +115,67 @@ class SearchResultList extends React.Component {
   }
 
   renderFooter = () => {
+    const { onCreateClick, search } = this.props;
+    const desc = `create item ${search}`;
     return (
-      <View>
-        <Button>Create</Button>
-      </View>
-    )
+      <TouchableRipple onPress={() => { onCreateClick(); }}>
+        <List.Item
+          title={search}
+          description={desc}
+          right={props => <List.Icon {...props} icon="add-box" />}
+
+        />
+      </TouchableRipple>
+    );
   }
 
-  onScroll = (event, b) => {
-    const { spacerAnim, openList } = this.state;
+  onScrollEndSnapToEdge = (event) => {
+    const { topGapHeight } = this.state;
 
-    // console.log(event, b)
-    // var newSpacer = 100 - event.nativeEvent.contentOffset.y;
-    // if(newSpacer<0) newSpacer = 0;
-    // this.setState({spacerAnim: newSpacer})
-    if(event.nativeEvent.contentOffset.y > 1){
-      Animated.timing(spacerAnim, {
-        toValue: 0,
-        easing: Easing.linear(Easing.ease),
-        duration: 100,
-        useNativeDriver: true,
-      }).start();
+    const scrollY = event.nativeEvent.contentOffset.y;
+
+    if (this.scrollView && scrollY < topGapHeight && scrollY > topGapHeight / 2) {
+      this.scrollView.scrollTo({ y: topGapHeight });
+    }
+
+    if (this.scrollView && scrollY < topGapHeight && scrollY < topGapHeight / 2) {
+      this.scrollView.scrollTo({ y: 0 });
     }
   }
 
   render() {
     const { results } = this.props;
-    const { spacerAnim } = this.state;
+    const { panelOffsetAnim } = this.state;
 
     return (
-      <View style={styles.container}>
+      <ScrollView
+        onScroll={this.onScroll}
+        contentContainerStyle={styles.contentContainer}
+        onMomentumScrollEnd={this.onScrollEndSnapToEdge}
+        ref={(scrollView) => { this.scrollView = scrollView; }}
+      >
+        <View style={styles.topGap} />
         <Animated.View
           style={{
-            height: 300,
+            flexGrow: 1,
             transform: [{
-              translateY: spacerAnim,
+              translateY: panelOffsetAnim,
             }],
-            backgroundColor:'#00F',
           }}
         >
           <Surface style={styles.surface}>
             <FlatList
-              contentContainerStyle={styles.contentContainer}
+              // contentContainerStyle={styles.contentContainer}
               data={results}
               renderItem={item => this.renderProduct(item)}
               keyboardShouldPersistTaps="handled"
-              scrollEnabled={true}
+              scrollEnabled={false}
               ListFooterComponent={this.renderFooter}
               onScroll={this.onScroll}
             />
           </Surface>
         </Animated.View>
-      </View>
-
+      </ScrollView>
     );
   }
 }
