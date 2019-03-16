@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Button, Text, Linking } from 'react-native';
+import { StyleSheet, ScrollView, View, Button, Text, Linking } from 'react-native';
 import { connect } from 'react-redux';
-import { TextInput } from 'react-native-paper';
+import { TextInput, FAB } from 'react-native-paper';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 
 
 import { addLog } from '../actions';
@@ -11,7 +13,14 @@ import DateTime from '../components/DateTime';
 /* StyleSheet
 ============================================================================= */
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
+});
 
 
 /* Helpers
@@ -115,41 +124,88 @@ class ProductLogEntry extends React.Component {
 
   render() {
     const { productLog, error } = this.state;
-    const { qty, date, code, name, energy } = productLog;
+    const { qty, date, code, name, energy, fat, saturatedFat, carbohydrates, sugar } = productLog;
     return (
-      <View>
-        <TextInput
-          label="Quantity (g)"
-          value={qty}
-          keyboardType="numeric"
-          autoFocus
-          onChangeText={val => this.setState({ productLog: { ...productLog, qty: val } })}
-          maxLength={3}
-          returnKeyType="next"
-          onSubmitEditing={() => { this.inputName.focus(); }}
-          blurOnSubmit={false}
-        />
-        <DateTime
-          date={date}
-          onChange={val => this.setState({ productLog: { ...productLog, date: val } })}
-        />
-        <TextInput
-          label="Name"
-          value={name}
-          onChangeText={val => this.setState({ productLog: { ...productLog, name: val } })}
-          ref={(c) => { this.inputName = c; }}
-        />
-        <Text>Code : {code}</Text>
-        <Text>Name : {name}</Text>
-        <Text>Energy : {energy}</Text>
-        <Text>Error : {error}</Text>
-        <Button
-          onPress={this.submit}
-          title="Submit"
-          color="#841584"
-          accessibilityLabel="Submit"
-        />
-        <LinkOpenFoodFact code={code} />
+      <View style={{flex: 1}}>
+        <ScrollView style={{flex:1, margin:15, padding:5, backgroundColor:'#F0F'}}>
+          <TextInput
+            label="Quantity (g)"
+            value={qty}
+            keyboardType="numeric"
+            autoFocus
+            onChangeText={val => this.setState({ productLog: { ...productLog, qty: val } })}
+            maxLength={3}
+            returnKeyType="next"
+            onSubmitEditing={() => { this.inputNameRef.focus(); }}
+            blurOnSubmit={false}
+          />
+          <DateTime
+            date={date}
+            onChange={val => this.setState({ productLog: { ...productLog, date: val } })}
+          />
+          <TextInput
+            label="Name"
+            value={name}
+            onChangeText={val => this.setState({ productLog: { ...productLog, name: val } })}
+            ref={(c) => { this.inputNameRef = c; }}
+          />
+          <Text>Code : {code}</Text>
+          <TextInput
+            label="Energy"
+            value={energy}
+            keyboardType="numeric"
+            maxLength={3}
+            onChangeText={val => this.setState({ productLog: { ...productLog, energy: val } })}
+            ref={(c) => { this.inputEnergyRef = c; }}
+          />
+          <TextInput
+            label="Fat"
+            value={fat}
+            keyboardType="numeric"
+            maxLength={3}
+            onChangeText={val => this.setState({ productLog: { ...productLog, fat: val } })}
+            ref={(c) => { this.inputFatRef = c; }}
+          />
+          <TextInput
+            label="Saturated Fat (g)"
+            value={saturatedFat}
+            keyboardType="numeric"
+            maxLength={3}
+            onChangeText={val => this.setState({ productLog: { ...productLog, saturatedFat: val } })}
+            ref={(c) => { this.inputSatFatRef = c; }}
+            returnKeyType="next"
+            onSubmitEditing={() => { this.inputCarbsRef.focus(); }}
+            blurOnSubmit={false}
+          />
+          <TextInput
+            label="Carbohydrates (g)"
+            value={carbohydrates}
+            keyboardType="numeric"
+            maxLength={3}
+            onChangeText={val => this.setState({ productLog: { ...productLog, carbohydrates: val } })}
+            ref={(c) => { this.inputCarbsRef = c; }}
+            returnKeyType="next"
+            onSubmitEditing={() => { this.inputSugarRef.focus(); }}
+            blurOnSubmit={false}
+          />
+          <TextInput
+            label="Sugar (g)"
+            value={sugar}
+            keyboardType="numeric"
+            maxLength={3}
+            onChangeText={val => this.setState({ productLog: { ...productLog, sugar: val } })}
+            ref={(c) => { this.inputSugarRef = c; }}
+          />
+          <Text>Error : {error}</Text>
+          <FAB
+            style={styles.fab}
+            icon="done"
+            onPress={this.submit}
+            accessibilityLabel="Submit"
+          />
+          <LinkOpenFoodFact code={code} />
+        </ScrollView>
+        <KeyboardSpacer />
       </View>
     );
   }
