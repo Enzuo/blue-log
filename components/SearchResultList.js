@@ -59,6 +59,7 @@ class SearchResultList extends React.Component {
     super(props);
     this.state = {
       openList: false,
+      hiddenList: true,
       panelOffsetAnim: new Animated.Value(300),
       topGapHeight: 100,
     };
@@ -83,7 +84,7 @@ class SearchResultList extends React.Component {
           useNativeDriver: true,
         }).start();
         // eslint-disable-next-line react/no-did-update-set-state
-        this.setState({ openList: true });
+        this.setState({ openList: true, hiddenList: false });
       }
       if (shouldClose) {
         Animated.timing(panelOffsetAnim, {
@@ -91,7 +92,9 @@ class SearchResultList extends React.Component {
           easing: Easing.in(Easing.ease),
           duration: 300,
           useNativeDriver: true,
-        }).start();
+        }).start(() => {
+          this.setState({ hiddenList: true });
+        });
         // eslint-disable-next-line react/no-did-update-set-state
         this.setState({ openList: false });
       }
@@ -145,7 +148,11 @@ class SearchResultList extends React.Component {
 
   render() {
     const { results } = this.props;
-    const { panelOffsetAnim } = this.state;
+    const { panelOffsetAnim, hiddenList } = this.state;
+
+    if (hiddenList) {
+      return null;
+    }
 
     return (
       <ScrollView
