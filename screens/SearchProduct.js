@@ -105,6 +105,7 @@ class SearchProduct extends React.Component {
         <Text>Name : {itemLabel}</Text>
         <SearchResultList
           results={searchResults}
+          search={text}
           onResultClick={result => this.onProductPicked(result)}
         />
         <KeyboardSpacer />
