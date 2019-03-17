@@ -1,4 +1,4 @@
-import { SQLite } from 'expo';
+import { SQLite, Asset, FileSystem } from 'expo';
 import queries from './queries';
 
 const name = 'test.db';
@@ -14,6 +14,17 @@ async function init() {
   console.log('database opened');
   await queries.load();
   console.log('database queries loaded');
+
+  await loadPrepopulatedDatabase();
+}
+
+async function loadPrepopulatedDatabase () {
+  await FileSystem.downloadAsync(
+    // eslint-disable-next-line global-require
+    Asset.fromModule(require('../assets/products.db')).uri,
+    `${FileSystem.documentDirectory}SQLite/db.db`, // If there is a file at this URI, its contents are replaced.
+  );
+  database = await SQLite.openDatabase('db.db');
 }
 
 const query = (queryName, object) => {
@@ -25,6 +36,7 @@ const query = (queryName, object) => {
         sqlStatement,
         values,
         (tx, resultSet) => {
+          console.log('query success', resultSet)
           resolve(resultSet);
         },
         (tx, error) => {

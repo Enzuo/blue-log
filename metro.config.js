@@ -4,8 +4,8 @@ module.exports = {
   resolver: {
     assetExts: [
       ...defaultAssetExts,
-      // 3D Model formats
       'sql',
-    ]
-  }
+      'db',
+    ],
+  },
 };
