@@ -4,6 +4,7 @@ import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import { store } from './store';
+import testAssets from './utils/testAssets';
 import Home from './screens/Home';
 import SearchProduct from './screens/SearchProduct';
 import ProductLogEdit from './screens/ProductLogEdit';

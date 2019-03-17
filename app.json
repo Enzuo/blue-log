@@ -22,6 +22,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "packagerOpts": {
+      "assetExts": ["txt"]
+    },
     "ios": {
       "supportsTablet": true
     }
