@@ -7,7 +7,7 @@ const allQueries = new Map([
   ['insertProduct', require('./queries/insertProduct.sql')],
 ]);
 
-let loadedQueries = null;
+let loadedQueries = [];
 
 async function loadQuery(queryFileModule) {
   let file = Asset.fromModule(queryFileModule);
@@ -16,17 +16,18 @@ async function loadQuery(queryFileModule) {
   return fileContent;
 }
 
-async function loadAllQueries() {
-  const loadQueriesPromises = [...allQueries].map(async ([key, file]) => {
+async function loadQueries(queries) {
+  const loadQueriesPromises = [...queries].map(async ([key, file]) => {
     const sql = await loadQuery(file);
     return [key, sql];
   });
   const loadedQueriesArr = await Promise.all(loadQueriesPromises);
-  return new Map(loadedQueriesArr);
+  loadedQueries = new Map([...loadedQueries, ...loadedQueriesArr]);
+  return loadedQueries;
 }
 
-async function load() {
-  loadedQueries = await loadAllQueries();
+async function init() {
+  loadedQueries = await loadQueries(allQueries);
   return loadedQueries;
 }
 
@@ -38,4 +39,4 @@ function prepare(queryName, values) {
   };
 }
 
-export default { load, prepare };
+export default { init, loadQueries, prepare };
