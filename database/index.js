@@ -1,4 +1,5 @@
 import { SQLite } from 'expo';
+import queries from './queries';
 
 const name = 'test.db';
 const version = '1.0';
@@ -10,33 +11,38 @@ let database;
 async function init() {
   // Expo : The version, description and size arguments are ignored, but are accepted by the function for compatibility with the WebSQL specification.
   database = await SQLite.openDatabase(name, version, description, size);
-
   console.log('database opened');
+  await queries.load();
+  console.log('database queries loaded');
 }
 
-async function query() {
-  database.transaction((tx) => {
-    tx.executeSql(
-      sqlStatement,
-      values,
-      (tx, resultSet) => {
-
-      },
-      (tx, error) => {
-
-      },
-    );
-  },
-  (error) => {
-    console.log('database transaction error', error);
-  },
-  (success) => {
-    console.log('database transaction success', success);
+const query = (queryName, object) => {
+  console.log('executing query', queryName)
+  const { sqlStatement, values } = queries.prepare(queryName, object);
+  return new Promise((resolve, reject) => {
+    database.transaction((tx) => {
+      tx.executeSql(
+        sqlStatement,
+        values,
+        (tx, resultSet) => {
+          resolve(resultSet);
+        },
+        (tx, error) => {
+          console.log('query error', queryName, error)
+          reject(error);
+        },
+      );
+    },
+    (error) => {
+      console.log('database transaction error', error);
+    },
+    (success) => {
+      console.log('database transaction success', success);
+    });
   });
-}
-
-
-export default () => {
-  init();
-  return { query };
 };
+
+/* Exports
+============================================================================= */
+
+export default { init, query };

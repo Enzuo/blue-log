@@ -5,7 +5,6 @@ import { Provider as PaperProvider } from 'react-native-paper';
 
 import { store } from './store';
 import database from './database';
-import testAssets from './utils/testAssets';
 import Home from './screens/Home';
 import SearchProduct from './screens/SearchProduct';
 import ProductLogEdit from './screens/ProductLogEdit';
@@ -18,10 +17,11 @@ const MainNavigator = createStackNavigator({
   initialRouteName: 'Home',
 });
 
+database.init().then(() => {
+  database.query('selectProduct');
+});
+
 const AppContainer = createAppContainer(MainNavigator);
-
-database();
-
 
 export default function Main() {
   return (

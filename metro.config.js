@@ -5,7 +5,7 @@ module.exports = {
     assetExts: [
       ...defaultAssetExts,
       // 3D Model formats
-      "txt",
+      'sql',
     ]
   }
 };
