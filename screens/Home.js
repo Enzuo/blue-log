@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, FlatList, TouchableHighlight } from 'react-nati
 import { connect } from 'react-redux';
 import { FAB, IconButton, List } from 'react-native-paper';
 
+import { shareDatabase } from '../utils/dataExport';
+
 
 /* StyleSheet
 ============================================================================= */
@@ -128,7 +130,7 @@ class Home extends React.Component {
             icon="add-to-photos"
             size={24}
             disabled={!selectMode}
-            onPress={() => console.log('Create group')}
+            onPress={() => { shareDatabase(); }}
           />
         </View>
 
