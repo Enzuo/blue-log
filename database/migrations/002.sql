@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS "Log"; -- fix cache problem when recreating database from assets
 CREATE TABLE "Log" (
    "id" SERIAL
   ,"date" INTEGER
@@ -6,7 +5,6 @@ CREATE TABLE "Log" (
   ,"dateUpdated" INTEGER
 );
 
-DROP TABLE IF EXISTS "ProductLog"; -- fix cache problem when recreating database
 CREATE TABLE "ProductLog"(
    "id" INTEGER PRIMARY KEY
   ,"idLog" INTEGER

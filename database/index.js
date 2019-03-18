@@ -65,8 +65,11 @@ async function init() {
   console.log('database migrations done');
 }
 
+// eslint-disable-next-line no-underscore-dangle
+const getName = () => database._db._name;
+
 
 /* Exports
 ============================================================================= */
 
-export default { init, query };
+export default { init, query, getName };

@@ -3,8 +3,9 @@ import { Asset } from 'expo';
 
 
 const allQueries = new Map([
-  ['selectProduct', require('./queries/selectProduct.sql')],
   ['insertProduct', require('./queries/insertProduct.sql')],
+  ['listLog', require('./queries/listLog.sql')],
+  ['selectProduct', require('./queries/selectProduct.sql')],
 ]);
 
 let loadedQueries = [];

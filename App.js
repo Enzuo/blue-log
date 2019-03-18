@@ -18,7 +18,7 @@ const MainNavigator = createStackNavigator({
 });
 
 database.init().then(() => {
-  database.query('selectProduct');
+  database.query('listLog');
 });
 
 const AppContainer = createAppContainer(MainNavigator);
