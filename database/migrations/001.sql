@@ -1,7 +1,9 @@
 CREATE TABLE "blueLogConfig" (
-  "version" INT
+  "version" INTEGER
 );
 
 PRAGMA foreign_keys = ON;
+PRAGMA recursive_triggers = OFF;
+
 
 

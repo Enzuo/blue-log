@@ -6,6 +6,8 @@ const allQueries = new Map([
   ['insertProduct', require('./queries/insertProduct.sql')],
   ['listLog', require('./queries/listLog.sql')],
   ['selectProduct', require('./queries/selectProduct.sql')],
+  ['test1', require('./queries/test1.sql')],
+  ['test2', require('./queries/test2.sql')],
 ]);
 
 let loadedQueries = [];
