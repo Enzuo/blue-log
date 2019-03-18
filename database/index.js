@@ -9,20 +9,19 @@ const size = 200000;
 
 let database;
 
-const query = (queryName, object) => {
-  console.log('executing query', queryName);
-  const { sqlStatement, values } = queries.prepare(queryName, object);
+const querySql = (sqlStatement, valuesArr) => {
+  console.log('query for database', database)
   return new Promise((resolve, reject) => {
     database.transaction((tx) => {
       tx.executeSql(
         sqlStatement,
-        values,
+        valuesArr,
         (tx, resultSet) => {
           console.log('query success', resultSet);
           resolve(resultSet);
         },
         (tx, error) => {
-          console.log('query error', queryName, error);
+          console.log('query error', error);
           reject(error);
         },
       );
@@ -34,6 +33,12 @@ const query = (queryName, object) => {
       console.log('database transaction success', success);
     });
   });
+};
+
+const query = (queryName, object) => {
+  console.log('executing query', queryName);
+  const { sql, values } = queries.prepare(queryName, object);
+  return querySql(sql, values);
 };
 
 async function init() {
@@ -49,9 +54,8 @@ async function init() {
     async (migration) => {
       if (typeof migration === 'function') {
         database = await migration(database, name);
-        return;
+        return null;
       }
-      console.log('current db opened', database);
       return query(migration);
     },
     (v) => {

@@ -66,7 +66,6 @@ function mapOpenFFAPI(response) {
   return {
     // code : product.code,
     name: product.product_name,
-    serving: product.serving_quantity,
     energy: energyComputed,
     fat: product.nutriments.fat_value,
     saturatedFat: product.nutriments['saturated-fat_value'],
@@ -75,6 +74,7 @@ function mapOpenFFAPI(response) {
     fiber: product.nutriments.fiber_value,
     proteins: product.nutriments.proteins_value,
     salt: product.nutriments.salt_value,
+    serving: product.serving_quantity,
   };
 }
 

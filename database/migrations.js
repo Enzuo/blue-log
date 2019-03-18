@@ -12,14 +12,22 @@ const migrationsQueries = [
 /* Functions migrations
 ============================================================================= */
 async function loadPrepopulatedDatabase(database, name) {
+  // Database loaded from cache so not recreated
+  // https://forums.expo.io/t/sqlite-db-doesnt-get-created-if-deleted/2295
+  // https://github.com/expo/expo/issues/639
+  // To avoid using the cached database and have a fresh new database
+  // Generate a new name every time we generate a new database
+  const randomNum = new Date().getTime();
+  const dbName = `${randomNum}.db`;
+  const dbUri = `${FileSystem.documentDirectory}SQLite/${dbName}`;
+
+
   await FileSystem.downloadAsync(
     // eslint-disable-next-line global-require
     Asset.fromModule(require('../assets/products.db')).uri,
-    `${FileSystem.documentDirectory}SQLite/db.db`, // If there is a file at this URI, its contents are replaced.
+    dbUri,
   );
-  // database = await SQLite.openDatabase('db.db');
-  return SQLite.openDatabase('db.db');
-  // console.log('new database open', database)
+  return SQLite.openDatabase(dbName);
 }
 
 
@@ -29,6 +37,7 @@ async function loadPrepopulatedDatabase(database, name) {
 const migrations = [
   loadPrepopulatedDatabase,
   '001',
+  '002',
 ];
 
 

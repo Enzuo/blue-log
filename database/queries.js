@@ -34,7 +34,7 @@ async function init() {
 function prepare(queryName, values) {
   const sql = loadedQueries.get(queryName);
   return {
-    sqlStatement: sql,
+    sql,
     values: [],
   };
 }
