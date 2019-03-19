@@ -34,12 +34,18 @@ async function init() {
   return loadedQueries;
 }
 
+/**
+ *
+ * @param {String} queryName
+ * @param {Object} values
+ * @returns return an array of queries to execute
+ */
 function prepare(queryName, values) {
   const sql = loadedQueries.get(queryName);
-  return {
+  return [{
     sql,
-    values: [],
-  };
+    val: [],
+  }];
 }
 
 export default { init, loadQueries, prepare };
