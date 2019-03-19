@@ -5,6 +5,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 
 import { store } from './store';
 import database from './database';
+import testDatabase from './utils/testDatabase';
 import Home from './screens/Home';
 import SearchProduct from './screens/SearchProduct';
 import ProductLogEdit from './screens/ProductLogEdit';
@@ -23,6 +24,7 @@ database.init().then( async () => {
   console.log('result test1', res)
   res = await database.query('test2');
   console.log('result test2', res)
+  testDatabase.scenario1();
 });
 
 const AppContainer = createAppContainer(MainNavigator);

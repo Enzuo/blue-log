@@ -12,7 +12,7 @@ let database;
 
 
 const openTransaction = (transactionHandler) => {
-  console.log('openTransaction', database);
+  console.log('openTransaction');
   return new Promise((resolve, reject) => {
     database.transaction(async (tx) => {
       const results = await Promise.all(transactionHandler(tx));
@@ -29,7 +29,7 @@ const openTransaction = (transactionHandler) => {
 };
 
 const executeSqlAsync = (transaction, sql, val, item) => new Promise((resolve, reject) => {
-  console.log('execute sql', sql);
+  console.log('execute sql', sql, val);
   transaction.executeSql(sql, val, (tx, res) => {
     resolve({ res, item });
   }, (tx, err) => {
@@ -38,8 +38,9 @@ const executeSqlAsync = (transaction, sql, val, item) => new Promise((resolve, r
 });
 
 const querySql = (sqlStatement, values) => {
-  openTransaction((tx) => {
-    return executeSqlAsync(tx, sqlStatement, values);
+  return openTransaction((tx) => {
+    // TODO openTransaction only accept array of promises
+    return [executeSqlAsync(tx, sqlStatement, values)];
   });
 };
 
@@ -76,9 +77,6 @@ const query = (queryName, data) => {
     sqlStatementsArr = [sqlStatements];
   }
   return openTransaction(executeStatements(sqlStatementsArr));
-
-
-  // return querySql(sql, values);
 };
 
 async function init() {

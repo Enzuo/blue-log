@@ -3,6 +3,8 @@ import { Asset } from 'expo';
 
 
 const allQueries = new Map([
+  ['createRecipeLog', require('./queries/createRecipeLog.sql')],
+  ['createRecipeLogProduct', require('./queries/createRecipeLogProduct.sql')],
   ['insertProduct', require('./queries/insertProduct.sql')],
   ['listLog', require('./queries/listLog.sql')],
   ['selectProduct', require('./queries/selectProduct.sql')],
@@ -47,7 +49,7 @@ function prepare(queryName, values) {
   return statements.map((sql) => {
     return {
       sql,
-      val: [],
+      val: values,
   }});
 }
 
