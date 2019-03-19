@@ -25,5 +25,5 @@ CREATE TABLE "ProductLog"(
 
 CREATE TRIGGER AFTER UPDATE ON "ProductLog" FOR EACH ROW
 BEGIN
-  UPDATE "ProductLog" SET "dateUpdated" = CURRENT_TIMESTAMP WHERE id = NEW.id;
+  UPDATE "ProductLog" SET "dateUpdated" = CURRENT_TIMESTAMP WHERE id = NEW.id;--p:o
 END;

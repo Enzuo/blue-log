@@ -22,7 +22,7 @@ async function loadQuery(queryFileModule) {
 async function loadQueries(queries) {
   const loadQueriesPromises = [...queries].map(async ([key, file]) => {
     const sql = await loadQuery(file);
-    const rawStatements = sql.split(';'); // dumb split on ; TODO careful not to put them in comments
+    const rawStatements = sql.split(/;(?!--p:o)/); // dumb split on ; add --;o to ommit them
     const statements = rawStatements.filter(stt => stt.trim() !== '');
     return [key, statements];
   });

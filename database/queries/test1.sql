@@ -6,3 +6,4 @@ INSERT INTO "Log" ("date") VALUES
 
 INSERT INTO "ProductLog" ("idLog")
   SELECT last_insert_rowid()
+;

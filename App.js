@@ -19,8 +19,10 @@ const MainNavigator = createStackNavigator({
 
 database.init().then( async () => {
   await database.query('listLog');
-  await database.query('test1');
-  await database.query('test2');
+  let res = await database.query('test1');
+  console.log('result test1', res)
+  res = await database.query('test2');
+  console.log('result test2', res)
 });
 
 const AppContainer = createAppContainer(MainNavigator);
