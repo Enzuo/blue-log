@@ -22,7 +22,9 @@ async function loadQuery(queryFileModule) {
 async function loadQueries(queries) {
   const loadQueriesPromises = [...queries].map(async ([key, file]) => {
     const sql = await loadQuery(file);
-    return [key, sql];
+    const rawStatements = sql.split(';'); // dumb split on ; TODO careful not to put them in comments
+    const statements = rawStatements.filter(stt => stt.trim() !== '');
+    return [key, statements];
   });
   const loadedQueriesArr = await Promise.all(loadQueriesPromises);
   loadedQueries = new Map([...loadedQueries, ...loadedQueriesArr]);
@@ -41,11 +43,12 @@ async function init() {
  * @returns return an array of queries to execute
  */
 function prepare(queryName, values) {
-  const sql = loadedQueries.get(queryName);
-  return [{
-    sql,
-    val: [],
-  }];
+  const statements = loadedQueries.get(queryName);
+  return statements.map((sql) => {
+    return {
+      sql,
+      val: [],
+  }});
 }
 
 export default { init, loadQueries, prepare };
