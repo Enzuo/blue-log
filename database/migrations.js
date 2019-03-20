@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------
+ * Migrations
+ *
+ * This module knows what migrations to do to have an up to date environement
+ * It doesn't know anything about the database and how to execute the migrations
+ *---------------------------------------------------------------------------*/
+
 /* eslint-disable global-require */
 import { SQLite, Asset, FileSystem } from 'expo';
 

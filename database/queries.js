@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------
+ * Queries
+ *
+ * This module knows sql files and how to manipulate them
+ * loading files, cutting them in statements, handeling sql templating
+ *---------------------------------------------------------------------------*/
+
 /* eslint-disable global-require */
 import { Asset } from 'expo';
 
@@ -46,11 +53,10 @@ async function init() {
  */
 function prepare(queryName, values) {
   const statements = loadedQueries.get(queryName);
-  return statements.map((sql) => {
-    return {
-      sql,
-      val: values,
-  }});
+  return statements.map(sql => ({
+    sql,
+    val: values,
+  }));
 }
 
 export default { init, loadQueries, prepare };

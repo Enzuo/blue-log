@@ -1,5 +1,13 @@
+/*----------------------------------------------------------------------------
+ * Database
+ *
+ * This module knows the sqlite database, how to interact with it
+ * Expose a simple database agnostic interface to get our data
+ * It cares about the database and make sure it's up to date.
+ *---------------------------------------------------------------------------*/
+
 /* eslint-disable arrow-body-style */
-import { SQLite, Asset, FileSystem } from 'expo';
+import { SQLite } from 'expo';
 import queries from './queries';
 import migrations from './migrations';
 
