@@ -6030,6 +6030,11 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
+sql-moduleon@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/sql-moduleon/-/sql-moduleon-1.2.0.tgz#f4774472bf70764edb0fdcb1b894a76300b22cab"
+  integrity sha1-9HdEcr9wdk7bD9yxuJSnYwCyLKs=
+
 stacktrace-parser@^0.1.3:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/stacktrace-parser/-/stacktrace-parser-0.1.4.tgz#01397922e5f62ecf30845522c95c4fe1d25e7d4e"

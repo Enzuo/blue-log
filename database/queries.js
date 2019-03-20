@@ -7,6 +7,7 @@
 
 /* eslint-disable global-require */
 import { Asset } from 'expo';
+import moduleon from 'sql-moduleon';
 
 
 const allQueries = new Map([
@@ -33,7 +34,8 @@ async function loadQueries(queries) {
     const sql = await loadQuery(file);
     const rawStatements = sql.split(/;(?!--p:o)/); // dumb split on ; add --;o to ommit them
     const statements = rawStatements.filter(stt => stt.trim() !== '');
-    return [key, statements];
+    const statementsFn = statements.map(st => moduleon(st));
+    return [key, statementsFn];
   });
   const loadedQueriesArr = await Promise.all(loadQueriesPromises);
   loadedQueries = new Map([...loadedQueries, ...loadedQueriesArr]);
@@ -52,11 +54,8 @@ async function init() {
  * @returns return an array of queries to execute
  */
 function prepare(queryName, values) {
-  const statements = loadedQueries.get(queryName);
-  return statements.map(sql => ({
-    sql,
-    val: values,
-  }));
+  const statementsFn = loadedQueries.get(queryName);
+  return statementsFn.map(sttFn => sttFn(values));
 }
 
 export default { init, loadQueries, prepare };
