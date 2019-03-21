@@ -1,6 +1,6 @@
 
-INSERT INTO "Log" ("date") VALUES
-  (CURRENT_TIMESTAMP)
+INSERT INTO "Log" ("date", "type") VALUES
+  (CURRENT_TIMESTAMP, 1)
 ;
 
 

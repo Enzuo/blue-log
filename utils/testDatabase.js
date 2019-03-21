@@ -4,6 +4,7 @@ import database from '../database';
 async function scenario1() {
   const recipe = {
     name: 'my recipe',
+    date: new Date().getTime(),
     products: [{
       name: 'courgettes',
     },
