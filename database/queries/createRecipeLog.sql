@@ -1,9 +1,11 @@
 INSERT INTO "Log"
-  ("date") VALUES
-  (CURRENT_TIMESTAMP)
-;
+  ("date", "type") VALUES (
+    {{= date }}
+  , 2
+);
 
 INSERT INTO "RecipeLog"
-  ("idLog", "name") VALUES
-  (last_insert_rowid(), 'test')
-;
+  ("idLog", "name") VALUES (
+    last_insert_rowid()
+  , {{= name }}
+);

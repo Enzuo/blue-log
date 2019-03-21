@@ -13,5 +13,4 @@ INSERT INTO "RecipeLogProduct"
   , {{= salt }}
   , {{= serving }}
   , {{= isIncomplete }}
-  )
-;
+);
