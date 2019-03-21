@@ -36,10 +36,10 @@ const openTransaction = (transactionHandler) => {
   });
 };
 
-const executeSqlAsync = (transaction, sql, val, item) => new Promise((resolve, reject) => {
+const executeSqlAsync = (transaction, sql, val, opts) => new Promise((resolve, reject) => {
   console.log('execute sql', sql, val);
   transaction.executeSql(sql, val, (tx, res) => {
-    resolve({ res, item });
+    resolve({ res, opts });
   }, (tx, err) => {
     reject(err);
   });
@@ -55,8 +55,9 @@ const querySql = (sqlStatement, values) => {
 const executeStatements = (sqlStatementsArr) => {
   return (tx) => {
     const executePromises = sqlStatementsArr.map((sqlStatements) => {
-      return sqlStatements.map((sqlStatement) => {
-        return executeSqlAsync(tx, sqlStatement.sql, sqlStatement.values, sqlStatement.item)
+      const len = sqlStatements.length;
+      return sqlStatements.map((sqlStatement, index) => {
+        return executeSqlAsync(tx, sqlStatement.sql, sqlStatement.values, { last: len === index + 1 });
       });
     });
     return [].concat(...executePromises);
@@ -73,7 +74,7 @@ const executeStatements = (sqlStatementsArr) => {
  * @param {Object/Array} data if data is an Array it'll call the same query for each item
  * @returns {Object/Array} if data is an Array return an array of results
  */
-const query = (queryName, data) => {
+const query = async (queryName, data) => {
   console.log('executing query', queryName);
   let sqlStatementsArr = null;
   if (Array.isArray(data)) {
@@ -84,7 +85,10 @@ const query = (queryName, data) => {
     // [{sql, values}, {sql, values}]
     sqlStatementsArr = [sqlStatements];
   }
-  return openTransaction(executeStatements(sqlStatementsArr));
+  const results = await openTransaction(executeStatements(sqlStatementsArr));
+  // only return last result if there is a chain of statments in a single sql file
+  const lastResults = results.filter(res => res.opts.last);
+  return lastResults.length > 1 ? lastResults : lastResults[0].res;
 };
 
 async function init() {

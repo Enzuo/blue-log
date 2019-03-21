@@ -16,7 +16,7 @@ async function scenario1() {
   const createdRecipe = await database.query('createRecipeLog', recipe);
   // const recipeProducts = recipe.products.map(product => ({ idRecipe: createdRecipe.id, ...product }));
   const recipeProducts = recipe.products.map((product) => {
-    return { ...product, idRecipeLog: createdRecipe[1].res.insertId };
+    return { ...product, idRecipeLog: createdRecipe.insertId };
   });
   await database.query('createRecipeLogProduct', recipeProducts);
   const res = await database.querySql('SELECT * FROM "RecipeLogProduct"');
