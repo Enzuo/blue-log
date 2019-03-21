@@ -18,14 +18,16 @@ const MainNavigator = createStackNavigator({
   initialRouteName: 'Home',
 });
 
-database.init().then( async () => {
+database.init();
+async function test() {
   await database.query('listLog');
   let res = await database.query('test1');
   console.log('result test1', res)
   res = await database.query('test2');
   console.log('result test2', res)
   testDatabase.scenario1();
-});
+}
+test();
 
 const AppContainer = createAppContainer(MainNavigator);
 

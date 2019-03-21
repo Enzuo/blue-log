@@ -16,13 +16,37 @@ const version = '1.0';
 const description = 'Test Database';
 const size = 200000;
 
-let database;
+let dbConnection;
 
+/* Initialization system
+============================================================================= */
+let isInit = false;
+const initListeners = [];
+
+const setInit = () => {
+  initListeners.map(listener => listener());
+  isInit = true;
+};
+
+const waitInit = () => {
+  return new Promise((resolve) => {
+    if (isInit) {
+      return resolve();
+    }
+    return initListeners.push(() => {
+      resolve();
+    });
+  });
+};
+
+
+/* Queries
+============================================================================= */
 
 const openTransaction = (transactionHandler) => {
   console.log('openTransaction');
   return new Promise((resolve, reject) => {
-    database.transaction(async (tx) => {
+    dbConnection.transaction(async (tx) => {
       const results = await Promise.all(transactionHandler(tx));
       resolve(results);
     },
@@ -56,8 +80,8 @@ const executeStatements = (sqlStatementsArr) => {
   return (tx) => {
     const executePromises = sqlStatementsArr.map((sqlStatements) => {
       const len = sqlStatements.length;
-      return sqlStatements.map((sqlStatement, index) => {
-        return executeSqlAsync(tx, sqlStatement.sql, sqlStatement.values, { last: len === index + 1 });
+      return sqlStatements.map((stt, index) => {
+        return executeSqlAsync(tx, stt.sql, stt.values, { last: len === index + 1 });
       });
     });
     return [].concat(...executePromises);
@@ -74,7 +98,11 @@ const executeStatements = (sqlStatementsArr) => {
  * @param {Object/Array} data if data is an Array it'll call the same query for each item
  * @returns {Object/Array} if data is an Array return an array of results
  */
-const query = async (queryName, data) => {
+const query = async (queryName, data, force) => {
+  console.log('query', queryName);
+  if (!force) {
+    await waitInit();
+  }
   console.log('executing query', queryName);
   let sqlStatementsArr = null;
   if (Array.isArray(data)) {
@@ -93,8 +121,8 @@ const query = async (queryName, data) => {
 
 async function init() {
   // Expo : The version, description and size arguments are ignored, but are accepted by the function for compatibility with the WebSQL specification.
-  database = await SQLite.openDatabase(name, version, description, size);
-  console.log('database opened', database);
+  dbConnection = await SQLite.openDatabase(name, version, description, size);
+  console.log('database opened', dbConnection);
 
   await queries.init();
   console.log('database queries loaded');
@@ -103,20 +131,21 @@ async function init() {
     undefined,
     async (migration) => {
       if (typeof migration === 'function') {
-        database = await migration(database, name);
+        dbConnection = await migration(dbConnection, name);
         return null;
       }
-      return query(migration);
+      return query(migration, null, true);
     },
     (v) => {
       console.log('database migrations set version to', v);
     },
   );
   console.log('database migrations done');
+  setInit();
 }
 
 // eslint-disable-next-line no-underscore-dangle
-const getName = () => database._db._name;
+const getName = () => dbConnection._db._name;
 
 
 /* Exports
