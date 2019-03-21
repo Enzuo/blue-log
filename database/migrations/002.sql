@@ -19,6 +19,7 @@ CREATE TABLE "ProductLog"(
   ,"proteins" NUMERIC
   ,"salt" NUMERIC
   ,"serving" NUMERIC
+  ,"isIncomplete" BOOLEAN
   ,"dateCreated" INTEGER DEFAULT CURRENT_TIMESTAMP
   ,"dateUpdated" INTEGER DEFAULT CURRENT_TIMESTAMP
   ,FOREIGN KEY("idLog") REFERENCES "Log"("id")
@@ -63,6 +64,7 @@ CREATE TABLE "RecipeLogProduct"(
   ,"proteins" NUMERIC
   ,"salt" NUMERIC
   ,"serving" NUMERIC
+  ,"isIncomplete" BOOLEAN
   ,"dateCreated" INTEGER DEFAULT CURRENT_TIMESTAMP
   ,"dateUpdated" INTEGER DEFAULT CURRENT_TIMESTAMP
   ,FOREIGN KEY("idRecipeLog") REFERENCES "RecipeLog"("id")

@@ -1,4 +1,17 @@
 INSERT INTO "RecipeLogProduct"
-  ("idRecipeLog", "name") VALUES
-  (?, "test")
+  ("idRecipeLog", "name", "code", "energy", "fat", "saturated", "carbohydrates", "sugar", "fiber", "proteins", "salt", "serving", "isIncomplete") VALUES (
+    {{= idRecipeLog }}
+  , {{= name }}
+  , {{= code }}
+  , {{= energy }}
+  , {{= fat }}
+  , {{= saturated }}
+  , {{= carbohydrates }}
+  , {{= sugar }}
+  , {{= fiber }}
+  , {{= proteins }}
+  , {{= salt }}
+  , {{= serving }}
+  , {{= isIncomplete }}
+  )
 ;

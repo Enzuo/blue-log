@@ -56,7 +56,7 @@ const executeStatements = (sqlStatementsArr) => {
   return (tx) => {
     const executePromises = sqlStatementsArr.map((sqlStatements) => {
       return sqlStatements.map((sqlStatement) => {
-        return executeSqlAsync(tx, sqlStatement.sql, sqlStatement.val, sqlStatement.item)
+        return executeSqlAsync(tx, sqlStatement.sql, sqlStatement.values, sqlStatement.item)
       });
     });
     return [].concat(...executePromises);
@@ -78,10 +78,10 @@ const query = (queryName, data) => {
   let sqlStatementsArr = null;
   if (Array.isArray(data)) {
     sqlStatementsArr = data.map(dataItem => queries.prepare(queryName, dataItem));
-    // [ [{sql, val}, {sql, val}], [{sql, val}, {sql, val}] ]
+    // [ [{sql, values}, {sql, values}], [{sql, values}, {sql, values}] ]
   } else {
     const sqlStatements = queries.prepare(queryName, data);
-    // [{sql, val}, {sql, val}]
+    // [{sql, values}, {sql, values}]
     sqlStatementsArr = [sqlStatements];
   }
   return openTransaction(executeStatements(sqlStatementsArr));
