@@ -88,9 +88,6 @@ class LogList extends React.Component {
   render() {
     const { items, selectedItems } = this.props;
 
-    console.log('items', items)
-
-
     return (
       <FlatList
         style={styles.list}
