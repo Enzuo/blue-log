@@ -98,11 +98,7 @@ const executeStatements = (sqlStatementsArr) => {
  * @param {Object/Array} data if data is an Array it'll call the same query for each item
  * @returns {Object/Array} if data is an Array return an array of results
  */
-const query = async (queryName, data, force) => {
-  console.log('query', queryName);
-  if (!force) {
-    await waitInit();
-  }
+const query = async (queryName, data) => {
   console.log('executing query', queryName);
   let sqlStatementsArr = null;
   if (Array.isArray(data)) {
@@ -134,7 +130,7 @@ async function init() {
         dbConnection = await migration(dbConnection, name);
         return null;
       }
-      return query(migration, null, true);
+      return query(migration);
     },
     (v) => {
       console.log('database migrations set version to', v);
@@ -151,4 +147,16 @@ const getName = () => dbConnection._db._name;
 /* Exports
 ============================================================================= */
 
-export default { init, query, querySql, getName };
+export default {
+  init,
+  query: async (queryName, data) => {
+    console.log('query', queryName);
+    await waitInit();
+    return query(queryName, data);
+  },
+  querySql: async (sql, data) => {
+    await waitInit();
+    return querySql(sql, data);
+  },
+  getName,
+};
