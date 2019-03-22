@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
 /* LogList
 ============================================================================= */
 
+let headerKeys = [];
 class LogList extends React.Component {
   constructor(props) {
     super(props);
@@ -62,31 +63,46 @@ class LogList extends React.Component {
     const isSelected = !!selectedItems.get(data.index);
     const itemIcon = isSelected ? 'check-box' : 'restaurant-menu';
     const description = data.item.energy ? `${data.item.energy} kcal` : null;
+    const hasHeader = headerKeys.indexOf(data.item.id) > -1;
+    const header = hasHeader ? <List.Subheader>{data.item.date}</List.Subheader> : null
 
     return (
-      <TouchableHighlight
-        onPress={() => this.onPress(data)}
-        onLongPress={() => this.onLongPress(data)}
-        underlayColor="#00F"
-      >
-        <List.Item
-          title={data.item.name}
-          description={description}
-          style={{ backgroundColor: isSelected ? '#DDD' : '#FFF' }}
-          left={props => <List.Icon animated {...props} icon={itemIcon} />}
-          right={() => (
-            <View style={styles.itemQty}>
-              <Text style={styles.itemQtyNb}>{data.item.qty}</Text>
-              <Text>g</Text>
-            </View>
-          )}
-        />
-      </TouchableHighlight>
+      <View>
+        {header}
+        <TouchableHighlight
+          onPress={() => this.onPress(data)}
+          onLongPress={() => this.onLongPress(data)}
+          underlayColor="#00F"
+        >
+          <List.Item
+            title={data.item.name}
+            description={description}
+            style={{ backgroundColor: isSelected ? '#DDD' : '#FFF' }}
+            left={props => <List.Icon animated {...props} icon={itemIcon} />}
+            right={() => (
+              <View style={styles.itemQty}>
+                <Text style={styles.itemQtyNb}>{data.item.qty}</Text>
+                <Text>g</Text>
+              </View>
+            )}
+          />
+        </TouchableHighlight>
+      </View>
     );
   }
 
   render() {
     const { items, selectedItems } = this.props;
+
+    let previousDate = null;
+    headerKeys = items.reduce((keys, item) => {
+      if (item.date !== previousDate) {
+        keys.push(item.id);
+        previousDate = item.date;
+      }
+      return keys;
+    }, []);
+    console.log(headerKeys)
 
     return (
       <FlatList

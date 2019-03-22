@@ -13,16 +13,21 @@ const persistConfig = {
   key: 'root',
   storage,
 };
-const persistedReducer = persistReducer(persistConfig, blueLogReducers);
-const store = createStore(persistedReducer);
-const persistor = persistStore(store);
+// const persistedReducer = persistReducer(persistConfig, blueLogReducers);
+// const store = createStore(persistedReducer);
+// const persistor = persistStore(store);
+
+const store = createStore(blueLogReducers);
+const persistor = null;
 
 
 const unsubscribe = store.subscribe(() => console.log(store.getState()));
 
-store.dispatch(addLog({ name: 'test', qty: 250 }));
-store.dispatch(addLog({ name: 'Carrote', energy: 450 }));
-store.dispatch(addLog({ name: 'Patate', qty: 25 }));
-store.dispatch(addLog({ name: 'Un truc avec un nom super super long quoi comment ca se fait', qty: 25 }));
+store.dispatch(addLog({ type: 1, date: new Date(2018, 9, 1).getTime(), name: 'test', qty: 250 }));
+store.dispatch(addLog({ type: 1, date: new Date(2018, 9, 1).getTime(), name: 'Carrote', energy: 450 }));
+store.dispatch(addLog({ type: 1, date: new Date(2018, 8, 25).getTime(), name: 'Patate', qty: 25 }));
+store.dispatch(addLog({ type: 1, date: new Date(2018, 9, 1).getTime(), name:'Un truc avec un nom super super long quoi comment ca se fait', qty: 25 }));
+store.dispatch(addLog({ type: 2, date: new Date(2018, 9, 1).getTime(), name: 'Recette curry', qty: 25 }));
+store.dispatch(addLog({ type: 3, date: new Date(2018, 9, 1).getTime(), category: 'Sleep', qty: 25 }));
 
 export { store, persistor };
