@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { FAB, IconButton, List } from 'react-native-paper';
 
 import { shareDatabase } from '../utils/dataExport';
+import LogList from '../components/LogList';
 
 
 /* StyleSheet
@@ -12,22 +13,6 @@ import { shareDatabase } from '../utils/dataExport';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  list: {
-    flex: 1,
-  },
-  itemQty: {
-    margin: 8,
-    height: 40,
-    width: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  itemQtyNb: {
-    marginRight: 5,
-    fontWeight: 'bold',
-    color: '#3498db',
   },
   groupActionContainer: {
     backgroundColor: '#EEE',
@@ -49,7 +34,7 @@ const styles = StyleSheet.create({
 
 class Home extends React.Component {
   state = {
-    selectedList: new Map(), // iterable object with string:boolean key:value pairs
+    selectedItems: new Map(), // iterable object with string:boolean key:value pairs
     selectMode: false,
   };
 
@@ -59,11 +44,15 @@ class Home extends React.Component {
     navigation.navigate('SearchProduct');
   }
 
-  selectItem = (data) => {
-    const key = data.index;
-    const { selectedList } = this.state;
+  onPick = (data) => {
+    const { navigation } = this.props;
+    return navigation.navigate('ProductLogEdit', { productLog: data.item });
+  }
 
-    const newSelectedList = new Map(selectedList);
+  onSelect = (key) => {
+    const { selectedItems } = this.state;
+
+    const newSelectedList = new Map(selectedItems);
     if (newSelectedList.has(key)) {
       newSelectedList.delete(key, !newSelectedList.get(key));
     } else {
@@ -71,53 +60,21 @@ class Home extends React.Component {
     }
 
     const selectMode = !!newSelectedList.size;
-    this.setState({ selectedList: newSelectedList, selectMode });
-  }
-
-  pressItem = (data) => {
-    const { selectMode } = this.state;
-    if (selectMode) {
-      return this.selectItem(data);
-    }
-    const { navigation } = this.props;
-    return navigation.navigate('ProductLogEdit', { productLog: data.item });
-  }
-
-  renderItem = (data) => {
-    const { selectedList } = this.state;
-
-    const isSelected = !!selectedList.get(data.index);
-    const itemIcon = isSelected ? 'check-box' : 'restaurant-menu';
-    const description = data.item.energy ? `${data.item.energy} kcal` : null;
-    return (
-      <TouchableHighlight
-        onPress={() => this.pressItem(data)}
-        onLongPress={() => this.selectItem(data)}
-        underlayColor="#00F"
-      >
-        <List.Item
-          title={data.item.name}
-          description={description}
-          style={{ backgroundColor: isSelected ? '#DDD' : '#FFF' }}
-          left={props => <List.Icon animated {...props} icon={itemIcon} />}
-          right={() => <View style={styles.itemQty}><Text style={styles.itemQtyNb}>{data.item.qty}</Text><Text>g</Text></View>}
-        />
-      </TouchableHighlight>
-    );
+    this.setState({ selectedItems: newSelectedList, selectMode });
   }
 
   render() {
     const { items } = this.props;
-    const { selectedList, selectMode } = this.state;
+    const { selectedItems, selectMode } = this.state;
 
     return (
       <View style={styles.container}>
-        <FlatList
-          style={styles.list}
-          data={items}
-          renderItem={item => this.renderItem(item)}
-          keyExtractor={(item, index) => index.toString()}
-          extraData={selectedList}
+        <LogList
+          items={items}
+          selectedItems={selectedItems}
+          selectMode={selectMode}
+          onSelect={this.onSelect}
+          onPick={this.onPick}
         />
         <View style={styles.groupActionContainer}>
           <IconButton
