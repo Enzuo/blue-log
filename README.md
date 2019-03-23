@@ -30,6 +30,7 @@ See [explanation](https://stackoverflow.com/questions/1249932/git-1-6-4-beta-on-
 
 #### Building the default products database
 
-> pip install csvs-to-sqlite
-> csvs-to-sqlite products.csv products.db
-
+```
+pip install csvs-to-sqlite
+csvs-to-sqlite products.csv products.db
+```
