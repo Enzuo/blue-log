@@ -3,8 +3,10 @@ import {
   EDIT_LOG,
 } from '../actions';
 
+// slice reducer
 const logs = (state = [], action) => {
   switch (action.type) {
+    // case function
     case ADD_LOG:
       return [
         ...state,
