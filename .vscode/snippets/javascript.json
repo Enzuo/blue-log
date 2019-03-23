@@ -38,5 +38,36 @@
       ""
     ],
     "description": "Class Component"
+  },
+  "Redux duck": {
+    "prefix": "duck",
+    "body": [
+      "/* Actions",
+      "============================================================================= */",
+      "const ${2:ADD} = '${1:module}/${2:ADD}';",
+      "",
+      "",
+      "/* Reducer",
+      "============================================================================= */",
+      "",
+      "export default function ${1:reducer}(state = {}, action = {}) {",
+      "\tswitch (action.type) {",
+      "\t\tcase ${2:ADD}:",
+      "\t\t\treturn [...state, ...action.payload];",
+      "\t\tdefault:",
+      "\t\t\treturn state;",
+      "\t}",
+      "}",
+      "",
+      "",
+      "/* Action creators",
+      "============================================================================= */",
+      "",
+      "export function ${0:addItem}(payload) {",
+      "\treturn { type: ${2:ADD}, payload };",
+      "}",
+      ""
+    ],
+    "description": "Ducks: Redux Reducer Bundles"
   }
 }

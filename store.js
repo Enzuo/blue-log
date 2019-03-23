@@ -3,10 +3,10 @@ import { persistStore, persistReducer } from 'redux-persist';
 // defaults to localStorage for web and AsyncStorage for react-native
 import storage from 'redux-persist/lib/storage';
 
-import blueLogReducers from './reducers/reducers';
+import blueLogReducers from './redux/reducers';
 import {
   addLog,
-} from './actions';
+} from './redux/logs';
 
 
 const persistConfig = {

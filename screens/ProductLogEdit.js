@@ -5,7 +5,7 @@ import { TextInput, FAB } from 'react-native-paper';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 
-import { addLog } from '../actions';
+import { addLog } from '../redux/logs';
 import DateTime from '../components/DateTime';
 import ProductEdit from '../components/ProductEdit';
 
