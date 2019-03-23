@@ -11,7 +11,8 @@ import moduleon from 'sql-moduleon';
 
 
 const allQueries = new Map([
-  ['createProductLog', require('./queries/createProductLog.sql')],
+  ['productLog:create', require('./queries/productLog/create.sql')],
+  ['productLog:update', require('./queries/productLog/update.sql')],
   ['createRecipeLog', require('./queries/createRecipeLog.sql')],
   ['createRecipeLogProduct', require('./queries/createRecipeLogProduct.sql')],
   ['insertProduct', require('./queries/insertProduct.sql')],

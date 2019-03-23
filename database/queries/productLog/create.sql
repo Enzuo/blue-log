@@ -5,8 +5,9 @@ INSERT INTO "Log"
 );
 
 INSERT INTO "ProductLog"
-  ("idLog", "name", "code", "energy", "fat", "saturated", "carbohydrates", "sugar", "fiber", "proteins", "salt", "serving", "isIncomplete") VALUES (
+  ("idLog", "qty", "name", "code", "energy", "fat", "saturated", "carbohydrates", "sugar", "fiber", "proteins", "salt", "serving", "isIncomplete") VALUES (
     last_insert_rowid()
+  , {{= qty }}
   , {{= name }}
   , {{= code }}
   , {{= energy }}
@@ -26,6 +27,7 @@ SELECT
   ,"Log"."type"          AS "type"
   ,"Log"."date"          AS "date"
   ,"ProductLog"."id"     AS "idProductLog"
+  ,"ProductLog"."qty"
   ,"ProductLog"."name"
   ,"ProductLog"."code"
   ,"ProductLog"."energy"

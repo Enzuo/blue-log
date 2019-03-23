@@ -1,7 +1,7 @@
 import { handle as handleAsync } from 'redux-pack';
 
 import db from '../database';
-import { rowsToObj } from '../utils/websql';
+import { rowsToObj, waitAndReturn } from '../utils/websql';
 
 
 /* Actions
@@ -28,12 +28,6 @@ function edit(state, payload) {
   return logs.sort((a, b) => a.date < b.date);
 }
 
-function load(state, action) {
-  return handleAsync(state, action, {
-    finish: () => ([...action.payload]),
-  });
-}
-
 export default (state = [], action) => {
   switch (action.type) {
     // case function
@@ -42,9 +36,13 @@ export default (state = [], action) => {
         finish: prevState => add(prevState, action.payload),
       });
     case EDIT:
-      return edit(state, action.payload);
+      return handleAsync(state, action, {
+        finish: prevState => edit(prevState, action.payload),
+      });
     case LOAD:
-      return load(state, action);
+      return handleAsync(state, action, {
+        finish: () => ([...action.payload]),
+      });
     default:
       return state;
   }
@@ -60,15 +58,14 @@ export const addLog = (productLog) => {
   if (productLog.id) {
     return {
       type: EDIT,
-      payload: productLog,
+      promise: waitAndReturn(db.query('productLog:update', productLog), productLog),
     };
   }
 
   // const newId = nextLogId++;
   return {
     type: ADD,
-    promise: rowsToObj(db.query('createProductLog', productLog)),
-    // payload: { id: newId, ...productLog },
+    promise: rowsToObj(db.query('productLog:create', productLog)),
   };
 };
 

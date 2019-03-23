@@ -1,7 +1,7 @@
 CREATE TABLE "Log" (
    "id" INTEGER PRIMARY KEY
   ,"date" INTEGER NOT NULL
-  ,"type" INTEGER NOT NULL /* 1: product, 2: recipe, 3: journal */
+  ,"type" INTEGER NOT NULL /* 1: product, 2: recipe, 3: notes */
   ,"dateCreated" INTEGER DEFAULT CURRENT_TIMESTAMP
 );
 

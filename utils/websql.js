@@ -8,3 +8,9 @@ export async function rowsToObj(webSqlResultSetPromise, isArray) {
   }
   return resultSet.rows._array[0];
 }
+
+
+export async function waitAndReturn(promise, object) {
+  await promise;
+  return object;
+}

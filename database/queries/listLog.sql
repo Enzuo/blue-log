@@ -4,6 +4,7 @@
     ,"Log"."type"          AS "type"
     ,"Log"."date"          AS "date"
     ,"ProductLog"."id"     AS "idProductLog"
+    ,"ProductLog"."qty"
     ,"ProductLog"."name"
     ,"ProductLog"."code"
     ,"ProductLog"."energy"
