@@ -99,7 +99,7 @@ const executeStatements = (sqlStatementsArr) => {
  * @returns {Object/Array} if data is an Array return an array of results
  */
 const query = async (queryName, data) => {
-  console.log('executing query', queryName);
+  console.log('executing query', queryName, data);
   let sqlStatementsArr = null;
   if (Array.isArray(data)) {
     sqlStatementsArr = data.map(dataItem => queries.prepare(queryName, dataItem));

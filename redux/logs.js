@@ -9,6 +9,7 @@ import { rowsToObj, waitAndReturn } from '../utils/websql';
 const ADD = 'log/ADD';
 const EDIT = 'log/EDIT';
 const LOAD = 'log/LOAD';
+const REMOVE = 'log/REMOVE';
 
 
 /* Reducer
@@ -28,6 +29,14 @@ function edit(state, payload) {
   return logs.sort((a, b) => a.date < b.date);
 }
 
+function remove(state, payload) {
+  return state.filter(log => {
+    console.log('PAYLOAD', payload);
+    console.log(payload.indexOf(log.id)  < 0, log.id);
+    return payload.indexOf(log.id) < 0
+  });
+}
+
 export default (state = [], action) => {
   switch (action.type) {
     // case function
@@ -43,6 +52,10 @@ export default (state = [], action) => {
       return handleAsync(state, action, {
         finish: () => ([...action.payload]),
       });
+    case REMOVE:
+      return handleAsync(state, action, {
+        finish: prevState => remove(prevState, action.payload),
+      });
     default:
       return state;
   }
@@ -51,8 +64,6 @@ export default (state = [], action) => {
 
 /* Action creators
 ============================================================================= */
-
-let nextLogId = 1;
 
 export const addLog = (productLog) => {
   if (productLog.id) {
@@ -72,4 +83,9 @@ export const addLog = (productLog) => {
 export const loadLogs = options => ({
   type: LOAD,
   promise: rowsToObj(db.query('listLog', options), true),
+});
+
+export const deleteLogs = ids => ({
+  type: REMOVE,
+  promise: waitAndReturn(db.query('productLog:delete', { ids }), ids),
 });

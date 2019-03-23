@@ -5,6 +5,7 @@ import { FAB, IconButton, List } from 'react-native-paper';
 
 import { shareDatabase } from '../utils/dataExport';
 import LogList from '../components/LogList';
+import { deleteLogs } from '../redux/logs';
 
 
 /* StyleSheet
@@ -63,6 +64,14 @@ class Home extends React.Component {
     this.setState({ selectedItems: newSelectedList, selectMode });
   }
 
+  onDelete = () => {
+    const { deleteLogsAction } = this.props;
+    const { selectedItems } = this.state;
+    const selectedArr = Array.from(selectedItems.keys());
+    deleteLogsAction(selectedArr);
+    this.setState({ selectedItems: new Map() });
+  }
+
   render() {
     const { items } = this.props;
     const { selectedItems, selectMode } = this.state;
@@ -81,7 +90,7 @@ class Home extends React.Component {
             icon="delete"
             size={24}
             disabled={!selectMode}
-            onPress={() => console.log('Delete')}
+            onPress={() => { this.onDelete(); }}
           />
           <IconButton
             icon="add-to-photos"
@@ -112,4 +121,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
+  { deleteLogsAction: deleteLogs }, // will be wrapped into a dispatch call
 )(Home);
