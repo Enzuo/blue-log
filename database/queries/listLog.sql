@@ -1,6 +1,6 @@
 
   SELECT
-     "Log"."id"            AS "idLog"
+     "Log"."id"            AS "id"
     ,"Log"."type"          AS "type"
     ,"Log"."date"          AS "date"
     ,"ProductLog"."id"     AS "idProductLog"
@@ -18,3 +18,4 @@
     ,"ProductLog"."isIncomplete"
   FROM "Log"
   INNER JOIN "ProductLog" ON "ProductLog"."idLog" = "Log"."id"
+  ORDER BY "date" DESC

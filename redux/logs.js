@@ -1,7 +1,7 @@
 import { handle as handleAsync } from 'redux-pack';
 
 import db from '../database';
-import { queryToObj } from '../utils/websql';
+import { rowsToObj } from '../utils/websql';
 
 
 /* Actions
@@ -67,12 +67,12 @@ export const addLog = (productLog) => {
   // const newId = nextLogId++;
   return {
     type: ADD,
-    promise: queryToObj(db.query('createProductLog', productLog)),
+    promise: rowsToObj(db.query('createProductLog', productLog)),
     // payload: { id: newId, ...productLog },
   };
 };
 
 export const loadLogs = options => ({
   type: LOAD,
-  promise: queryToObj(db.query('listLog', options), true),
+  promise: rowsToObj(db.query('listLog', options), true),
 });
