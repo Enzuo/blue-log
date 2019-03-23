@@ -1,11 +1,14 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
+import { middleware as reduxPackMiddleware } from 'redux-pack'
+
 // defaults to localStorage for web and AsyncStorage for react-native
 import storage from 'redux-persist/lib/storage';
 
 import blueLogReducers from './reducers';
 import {
   addLog,
+  loadLogs,
 } from './logs';
 
 
@@ -17,7 +20,7 @@ const persistConfig = {
 // const store = createStore(persistedReducer);
 // const persistor = persistStore(store);
 
-const store = createStore(blueLogReducers);
+const store = createStore(blueLogReducers, applyMiddleware(reduxPackMiddleware));
 const persistor = null;
 
 
@@ -31,6 +34,7 @@ store.dispatch(addLog({ type: 2, date: new Date(2019, 2, 1).getTime(), name: 'Re
 store.dispatch(addLog({ type: 3, date: new Date(2019, 2, 1).getTime(), category: 'Sleep', qty: 25 }));
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 22, 9).getTime(), name: 'Cheese cake', qty: 250 }));
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 22, 12).getTime(), name: 'Cheese cake again at noon', qty: 250 }));
+store.dispatch(loadLogs());
 
 export { store, persistor };
 
