@@ -28,6 +28,18 @@ const styles = StyleSheet.create({
 /* Helpers
 ============================================================================= */
 
+function hasSameDate(ts1, ts2) {
+  const d1 = new Date(ts1);
+  const d2 = new Date(ts2);
+  const y1 = d1.getYear();
+  const y2 = d2.getYear();
+  const m1 = d1.getMonth();
+  const m2 = d2.getMonth();
+  const j1 = d1.getDate();
+  const j2 = d2.getDate();
+  return y1 === y2 && m1 === m2 && j1 === j2;
+}
+
 
 /* LogList
 ============================================================================= */
@@ -61,7 +73,8 @@ class LogList extends React.Component {
     const { selectedItems } = this.props;
 
     const isSelected = !!selectedItems.get(data.index);
-    const itemIcon = isSelected ? 'check-box' : 'restaurant-menu';
+    let itemIcon = data.item.type === 3 ? 'book' : 'restaurant-menu';
+    itemIcon = isSelected ? 'check-box' : itemIcon;
     const description = data.item.energy ? `${data.item.energy} kcal` : null;
     const hasHeader = headerKeys.indexOf(data.item.id) > -1;
     const header = hasHeader ? <List.Subheader>{data.item.date}</List.Subheader> : null
@@ -72,6 +85,7 @@ class LogList extends React.Component {
         <TouchableHighlight
           onPress={() => this.onPress(data)}
           onLongPress={() => this.onLongPress(data)}
+          delayLongPress={500}
           underlayColor="#00F"
         >
           <List.Item
@@ -96,13 +110,12 @@ class LogList extends React.Component {
 
     let previousDate = null;
     headerKeys = items.reduce((keys, item) => {
-      if (item.date !== previousDate) {
+      if (!hasSameDate(item.date, previousDate)) {
         keys.push(item.id);
         previousDate = item.date;
       }
       return keys;
     }, []);
-    console.log(headerKeys)
 
     return (
       <FlatList
