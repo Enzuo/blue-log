@@ -6,22 +6,29 @@ const EDIT = 'log/EDIT';
 
 /* Reducer
 ============================================================================= */
+function add(state, payload) {
+  const logs1 = [
+    ...state,
+    payload,
+  ];
+  return logs1.sort((a, b) => a.date < b.date);
+}
+
+function edit(state, payload) {
+  const logs = state.map(log => (
+    payload.id === log.id ? payload : log
+  ));
+  return logs.sort((a, b) => a.date < b.date);
+}
+
 
 export default (state = [], action) => {
   switch (action.type) {
     // case function
     case ADD:
-      const logs1 = [
-        ...state,
-        {
-          id: action.id,
-          ...action.productLog,
-        },
-      ];
-      return logs1.sort((a, b) => a.date < b.date);
+      return add(state, action.payload);
     case EDIT:
-      const logs = state.map(log => (action.productLog.id === log.id ? action.productLog : log));
-      return logs.sort((a, b) => a.date < b.date);
+      return edit(state, action.payload);
     default:
       return state;
   }
@@ -37,12 +44,12 @@ export const addLog = (productLog) => {
   if (productLog.id) {
     return {
       type: EDIT,
-      productLog,
+      payload: productLog,
     };
   }
+  const newId = nextLogId++;
   return {
     type: ADD,
-    id: nextLogId++,
-    productLog,
+    payload: { id: newId, ...productLog },
   };
 };

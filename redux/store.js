@@ -33,3 +33,53 @@ store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 22, 9).getTime(), name:
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 22, 12).getTime(), name: 'Cheese cake again at noon', qty: 250 }));
 
 export { store, persistor };
+
+
+/**
+ * Store structure
+ */
+
+const storeStructure = {
+  logs: [
+    {
+      id: 1,
+      date: 1543232,
+      type: 1,
+      product: { // <-- flatten ?
+        name: 'tomate',
+        energy: 324,
+      },
+    },
+    {
+      id: 2,
+      date: 15342323,
+      type: 2,
+      recipe: {
+        name: 'recette de tomates',
+        products: [{
+          name: 'tomate',
+          energy: 312,
+        },
+        {
+          name: 'salade',
+          energy: 12,
+        }],
+      },
+    },
+    {
+      id: 12,
+      date: 14343,
+      type: 3,
+      note: {
+        title: 'hello',
+        description: 'blah blah',
+        category: 1,
+      },
+    },
+  ],
+  categories: {
+    id: 1,
+    name: 'Journal',
+    color: '#233',
+  },
+};
