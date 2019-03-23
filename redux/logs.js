@@ -11,15 +11,17 @@ export default (state = [], action) => {
   switch (action.type) {
     // case function
     case ADD:
-      return [
+      const logs1 = [
         ...state,
         {
           id: action.id,
           ...action.productLog,
         },
       ];
+      return logs1.sort((a, b) => a.date < b.date);
     case EDIT:
-      return state.map(log => (action.productLog.id === log.id ? action.productLog : log));
+      const logs = state.map(log => (action.productLog.id === log.id ? action.productLog : log));
+      return logs.sort((a, b) => a.date < b.date);
     default:
       return state;
   }
