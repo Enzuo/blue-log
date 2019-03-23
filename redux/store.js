@@ -34,7 +34,9 @@ store.dispatch(addLog({ type: 2, date: new Date(2019, 2, 1).getTime(), name: 'Re
 store.dispatch(addLog({ type: 3, date: new Date(2019, 2, 1).getTime(), category: 'Sleep', qty: 25 }));
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 22, 9).getTime(), name: 'Cheese cake', qty: 250 }));
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 22, 12).getTime(), name: 'Cheese cake again at noon', qty: 250 }));
-store.dispatch(loadLogs());
+setTimeout(() => {
+  store.dispatch(loadLogs());
+}, 5000);
 
 export { store, persistor };
 

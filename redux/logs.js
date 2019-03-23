@@ -1,5 +1,8 @@
 import { handle as handleAsync } from 'redux-pack';
 
+import db from '../database';
+import { queryToObj } from '../utils/websql';
+
 
 /* Actions
 ============================================================================= */
@@ -35,7 +38,9 @@ export default (state = [], action) => {
   switch (action.type) {
     // case function
     case ADD:
-      return add(state, action.payload);
+      return handleAsync(state, action, {
+        finish: prevState => add(prevState, action.payload),
+      });
     case EDIT:
       return edit(state, action.payload);
     case LOAD:
@@ -58,31 +63,16 @@ export const addLog = (productLog) => {
       payload: productLog,
     };
   }
-  const newId = nextLogId++;
+
+  // const newId = nextLogId++;
   return {
     type: ADD,
-    payload: { id: newId, ...productLog },
+    promise: queryToObj(db.query('createProductLog', productLog)),
+    // payload: { id: newId, ...productLog },
   };
-};
-
-function delay(t, v) {
-  return new Promise(((resolve) => {
-    setTimeout(resolve.bind(null, v), t);
-  }));
-}
-
-const databaseLoadLogs = async () => {
-  await delay(5000);
-  return [{
-    id: 1,
-    name: 'test async 1',
-  }, {
-    id: 2,
-    name: 'test async 2',
-  }];
 };
 
 export const loadLogs = options => ({
   type: LOAD,
-  promise: databaseLoadLogs(options),
+  promise: queryToObj(db.query('listLog', options), true),
 });

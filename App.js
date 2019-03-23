@@ -4,6 +4,7 @@ import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import { store } from './redux/store';
+import database from './database';
 import Home from './screens/Home';
 import SearchProduct from './screens/SearchProduct';
 import ProductLogEdit from './screens/ProductLogEdit';
@@ -15,6 +16,8 @@ const MainNavigator = createStackNavigator({
 }, {
   initialRouteName: 'Home',
 });
+
+database.init();
 
 
 const AppContainer = createAppContainer(MainNavigator);

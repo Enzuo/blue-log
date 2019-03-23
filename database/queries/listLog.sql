@@ -1,5 +1,4 @@
 
-WITH product_log AS (
   SELECT
      "Log"."id"            AS "idLog"
     ,"Log"."type"          AS "type"
@@ -19,7 +18,3 @@ WITH product_log AS (
     ,"ProductLog"."isIncomplete"
   FROM "Log"
   INNER JOIN "ProductLog" ON "ProductLog"."idLog" = "Log"."id"
-)
-
-SELECT * FROM product_log
-;

@@ -11,6 +11,7 @@ import moduleon from 'sql-moduleon';
 
 
 const allQueries = new Map([
+  ['createProductLog', require('./queries/createProductLog.sql')],
   ['createRecipeLog', require('./queries/createRecipeLog.sql')],
   ['createRecipeLogProduct', require('./queries/createRecipeLogProduct.sql')],
   ['insertProduct', require('./queries/insertProduct.sql')],
@@ -55,6 +56,9 @@ async function init() {
  */
 function prepare(queryName, values) {
   const statementsFn = loadedQueries.get(queryName);
+  if (!statementsFn) {
+    throw new Error('query not defined');
+  }
   return statementsFn.map(sttFn => sttFn(values));
 }
 
