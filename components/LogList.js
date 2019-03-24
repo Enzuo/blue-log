@@ -54,7 +54,7 @@ class LogList extends React.Component {
   }
 
   onLongPress = (data) => {
-    const key = data.index;
+    const key = data.item.id;
     const { onSelect } = this.props;
 
     return onSelect(key);
@@ -63,7 +63,7 @@ class LogList extends React.Component {
   onPress = (data) => {
     const { selectMode, onSelect, onPick } = this.props;
     if (selectMode) {
-      const key = data.index;
+      const key = data.item.id;
       return onSelect(key);
     }
     return onPick(data);
@@ -72,7 +72,8 @@ class LogList extends React.Component {
   renderItem = (data) => {
     const { selectedItems } = this.props;
 
-    const isSelected = !!selectedItems.get(data.index);
+    const key = data.item.id;
+    const isSelected = !!selectedItems.get(key);
     let itemIcon = data.item.type === 3 ? 'book' : 'restaurant-menu';
     itemIcon = isSelected ? 'check-box' : itemIcon;
     const description = data.item.energy ? `${data.item.energy} kcal` : null;
