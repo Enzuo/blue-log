@@ -11,10 +11,18 @@ import { SQLite } from 'expo';
 import queries from './queries';
 import migrations from './migrations';
 
-const name = 'test.db';
-const version = '1.0';
-const description = 'Test Database';
-const size = 200000;
+if (process.env.JEST_WORKER_ID !== undefined) {
+  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
+  const websql = require('websql');
+  SQLite.openDatabase = websql;
+}
+
+const config = {
+  name: 'test.db',
+  version: '1.0',
+  description: 'Test Database',
+  size: 200000,
+};
 
 let dbConnection;
 
@@ -47,15 +55,20 @@ const openTransaction = (transactionHandler) => {
   console.log('openTransaction');
   return new Promise((resolve, reject) => {
     dbConnection.transaction(async (tx) => {
-      const results = await Promise.all(transactionHandler(tx));
-      resolve(results);
+      let results = null;
+      try {
+        results = await Promise.all(transactionHandler(tx));
+      } catch (e) {
+        reject(e);
+      }
+      return resolve(results);
     },
     (error) => {
-      console.log('database transaction error', error);
+      // console.log('database transaction error', error);
       reject(error);
     },
     (success) => {
-      console.log('database transaction success', success);
+      // console.log('database transaction success', success);
     });
   });
 };
@@ -117,6 +130,7 @@ const query = async (queryName, data) => {
 
 async function init() {
   // Expo : The version, description and size arguments are ignored, but are accepted by the function for compatibility with the WebSQL specification.
+  const { name, version, description, size } = config;
   dbConnection = await SQLite.openDatabase(name, version, description, size);
   console.log('database opened', dbConnection);
 
@@ -127,7 +141,7 @@ async function init() {
     undefined,
     async (migration) => {
       if (typeof migration === 'function') {
-        dbConnection = await migration(dbConnection, name);
+        dbConnection = await migration(dbConnection, config);
         return null;
       }
       return query(migration);

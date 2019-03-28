@@ -18,7 +18,7 @@ const migrationsQueries = [
 
 /* Functions migrations
 ============================================================================= */
-async function loadPrepopulatedDatabase(database, name) {
+async function loadPrepopulatedDatabase(database, config) {
   // Database loaded from cache so not recreated
   // https://forums.expo.io/t/sqlite-db-doesnt-get-created-if-deleted/2295
   // https://github.com/expo/expo/issues/639
@@ -28,6 +28,10 @@ async function loadPrepopulatedDatabase(database, name) {
   const dbName = `${randomNum}.db`;
   const dbUri = `${FileSystem.documentDirectory}SQLite/${dbName}`;
 
+  if (process.env.JEST_WORKER_ID !== undefined) {
+    const { version, description, size } = config;
+    return SQLite.openDatabase(`test\\${dbName}`, version, description, size);
+  }
 
   await FileSystem.downloadAsync(
     // eslint-disable-next-line global-require

@@ -26,6 +26,10 @@ const allQueries = new Map([
 let loadedQueries = [];
 
 async function loadQuery(queryFileModule) {
+  if (process.env.JEST_WORKER_ID !== undefined) {
+    return queryFileModule;
+  }
+
   let file = Asset.fromModule(queryFileModule);
   file = await fetch(file.uri);
   const fileContent = await file.text();
