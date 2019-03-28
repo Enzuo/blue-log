@@ -1,8 +1,8 @@
 DELETE FROM "ProductLog"
-WHERE "idLog" = {{= ids }}
+WHERE "idLog" IN( {{= ids }} )
 ;
 
 DELETE FROM "Log"
-WHERE "id" = {{= ids }}
+WHERE "id" IN( {{= ids }} )
 ;
 

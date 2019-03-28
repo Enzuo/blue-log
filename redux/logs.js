@@ -3,7 +3,6 @@ import { handle as handleAsync } from 'redux-pack';
 import db from '../database';
 import { rowsToObj, waitAndReturn } from '../utils/websql';
 
-
 /* Actions
 ============================================================================= */
 const ADD = 'log/ADD';
@@ -15,11 +14,11 @@ const REMOVE = 'log/REMOVE';
 /* Reducer
 ============================================================================= */
 function add(state, payload) {
-  const logs1 = [
+  const logs = [
     ...state,
     payload,
   ];
-  return logs1.sort((a, b) => a.date < b.date);
+  return logs.sort((a, b) => a.date < b.date);
 }
 
 function edit(state, payload) {
@@ -30,11 +29,7 @@ function edit(state, payload) {
 }
 
 function remove(state, payload) {
-  return state.filter(log => {
-    console.log('PAYLOAD', payload);
-    console.log(payload.indexOf(log.id)  < 0, log.id);
-    return payload.indexOf(log.id) < 0
-  });
+  return state.filter(log => payload.indexOf(log.id) < 0);
 }
 
 export default (state = [], action) => {
@@ -54,7 +49,7 @@ export default (state = [], action) => {
       });
     case REMOVE:
       return handleAsync(state, action, {
-        finish: prevState => remove(prevState, action.payload),
+        start: prevState => remove(prevState, action.payload),
       });
     default:
       return state;
@@ -88,4 +83,5 @@ export const loadLogs = options => ({
 export const deleteLogs = ids => ({
   type: REMOVE,
   promise: waitAndReturn(db.query('productLog:delete', { ids }), ids),
+  payload: ids,
 });
