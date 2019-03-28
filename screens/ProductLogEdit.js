@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { StyleSheet, ScrollView, View, Button, Text, Linking } from 'react-native';
 import { connect } from 'react-redux';
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
 /* Helpers
 ============================================================================= */
 
-async function getItemFromOpenFoodFact(code) {
+async function getItemFromOpenFoodFact(code : string|number) {
   console.log('get item with code from open food fact', code);
   try {
     const response = await fetch(
