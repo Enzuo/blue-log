@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, Button, Text, Linking } from 'react-native';
 import { connect } from 'react-redux';
+import { StyleSheet, ScrollView, View, Button, Text, Linking } from 'react-native';
 import { TextInput, FAB } from 'react-native-paper';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
@@ -87,9 +87,9 @@ function mapOpenFFAPI(response) {
 }
 
 
-/* ProductLogEntry
+/* ProductLogEdit
 ============================================================================= */
-class ProductLogEntry extends React.Component {
+class ProductLogEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -122,9 +122,9 @@ class ProductLogEntry extends React.Component {
   }
 
   submit = () => {
-    const { addProductLog } = this.props;
+    const { addLogAction } = this.props;
     const { productLog } = this.state;
-    addProductLog(productLog);
+    addLogAction(productLog);
 
     const { navigation } = this.props;
     navigation.popToTop();
@@ -180,5 +180,5 @@ class ProductLogEntry extends React.Component {
 
 export default connect(
   null,
-  { addProductLog: addLog },
-)(ProductLogEntry);
+  { addLogAction: addLog },
+)(ProductLogEdit);

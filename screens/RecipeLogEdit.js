@@ -1,7 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, View, ScrollView, FlatList, Text } from 'react-native';
 import { TextInput, FAB } from 'react-native-paper';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
+
+import { deleteLogs, addRecipeLog } from '../redux/logs';
 
 
 /* StyleSheet
@@ -36,7 +39,7 @@ class RecipeLogEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      log: {
+      recipeLog: {
         date: Date.now(),
         qty: 100,
       },
@@ -47,9 +50,9 @@ class RecipeLogEdit extends React.Component {
     const { navigation } = this.props;
     const recipeLogParam = navigation.getParam('recipeLog', null);
 
-    const { log: defaultLog } = this.state;
-    const log = { ...defaultLog, ...recipeLogParam };
-    this.setState({ log });
+    const { recipeLog: defaultLog } = this.state;
+    const recipeLog = { ...defaultLog, ...recipeLogParam };
+    this.setState({ recipeLog });
   }
 
   renderItem = (data) => {
@@ -60,11 +63,27 @@ class RecipeLogEdit extends React.Component {
     );
   }
 
-  render() {
-    const { log } = this.state;
-    const { products, name } = log;
+  submit = () => {
+    const { navigation, deleteLogsAction, addRecipeLogAction } = this.props;
+    const { recipeLog } = this.state;
 
-    console.log('recipe log', log)
+    // delete product log if necessary (added to the recipe group)
+    if (recipeLog.products) {
+      const productLogToDelete = recipeLog.products.map(product => product.id);
+      deleteLogsAction(productLogToDelete);
+    }
+
+    console.log('RECIPE LOOGO', recipeLog);
+
+    addRecipeLogAction(recipeLog);
+    navigation.popToTop();
+  }
+
+  render() {
+    const { recipeLog } = this.state;
+    const { products, name } = recipeLog;
+
+    console.log('recipe log', recipeLog)
 
     return (
       <View style={styles.view}>
@@ -73,7 +92,7 @@ class RecipeLogEdit extends React.Component {
 
             <TextInput
               value={name}
-              onChangeText={val => this.setState({ log: { name: val, ...log } })}
+              onChangeText={val => this.setState({ recipeLog: { name: val, ...recipeLog } })}
             />
             <FlatList
               data={products}
@@ -95,4 +114,11 @@ class RecipeLogEdit extends React.Component {
   }
 }
 
-export default RecipeLogEdit;
+
+/* Exports
+============================================================================= */
+
+export default connect(
+  null,
+  { deleteLogsAction: deleteLogs, addRecipeLogAction: addRecipeLog },
+)(RecipeLogEdit);
