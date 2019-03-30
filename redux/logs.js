@@ -85,3 +85,27 @@ export const deleteLogs = ids => ({
   promise: waitAndReturn(db.query('productLog:delete', { ids }), ids),
   payload: ids,
 });
+
+export const addRecipeLog = (recipeLog) => {
+  if (recipeLog.id) {
+    return {
+      type: EDIT,
+      promise: recipeLogDB(recipeLog),
+    };
+  }
+
+  // const newId = nextLogId++;
+  return {
+    type: ADD,
+    promise: recipeLogDB(recipeLog),
+  };
+}
+
+async function recipeLogDB(recipeLog) {
+  const created = await db.query('recipeLog:create', recipeLog);
+  console.log('recipeLogDBCreate', created)
+  const idRecipeLog = created.insertId;
+  const products = recipeLog.products.map(product => ({ ...product, idRecipeLog }));
+  await db.query('recipeLog:createProducts', products);
+  return recipeLog;
+}

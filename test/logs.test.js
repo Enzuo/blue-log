@@ -4,7 +4,7 @@ import { LIFECYCLE, KEY } from 'redux-pack';
 
 // import { store } from '../redux/store';
 
-import logsReducer, { deleteLogs } from '../redux/logs';
+import logsReducer, { deleteLogs, addRecipeLog } from '../redux/logs';
 import database from '../database';
 
 import { clearDataset, insertDataset } from './testDataset';
@@ -71,4 +71,23 @@ describe('logs action creator', () => {
     // assertDeepEqual(endState, expectedEndState);
   });
 
+  test.only('addRecipeLog', async () => {
+    const recipeLog = {
+      id: undefined,
+      date: 123,
+      name: 'testRecipe',
+      products: [
+        {
+          name: 'carrote',
+        },
+        {
+          name: 'choux',
+        },
+      ],
+    };
+
+    const actionPack = addRecipeLog(recipeLog);
+    const result = await actionPack.promise;
+    console.log(result);
+  });
 });
