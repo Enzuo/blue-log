@@ -6,6 +6,9 @@ export const clearDataset = async () => {
   try {
     await database.querySql([
       'DELETE FROM "ProductLog"',
+      'DELETE FROM "RecipeLogProduct"',
+      'DELETE FROM "RecipeLog"',
+      'DELETE FROM "Log"',
     ]);
   } catch (e) {
     console.error(e);

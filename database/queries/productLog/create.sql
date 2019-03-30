@@ -26,7 +26,6 @@ SELECT
    "Log"."id"            AS "id"
   ,"Log"."type"          AS "type"
   ,"Log"."date"          AS "date"
-  ,"ProductLog"."id"     AS "idProductLog"
   ,"ProductLog"."qty"
   ,"ProductLog"."name"
   ,"ProductLog"."code"
@@ -42,4 +41,4 @@ SELECT
   ,"ProductLog"."isIncomplete"
 FROM "Log"
 INNER JOIN "ProductLog" ON "ProductLog"."idLog" = "Log"."id"
-                        AND "ProductLog"."id" = last_insert_rowid()
+                        AND "ProductLog"."idLog" = last_insert_rowid()

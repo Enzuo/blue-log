@@ -6,8 +6,7 @@ CREATE TABLE "Log" (
 );
 
 CREATE TABLE "ProductLog"(
-   "id" INTEGER PRIMARY KEY
-  ,"idLog" INTEGER
+   "idLog" INTEGER
   ,"qty" INTEGER
   ,"name" TEXT
   ,"code" INTEGER
@@ -34,8 +33,7 @@ END;
 
 
 CREATE TABLE "RecipeLog"(
-   "id" INTEGER PRIMARY KEY
-  ,"idLog" INTEGER
+   "idLog" INTEGER
   ,"qty" INTEGER
   ,"name" TEXT
   ,"dateCreated" INTEGER DEFAULT CURRENT_TIMESTAMP
@@ -68,5 +66,5 @@ CREATE TABLE "RecipeLogProduct"(
   ,"isIncomplete" BOOLEAN
   ,"dateCreated" INTEGER DEFAULT CURRENT_TIMESTAMP
   ,"dateUpdated" INTEGER DEFAULT CURRENT_TIMESTAMP
-  ,FOREIGN KEY("idRecipeLog") REFERENCES "RecipeLog"("id")
+  ,FOREIGN KEY("idRecipeLog") REFERENCES "RecipeLog"("idLog")
 );

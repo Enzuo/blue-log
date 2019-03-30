@@ -82,7 +82,7 @@ export const loadLogs = options => ({
 
 export const deleteLogs = ids => ({
   type: REMOVE,
-  promise: waitAndReturn(db.query('productLog:delete', { ids }), ids),
+  promise: waitAndReturn(db.query('log:delete', { ids }), ids),
   payload: ids,
 });
 
@@ -99,13 +99,14 @@ export const addRecipeLog = (recipeLog) => {
     type: ADD,
     promise: recipeLogDB(recipeLog),
   };
-}
+};
 
 async function recipeLogDB(recipeLog) {
   const created = await db.query('recipeLog:create', recipeLog);
-  console.log('recipeLogDBCreate', created)
   const idRecipeLog = created.insertId;
   const products = recipeLog.products.map(product => ({ ...product, idRecipeLog }));
   await db.query('recipeLog:createProducts', products);
-  return recipeLog;
+  const result = await db.query('recipeLog:select', { id: idRecipeLog });
+  console.log(JSON.stringify(result));
+  return rowsToObj(result, false, true);
 }

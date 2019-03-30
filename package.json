@@ -24,7 +24,8 @@
     "redux": "^4.0.1",
     "redux-pack": "^0.1.5",
     "redux-persist": "^5.10.0",
-    "sql-moduleon": "../sql-moduleon"
+    "sql-moduleon": "../sql-moduleon",
+    "treeize": "^2.1.2"
   },
   "devDependencies": {
     "@babel/preset-flow": "^7.0.0",

@@ -1,3 +1,8 @@
 DELETE FROM "RecipeLogProduct"
-WHERE "idRecipeLog" = {{= idRecipeLog }}
+WHERE "idRecipeLog" = {{= idLog }}
+;
+
+UPDATE "RecipeLog" SET
+    "qty" = {{= qty }}
+  , "name" = {{= name }}
 ;

@@ -71,10 +71,11 @@ describe('logs action creator', () => {
     // assertDeepEqual(endState, expectedEndState);
   });
 
-  test.only('addRecipeLog', async () => {
+  test('addRecipeLog', async () => {
     const recipeLog = {
       id: undefined,
       date: 123,
+      qty: 1, // TODO bug if null with treeize
       name: 'testRecipe',
       products: [
         {
@@ -89,5 +90,15 @@ describe('logs action creator', () => {
     const actionPack = addRecipeLog(recipeLog);
     const result = await actionPack.promise;
     console.log(result);
+    expect(result.id).toBe(1);
+    expect(result.date).toBe(123);
+    expect(result.qty).toBe(1);
+    expect(result.name).toBe('testRecipe');
+    expect(result.products).toHaveLength(2);
+    expect(result.products[0].name).toBe('carrote');
+    expect(result.products[1].name).toBe('choux');
+
+    const after = await database.querySql('SELECT * FROM "RecipeLogProduct";');
+    expect(after[0].res.rows).toHaveLength(2);
   });
 });
