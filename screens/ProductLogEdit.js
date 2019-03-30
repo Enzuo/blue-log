@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { StyleSheet, ScrollView, View, Button, Text, Linking } from 'react-native';
 import { connect } from 'react-redux';
@@ -82,7 +81,6 @@ function mapOpenFFAPI(response) {
 
 /* ProductLogEntry
 ============================================================================= */
-
 class ProductLogEntry extends React.Component {
   constructor(props) {
     super(props);
