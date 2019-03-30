@@ -20,6 +20,14 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  view: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+    padding: 5,
+    backgroundColor: '#F0F',
+  },
 });
 
 
@@ -126,9 +134,9 @@ class ProductLogEntry extends React.Component {
     const { productLog, error } = this.state;
     const { qty, date, code, name, energy, fat, saturatedFat, carbohydrates, sugar } = productLog;
     return (
-      <View style={{flex: 1}}>
-        <View style={{flex: 1}}>
-          <ScrollView style={{flex:1, padding:5, backgroundColor:'#F0F'}}>
+      <View style={styles.view}>
+        <View style={styles.view}>
+          <ScrollView style={styles.scrollView}>
             <TextInput
               label="Quantity (g)"
               value={qty}

@@ -5,7 +5,15 @@ import { FAB, IconButton, List } from 'react-native-paper';
 
 import { shareDatabase } from '../utils/dataExport';
 import LogList from '../components/LogList';
+import LogAddButton from '../components/LogAddButton';
 import { deleteLogs } from '../redux/logs';
+
+
+const TYPES = {
+  PRODUCT: 1,
+  RECIPE: 2, // product group
+  NOTE: 3,
+};
 
 
 /* StyleSheet
@@ -21,12 +29,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     paddingRight: 80,
   },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
 });
 
 
@@ -39,6 +41,20 @@ class Home extends React.Component {
     selectMode: false,
   };
 
+  addLog = (type, noData) => {
+    console.log('addLog event', type, noData)
+    const { navigation, items } = this.props;
+    const { selectedItems } = this.state;
+    let data = null;
+    if (!noData && selectedItems.size > 0) {
+      const selectedLogs = items.filter(item => !!selectedItems.get(item.id));
+      data = { products: selectedLogs };
+    }
+    if (type === 2) {
+      return navigation.navigate('RecipeLogEdit', { recipeLog: data });
+    }
+    return this.launchScan();
+  }
 
   launchScan = (event) => {
     const { navigation } = this.props;
@@ -75,6 +91,7 @@ class Home extends React.Component {
   render() {
     const { items } = this.props;
     const { selectedItems, selectMode } = this.state;
+    const addType = selectedItems.size > 1 ? TYPES.RECIPE : TYPES.PRODUCT;
 
     return (
       <View style={styles.container}>
@@ -100,11 +117,9 @@ class Home extends React.Component {
           />
         </View>
 
-        <FAB
-          style={styles.fab}
-          icon="add"
-          onPress={this.launchScan}
-          accessibilityLabel="Add log"
+        <LogAddButton
+          onPress={this.addLog}
+          type={addType}
         />
       </View>
     );

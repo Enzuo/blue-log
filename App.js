@@ -8,11 +8,13 @@ import database from './database';
 import Home from './screens/Home';
 import SearchProduct from './screens/SearchProduct';
 import ProductLogEdit from './screens/ProductLogEdit';
+import RecipeLogEdit from './screens/RecipeLogEdit';
 
 const MainNavigator = createStackNavigator({
   Home: { screen: Home },
   SearchProduct: { screen: SearchProduct },
   ProductLogEdit: { screen: ProductLogEdit },
+  RecipeLogEdit: { screen: RecipeLogEdit },
 }, {
   initialRouteName: 'Home',
 });
