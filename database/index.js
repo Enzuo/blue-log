@@ -84,6 +84,11 @@ const executeSqlAsync = (transaction, sql, val, opts) => new Promise((resolve, r
 
 const querySql = (sqlStatement, values) => {
   return openTransaction((tx) => {
+    if (Array.isArray(sqlStatement)) {
+      return sqlStatement.map((stt) => {
+        return executeSqlAsync(tx, stt, values);
+      });
+    }
     // TODO openTransaction only accept array of promises
     return [executeSqlAsync(tx, sqlStatement, values)];
   });

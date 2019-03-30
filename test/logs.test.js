@@ -7,6 +7,8 @@ import { LIFECYCLE, KEY } from 'redux-pack';
 import logsReducer, { deleteLogs } from '../redux/logs';
 import database from '../database';
 
+import { clearDataset, insertDataset } from './testDataset';
+
 beforeAll(() => {
   jest.setTimeout(15000);
   return database.init();
@@ -36,6 +38,7 @@ function makePackAction(lifecycle, { type, payload, meta={} }) {
 describe('logs action creator', () => {
   beforeEach(() => { // Runs before each test in the suite
     // store.clearActions();
+    return clearDataset();
   });
 
   test('deleteLogs', async () => {
@@ -45,14 +48,15 @@ describe('logs action creator', () => {
     //     'type': 'select_avatar',
     //   },
     // ];
+    await insertDataset('logs.test.sql');
 
     const before = await database.querySql('SELECT * FROM "Log";');
-    expect(before[0].res.rows.length, 3);
+    expect(before[0].res.rows.length).toEqual(3);
     const actionPack = deleteLogs([1, 2]);
     const result = await actionPack.promise;
-    expect(result, [1, 2]);
+    expect(result).toEqual([1, 2]);
     const after = await database.querySql('SELECT * FROM "Log";');
-    expect(after[0].res.rows.length, 1);
+    expect(after[0].res.rows.length).toEqual(1);
 
 
     // store.dispatch(deleteLogs(1));
