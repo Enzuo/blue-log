@@ -5,6 +5,9 @@ import Treeize from 'treeize';
 export async function rowsToObj(webSqlResultSetPromise, isArray, isTree) {
   const resultSet = await webSqlResultSetPromise;
   let result = resultSet.rows._array;
+  if (!result.length) {
+    throw new Error('rowsToObj : no result');
+  }
   if (isTree) {
     const tree = new Treeize();
     tree.grow(result);

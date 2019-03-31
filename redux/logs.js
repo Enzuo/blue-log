@@ -102,8 +102,8 @@ export const addRecipeLog = (recipeLog) => {
 };
 
 async function recipeLogDB(recipeLog) {
-  const created = await db.query('recipeLog:create', recipeLog);
-  const idRecipeLog = created.insertId;
+  const created = await rowsToObj(db.query('recipeLog:create', recipeLog));
+  const idRecipeLog = created.idLog;
   const products = recipeLog.products.map(product => ({ ...product, idRecipeLog }));
   await db.query('recipeLog:createProducts', products);
   const result = await db.query('recipeLog:select', { id: idRecipeLog });

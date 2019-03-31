@@ -10,3 +10,5 @@ INSERT INTO "RecipeLog"
   , {{= qty }}
   , {{= name }}
 );
+
+SELECT "idLog" FROM "RecipeLog" WHERE rowid = last_insert_rowid();

@@ -87,10 +87,12 @@ describe('logs action creator', () => {
       ],
     };
 
+    await insertDataset('logs.test.sql');
+
     const actionPack = addRecipeLog(recipeLog);
     const result = await actionPack.promise;
     console.log(result);
-    expect(result.id).toBe(1);
+    expect(result.id).toBe(4);
     expect(result.date).toBe(123);
     expect(result.qty).toBe(1);
     expect(result.name).toBe('testRecipe');

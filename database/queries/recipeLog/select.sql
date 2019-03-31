@@ -20,3 +20,4 @@ SELECT
 FROM "Log"
 INNER JOIN "RecipeLog" ON "RecipeLog"."idLog" = "Log"."id"
 LEFT JOIN "RecipeLogProduct" ON "RecipeLogProduct"."idRecipeLog" = "RecipeLog"."idLog"
+WHERE "Log"."id" = {{= id }}
