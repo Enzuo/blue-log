@@ -9,6 +9,7 @@ import blueLogReducers from './reducers';
 import {
   addLog,
   loadLogs,
+  addRecipeLog,
 } from './logs';
 
 
@@ -24,19 +25,29 @@ const store = createStore(blueLogReducers, applyMiddleware(reduxPackMiddleware))
 const persistor = null;
 
 
-const unsubscribe = store.subscribe(() => console.log(store.getState()));
+// const unsubscribe = store.subscribe(() => console.log(store.getState()));
 
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 1).getTime(), name: 'test', qty: 250 }));
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 1).getTime(), name: 'Carrote', energy: 450 }));
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 25).getTime(), name: 'Patate', qty: 25 }));
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 1).getTime(), name: 'Un truc avec un nom super super long quoi comment ca se fait', qty: 25 }));
 store.dispatch(addLog({ type: 2, date: new Date(2019, 2, 1).getTime(), name: 'Recette curry', qty: 25 }));
-store.dispatch(addLog({ type: 3, date: new Date(2019, 2, 1).getTime(), category: 'Sleep', qty: 25 }));
+store.dispatch(addLog({ type: 3, date: new Date(2019, 2, 1).getTime(), category: 'Sleep', qty: 25, name :'note' }));
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 22, 9).getTime(), name: 'Cheese cake', qty: 250 }));
 store.dispatch(addLog({ type: 1, date: new Date(2019, 2, 22, 12).getTime(), name: 'Cheese cake again at noon', qty: 250 }));
-setTimeout(() => {
-  store.dispatch(loadLogs());
-}, 5000);
+store.dispatch(addRecipeLog({
+  type: 2,
+  date: new Date(2019, 2, 22, 12).getTime(),
+  name: 'Recette tartiflette',
+  qty: 250,
+  products: [{
+    name: 'Patate',
+    qty: 12,
+  }],
+}));
+// setTimeout(() => {
+//   store.dispatch(loadLogs());
+// }, 5000);
 
 export { store, persistor };
 

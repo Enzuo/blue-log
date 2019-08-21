@@ -4,7 +4,7 @@ import { LIFECYCLE, KEY } from 'redux-pack';
 
 // import { store } from '../redux/store';
 
-import logsReducer, { deleteLogs, addRecipeLog } from '../redux/logs';
+import logsReducer, { deleteLogs, addRecipeLog, loadLogs } from '../redux/logs';
 import database from '../database';
 
 import { clearDataset, insertDataset } from './testDataset';
@@ -102,5 +102,16 @@ describe('logs action creator', () => {
 
     const after = await database.querySql('SELECT * FROM "RecipeLogProduct";');
     expect(after[0].res.rows).toHaveLength(2);
+  });
+
+  test.only('listLog', async () => {
+    try {
+      await insertDataset('logs.test.sql');
+      const actionPack = await loadLogs();
+      const result = await actionPack.promise;
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
   });
 });

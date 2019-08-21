@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableHighlight } from 'react-native';
 import { List } from 'react-native-paper';
+import LOGTYPES from './constants';
 
 
 /* StyleSheet
@@ -93,7 +94,7 @@ class LogList extends React.Component {
             title={data.item.name}
             description={description}
             style={{ backgroundColor: isSelected ? '#DDD' : '#FFF' }}
-            left={props => <List.Icon animated {...props} icon={itemIcon} />}
+            left={props => <List.Icon {...props} icon={itemIcon} />}
             right={() => (
               <View style={styles.itemQty}>
                 <Text style={styles.itemQtyNb}>{data.item.qty}</Text>

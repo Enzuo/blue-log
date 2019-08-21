@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
 
 /* RecipeLogEdit
 ============================================================================= */
+let shouldDeleteLog = false;
 
 class RecipeLogEdit extends React.Component {
   constructor(props) {
@@ -49,6 +50,7 @@ class RecipeLogEdit extends React.Component {
   async componentDidMount() {
     const { navigation } = this.props;
     const recipeLogParam = navigation.getParam('recipeLog', null);
+    shouldDeleteLog = navigation.getParam('shouldDeletLog', false);
 
     const { recipeLog: defaultLog } = this.state;
     const recipeLog = { ...defaultLog, ...recipeLogParam };
@@ -68,7 +70,7 @@ class RecipeLogEdit extends React.Component {
     const { recipeLog } = this.state;
 
     // delete product log if necessary (added to the recipe group)
-    if (recipeLog.products) {
+    if (recipeLog.products && shouldDeleteLog) {
       const productLogToDelete = recipeLog.products.map(product => product.id);
       deleteLogsAction(productLogToDelete);
     }
