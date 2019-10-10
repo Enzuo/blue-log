@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { BarCodeScanner, Permissions } from 'expo';
+import { BarCodeScanner } from 'expo';
+import { Permissions } from 'expo-permissions';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { IconButton } from 'react-native-paper';
 
