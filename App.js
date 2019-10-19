@@ -1,4 +1,5 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
