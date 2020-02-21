@@ -1,15 +1,23 @@
 # Blue Log
 
+![logo](assets/iconCrop.png)
+
 ## Concept
 
-What - what does it do
-Why - The problem it resolve
-Project philopshy
+Mobile application to log everything and anything in really simple steps.
+
+Help you log your life, what you eat, what you buy, or any others event. Collect data to be able to do analysis.
 
 
 ## Install
 
+The application is built using react native
 
+Run
+```
+npm i
+npm start
+```
 
 
 ## Contributing
