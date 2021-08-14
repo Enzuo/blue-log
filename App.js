@@ -1,5 +1,8 @@
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+// import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+
+
 import { Provider } from 'react-redux';
 import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -11,25 +14,32 @@ import SearchProduct from './screens/SearchProduct';
 import ProductLogEdit from './screens/ProductLogEdit';
 import RecipeLogEdit from './screens/RecipeLogEdit';
 
-const MainNavigator = createStackNavigator({
-  Home: { screen: Home },
-  SearchProduct: { screen: SearchProduct },
-  ProductLogEdit: { screen: ProductLogEdit },
-  RecipeLogEdit: { screen: RecipeLogEdit },
-}, {
-  initialRouteName: 'Home',
-});
+
+const Stack = createStackNavigator();
+
+function MyStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="SearchProduct" component={SearchProduct} />
+      <Stack.Screen name="ProductLogEdit" component={ProductLogEdit} />
+      <Stack.Screen name="RecipeLogEdit" component={RecipeLogEdit} />
+    </Stack.Navigator>
+  );
+}
 
 database.init();
 
 
-const AppContainer = createAppContainer(MainNavigator);
+// const AppContainer = createAppContainer();
 
 export default function Main() {
   return (
     <Provider store={store}>
       <PaperProvider>
-        <AppContainer />
+        <NavigationContainer>
+          <MyStack />
+        </NavigationContainer>
       </PaperProvider>
     </Provider>
   );
