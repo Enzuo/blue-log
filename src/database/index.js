@@ -22,7 +22,8 @@ async function init (){
 async function migrate () {
   // define current version
   // pick needed migrations
-  let result = await query('SELECT "migration_name" FROM "_prisma_migrations"')
+  let result = await query('SELECT "migration_name" FROM "_prisma_migrations"; SELECT * FROM "_prisma_migrations";')
+  console.log('result', result)
   let executedMigrationsNames = sqliteResult(result).map(a => a.migration_name)
   let migrationsFiltered = migrations.filter(m => executedMigrationsNames.findIndex(name => name === m.name) === -1)
 
@@ -31,7 +32,7 @@ async function migrate () {
 
   // execute migrations
   migrationsToApply.forEach(async (migration) => {
-    console.log('applying migration', migration.name)
+    console.log('>>> applying migration', migration.name)
     await query(migration.content)
 
     // Simulate prisma migration log
@@ -47,12 +48,15 @@ async function query (sql, data=[]) {
     let results = []
     db.transaction(
       (tx) => {
-        tx.executeSql(
-          sql,
-          data,
-          (tx, result) => { results.push(result)},
-          (tx, error) => { console.error(error)}
-        )
+        let statements = splitStatements(sql)
+        statements.forEach((stt) => {
+          tx.executeSql(
+            stt,
+            data,
+            (tx, result) => { results.push(result)},
+            (tx, error) => { console.error(error)}
+          )
+        })
       },
       (error) => {
         console.error(error)
@@ -63,6 +67,12 @@ async function query (sql, data=[]) {
       }
     )
   })
+}
+
+function splitStatements(sql){
+  const rawStatements = sql.split(/;(?!--p:o)/); // dumb split on ; add --;o to ommit them
+  const statements = rawStatements.filter(stt => stt.trim() !== '');
+  return statements
 }
 
 /**

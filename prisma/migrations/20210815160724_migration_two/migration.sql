@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "Post" ADD COLUMN "desc" TEXT;
+ALTER TABLE "Profile" ADD COLUMN "desc" TEXT;
