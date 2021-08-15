@@ -6,7 +6,7 @@
  *---------------------------------------------------------------------------*/
 
 /* eslint-disable global-require */
-import { Asset } from 'expo';
+import { Asset } from 'expo-asset'
 import moduleon from 'sql-moduleon';
 
 

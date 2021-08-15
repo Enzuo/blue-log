@@ -19,8 +19,17 @@ npm i
 npm start
 ```
 
+### Database
+
+```bash
+npx prisma migrate prod --name init
+npx prisma generate # to generate the Prisma Client. You can then start querying your database.
+```
+
+
 
 ## Contributing
+
 
 #### Projects snippets for vs code
 To use them install the [Project Snippets](https://marketplace.visualstudio.com/items?itemName=rebornix.project-snippets) extension

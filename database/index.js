@@ -115,8 +115,8 @@ const executeStatements = (sqlStatementsArr) => {
  * 2) Data can be an array, we want to compute the query for each item
  * and then return a response for each item
  * @param {String} queryName
- * @param {Object/Array} data if data is an Array it'll call the same query for each item
- * @returns {Object/Array} if data is an Array return an array of results
+ * @param {Object|Array} data if data is an Array it'll call the same query for each item
+ * @returns {Promise<Object|Array>} if data is an Array return an array of results
  */
 const query = async (queryName, data) => {
   console.log('executing query', queryName, data);

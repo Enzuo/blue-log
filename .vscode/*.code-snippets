@@ -1,0 +1,59 @@
+{
+  "reactFunctionComponent": {
+    "prefix": "rfc",
+    "scope": "javascript,typescript",
+    "body": [
+      "import React from 'react'",
+      "import PropTypes from 'prop-types'",
+      "import { View, StyleSheet } from 'react-native'",
+      "",
+      "${1:${TM_FILENAME_BASE}}.propTypes = {",
+      "\t$2",
+      "}",
+      "",
+      "function ${1:${TM_FILENAME_BASE}} ({$2}) {",
+      "",
+      "\treturn (",
+      "\t\t<View style={styles.container}>$3</View>",
+      "\t)",
+      "}",
+      "",
+      "/* StyleSheet",
+      "============================================================================ */",
+      "",
+      "const styles = StyleSheet.create({",
+      "\tcontainer: {",
+      "\t\tflex: 1",
+      "\t}",
+      "})",
+      "",
+      "/* Exports",
+      "============================================================================ */",
+      "",
+      "export default ${1:${TM_FILENAME_BASE}}"
+    ],
+    "description": "Creates a React function component for react native"
+  },
+
+  "reactFunctionComponentTS": {
+    "prefix": "rfc",
+    "scope": "typescriptreact",
+    "body": [
+      "",
+      "type ${1:${TM_FILENAME_BASE}}Props = {",
+      "\t$2",
+      "}",
+      "",
+      "function ${1:${TM_FILENAME_BASE}} ({$2} : ${1:${TM_FILENAME_BASE}}Props) {",
+      "",
+      "\treturn (",
+      "\t\t<div>$3</div>",
+      "\t)",
+      "}",
+      "",
+      "export default ${1:${TM_FILENAME_BASE}}"
+    ],
+    "description": "Creates a React function component (Typescript)"
+  }
+}
+
