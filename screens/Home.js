@@ -110,7 +110,7 @@ class Home extends React.Component {
             onPress={() => { this.onDelete(); }}
           />
           <IconButton
-            icon="add-to-photos"
+            icon="plus-box-multiple"
             size={24}
             disabled={!selectMode}
             onPress={() => { shareDatabase(); }}

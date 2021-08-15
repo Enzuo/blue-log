@@ -33,7 +33,7 @@ class LogAddButton extends React.Component {
 
   render() {
     const { type, onPress } = this.props; // 1 product 2 recipe 3 notes
-    const icon = 'restaurant';
+    const icon = 'silverware';
     const color = type === 1 ? '#00F' : null;
 
     return (

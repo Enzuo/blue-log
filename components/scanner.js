@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { BarCodeScanner } from 'expo';
-import { Permissions } from 'expo-permissions';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import * as Permissions from 'expo-permissions';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { IconButton } from 'react-native-paper';
 
@@ -78,7 +78,7 @@ export default class Scanner extends React.Component {
           <View style={styles.backgroundIcon}>
             <IconButton
               size={60}
-              icon="photo-camera"
+              icon="camera"
               style={{ width: 100 }} // solve problem icon being cut in half
               color="#999"
               onPress={() => console.log('Pressed')}

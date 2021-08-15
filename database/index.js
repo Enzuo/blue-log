@@ -7,7 +7,9 @@
  *---------------------------------------------------------------------------*/
 
 /* eslint-disable arrow-body-style */
-import { SQLite } from 'expo-sqlite';
+// import { SQLite } from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite';
+
 import queries from './queries';
 import migrations from './migrations';
 
