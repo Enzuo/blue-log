@@ -17,22 +17,23 @@ async function migrate () {
   // needed migrations
 
   //
-  let migrationsToApply = await Promise.all(migrations.map(m => loader.loadAsset(m.module)))
+  // let migrationsToApply = await Promise.all(migrations.map(m => loader.loadAsset(m.module)))
+  let migrationsToApply = await loader.loadAll(migrations)
   // let res = await Promise.all(migrationsToApply.map(m => loader.loadAsset(m)))
-  // console.log('show asset', migrationsToApply)
+  console.log('show asset', migrationsToApply)
   migrationsToApply.forEach(async (migration) => {
-    await query()
+    await query(migration.content)
+    await query('INSERT INTO "_prisma_migrations" ("migration_name") VALUES (?)', [migration.name])
   })
-
 }
 
-async function query (sql) {
+async function query (sql, data=[]) {
   db.transaction(
     (tx) => {
-      tx.executeSql(sql, [], (result) => {}, (error) => { console.error(error)})
+      tx.executeSql(sql, data, (tx, result) => {}, (tx, error) => { console.error(error)})
     },
     (error) => {
-
+      console.error(error)
     },
     (result) => {
 
