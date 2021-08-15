@@ -1,4 +1,25 @@
 import { Asset } from 'expo-asset'
+import * as FileSystem from 'expo-file-system'
+
+
+
+/**
+ *
+ * @param {string} pathToDatabaseFile  '../../prisma/dev.db'
+ * @param {string} name my.db
+ * @returns
+ */
+async function loadDb(pathToDatabaseFile , name){
+  if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
+    await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
+  }
+  await FileSystem.downloadAsync(
+    Asset.fromModule(require('../../prisma/dev.db')).uri,
+    FileSystem.documentDirectory + 'SQLite/'+name
+  );
+  return name
+}
+
 
 
 /**
@@ -40,4 +61,5 @@ export default {
   loadModule,
   loadAsset,
   loadAll,
+  loadDb,
 }
