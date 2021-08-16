@@ -8,17 +8,16 @@ import { View, Button, StyleSheet } from 'react-native'
 // import * as SQLite from 'expo-sqlite'
 // const db = SQLite.openDatabase('dev');
 
-import * as db from '../src/database/index'
+import database from '../src/database/index'
 
 
 Home2.propTypes = {
-
 }
 
 function Home2 ({}) {
 
   const handlePress = () => {
-
+    database.queryFile('listLog.sql')
   }
 
   return (
