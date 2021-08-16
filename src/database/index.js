@@ -1,17 +1,16 @@
 import 'react-native-get-random-values'
 import { v4 as uuidv4 } from 'uuid'
-
 import * as SQLite from 'expo-sqlite'
-import moduleon from 'sql-moduleon'
 
-
-import {migrations, queries} from '../assets/_assets'
 import loader from '../assets/loader'
-import { array } from 'prop-types'
+import * as utils from './utils'
+
+import {loadMigrations} from './migrations'
+import {loadQueries} from './queries'
 
 
 let db
-let queriesFns
+let queries
 
 async function init (){
   const randomNum = new Date().getTime();
@@ -21,19 +20,17 @@ async function init (){
 
   await migrate()
 
-  queriesFns = await loadQueries()
+  queries = await loadQueries()
 }
 
 async function migrate () {
   // define current version
   // pick needed migrations
-  let result = await querySql('SELECT "migration_name" FROM "_prisma_migrations"; SELECT * FROM "_prisma_migrations";')
-  console.log('result', result)
+  let result = await querySql('SELECT "migration_name" FROM "_prisma_migrations"')
   let executedMigrationsNames = sqliteResult(result).map(a => a.migration_name)
-  let migrationsFiltered = migrations.filter(m => executedMigrationsNames.findIndex(name => name === m.name) === -1)
 
   // load migrations assets
-  let migrationsToApply = await loader.loadAll(migrationsFiltered)
+  let migrationsToApply = await loadMigrations(executedMigrationsNames)
 
   // execute migrations
   migrationsToApply.forEach(async (migration) => {
@@ -81,7 +78,7 @@ async function query (statements) {
 }
 
 async function querySql (sql, data=[]) {
-  let statementsSql = splitStatements(sql)
+  let statementsSql = utils.splitStatements(sql)
   let statements = statementsSql.map(stt => { return {sql:stt, values: data}})
   let result = await query(statements)
   return result
@@ -100,41 +97,14 @@ async function queryFns (queriesFn, data) {
  * @returns
  */
 async function queryFile(filepath, data){
-  let queryFn = queriesFns.find(q => q.name === filepath)
-  if(!queryFn){
+  let query = queries.find(q => q.name === filepath)
+  if(!query){
     throw  Error('query not found ' + filepath)
   }
-  // let sql = await loader.loadModule(asset)
-  let result = await queryFns(queryFn.sttFns, data)
+  let result = await queryFns(query.sttFns, data)
   return result
 }
 
-/**
- *
- * @returns
- */
-async function loadQueries(){
-  console.log('load queries')
-  let queriesAssets = await loader.loadAll(queries)
-  return queriesAssets.map(q => {
-    let statements = splitStatements(q.content)
-    let statementsFns = statements.map(stt => {
-      return moduleon(stt)
-    })
-    return {name : q.name, content : q.content, sttFns : statementsFns}
-  })
-}
-
-/**
- *
- * @param {string} sql
- * @returns
- */
-function splitStatements(sql){
-  const rawStatements = sql.split(/;(?!--p:o)/); // dumb split on ; add --;o to ommit them
-  const statements = rawStatements.filter(stt => stt.trim() !== '');
-  return statements
-}
 
 /**
  *
