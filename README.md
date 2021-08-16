@@ -2,28 +2,29 @@
 
 ![logo](assets/iconCrop.png)
 
-## Concept
+## Concept & core values
 
 Mobile application to log everything and anything in really simple steps.
 
-Help you log your life, what you eat, what you buy, or any others event. Collect data to be able to do analysis.
+Help you log your life, what you eat, what you buy, or any others event. Collect any data to be able to use it for further analysis.
+
+What you log is your own, stored loccaly and easily exportable to use elsewhere.
 
 
 ## Install
 
 The application is built using react native
 
-Run
-```
-npm i
+```bash
+npm install
+npm run assets:generate # generate the file listing the runtime assets
 npm start
 ```
 
 ### Database
 
 ```bash
-npx prisma migrate prod --name init
-npx prisma generate # to generate the Prisma Client. You can then start querying your database.
+npx prisma migrate prod --name init # generate the migrations from the prisma database schema
 ```
 
 

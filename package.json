@@ -3,6 +3,7 @@
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
+    "assets:generate": "node ./src/assets/generate.js",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
