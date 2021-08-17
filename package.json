@@ -4,7 +4,7 @@
     "start": "expo start",
     "android": "expo start --android",
     "assets:generate": "node ./src/assets/generate.js",
-    "cl":"node -r esm ./src/cl.js",
+    "cl": "node -r esm ./src/cl.js",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
@@ -50,6 +50,7 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-flow": "^7.0.0",
+    "@types/jest": "^27.0.1",
     "babel-eslint": "^10.0.3",
     "babel-preset-expo": "^7.0.0",
     "babel-preset-flow": "^6.23.0",
@@ -60,11 +61,11 @@
     "eslint-plugin-react": "^7.24.0",
     "esm": "^3.2.25",
     "flow-bin": "^0.109.0",
-    "jest": "^24.9.0",
-    "jest-expo": "^35.0.0",
+    "jest": "^27.0.6",
+    "jest-expo": "^42.1.0",
     "prisma": "^2.29.1",
     "redux-mock-store": "^1.5.3",
-    "websql": "^1.0.0"
+    "websql": "^2.0.2"
   },
   "jest": {
     "preset": "jest-expo",

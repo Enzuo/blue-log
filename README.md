@@ -24,7 +24,15 @@ npm start
 ### Database
 
 ```bash
-npx prisma migrate prod --name init # generate the migrations from the prisma database schema
+npx prisma migrate prod --name init # generate new migrations from schema.prisma
+```
+
+### Tests
+
+Run jest powered unit tests
+
+```bash
+npm test
 ```
 
 

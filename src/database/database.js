@@ -23,10 +23,11 @@ let queries
  * @param {{name:string, content:string}[]} queriesList list of queries
  */
 async function init (SQLite, name, migrations, queriesList){
+  console.log('>>> db:init')
   // const randomNum = new Date().getTime();
   // const dbName = `${randomNum}.db`;
   // let name = await loader.loadDb('../../prisma/dev.db', dbName)
-  db = SQLite.openDatabase(name)
+  db = SQLite.openDatabase(name, '1.0', 'description', 1)
 
   await migrate(migrations)
 
@@ -51,7 +52,7 @@ async function migrate (migrations) {
 
   // execute migrations
   migrationsToApply.forEach(async (migration) => {
-    console.log('>>> applying migration', migration.name)
+    console.log('>>> db:applying migration', migration.name)
     await querySql(migration.content)
 
     // Simulate prisma migration log

@@ -1,6 +1,6 @@
-import database from './index'
-
 import * as SQLite from 'expo-sqlite'
+
+import database from './database'
 
 import {migrations, queries} from '../assets/_assets'
 import loader from '../assets/loader'
@@ -37,18 +37,11 @@ export async function loadQueries(){
   console.log('loading queries')
   let queriesAssets = await loader.loadAll(queries)
   return queriesAssets
-  // .map(q => {
-  //   let statements = utils.splitStatements(q.content)
-  //   let statementsFns = statements.map(stt => {
-  //     return moduleon(stt)
-  //   })
-  //   return {name : q.name, content : q.content, sttFns : statementsFns}
-  // })
 }
 
 
 
 export default {
   init,
-  queryFile : database.queryFile,
+  // queryFile : database.queryFile,
 }

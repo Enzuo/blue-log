@@ -104,7 +104,7 @@ describe('logs action creator', () => {
     expect(after[0].res.rows).toHaveLength(2);
   });
 
-  test.only('listLog', async () => {
+  test('listLog', async () => {
     try {
       await insertDataset('logs.test.sql');
       const actionPack = await loadLogs();
