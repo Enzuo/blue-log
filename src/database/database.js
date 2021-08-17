@@ -51,18 +51,26 @@ async function migrate (migrations) {
   // let migrationsToApply = await loadMigrations(executedMigrationsNames)
 
   // execute migrations
-  migrationsToApply.forEach(async (migration) => {
-    console.log('>>> db:applying migration', migration.name)
-    await querySql(migration.content)
+  let migrationsToApplyQueue = migrationsToApply.map((migration) => {
+    return async () => {
+      console.log('>>> db:applying migration', migration.name)
+      await querySql(migration.content)
 
-    // Simulate prisma migration log
-    await querySql(
-      'INSERT INTO "_prisma_migrations" ("id", "checksum", "migration_name") VALUES (?, ?, ?)',
-      [uuidv4(), 'local', migration.name]
-    )
+      // Simulate prisma migration log
+      // TODO might be interesting to have it in the same transaction as the migration,
+      //      so if this fails the whole migration gets a rollback
+      await querySql(
+        'INSERT INTO "_prisma_migrations" ("id", "checksum", "migration_name") VALUES (?, ?, ?)',
+        [uuidv4(), 'local', migration.name]
+        )
+    }
   })
+  for(let i=0; i < migrationsToApplyQueue.length; i++){
+    await migrationsToApplyQueue[i]()
+  }
 }
 
+let index=0
 /**
  * Main database query function,
  * create transaction and execute an array of statements
@@ -71,24 +79,37 @@ async function migrate (migrations) {
  * @returns
  */
 async function query (statements) {
+  let queryId = index++
   return new Promise((resolve, reject) => {
     let results = []
+    // let errors = []
     db.transaction(
       (tx) => {
         statements.forEach((stt) => {
+          console.log('query stt',queryId)
+          // https://stackoverflow.com/questions/38237013/are-multiple-executed-queries-in-a-websql-transaction-run-asynchronously
           tx.executeSql(
             stt.sql,
             stt.values,
-            (tx, result) => { results.push(result)},
-            (tx, error) => { console.error(error)}
+            (tx, result) => { console.log('query stt end',queryId); results.push(result)},
+            (tx, error) => {
+              console.log('query stt end error',queryId);
+              // errors.push(error);
+              return true // rollback tx & call tx error callback
+            }
           )
         })
       },
-      (error) => {
-        console.error(error)
-        reject(error)
+      (txError) => {
+        console.error(txError)
+        reject(txError)
       },
       () => {
+        console.log('end transaction',queryId)
+        // if(errors.length){
+        //   reject(errors)
+        //   return
+        // }
         resolve(results)
       }
     )
