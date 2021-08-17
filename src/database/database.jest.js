@@ -16,6 +16,5 @@ async function init(){
 }
 
 export default {
-  init,
-  // queryFile : database.queryFile,
+  init
 }

@@ -40,8 +40,6 @@ export async function loadQueries(){
 }
 
 
-
 export default {
-  init,
-  // queryFile : database.queryFile,
+  init
 }

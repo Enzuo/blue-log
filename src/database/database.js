@@ -24,9 +24,6 @@ let queries
  */
 async function init (SQLite, name, migrations, queriesList){
   console.log('>>> db:init')
-  // const randomNum = new Date().getTime();
-  // const dbName = `${randomNum}.db`;
-  // let name = await loader.loadDb('../../prisma/dev.db', dbName)
   db = SQLite.openDatabase(name, '1.0', 'description', 1)
 
   await migrate(migrations)
@@ -46,10 +43,6 @@ async function migrate (migrations) {
   let executedMigrationsNames = sqliteResult(result).map(a => a.migration_name)
   let migrationsToApply = migrations.filter(m => executedMigrationsNames.findIndex(name => name === m.name) === -1)
 
-
-  // load migrations assets
-  // let migrationsToApply = await loadMigrations(executedMigrationsNames)
-
   // execute migrations
   let migrationsToApplyQueue = migrationsToApply.map((migration) => {
     return async () => {
@@ -63,6 +56,7 @@ async function migrate (migrations) {
         'INSERT INTO "_prisma_migrations" ("id", "checksum", "migration_name") VALUES (?, ?, ?)',
         [uuidv4(), 'local', migration.name]
         )
+      console.log('>>> db:migration applied', migration.name)
     }
   })
   for(let i=0; i < migrationsToApplyQueue.length; i++){
@@ -70,7 +64,7 @@ async function migrate (migrations) {
   }
 }
 
-let index=0
+
 /**
  * Main database query function,
  * create transaction and execute an array of statements
@@ -79,37 +73,27 @@ let index=0
  * @returns
  */
 async function query (statements) {
-  let queryId = index++
   return new Promise((resolve, reject) => {
     let results = []
-    // let errors = []
     db.transaction(
       (tx) => {
         statements.forEach((stt) => {
-          console.log('query stt',queryId)
-          // https://stackoverflow.com/questions/38237013/are-multiple-executed-queries-in-a-websql-transaction-run-asynchronously
           tx.executeSql(
             stt.sql,
             stt.values,
-            (tx, result) => { console.log('query stt end',queryId); results.push(result)},
+            (tx, result) => {
+              results.push(result)
+            },
             (tx, error) => {
-              console.log('query stt end error',queryId);
-              // errors.push(error);
               return true // rollback tx & call tx error callback
             }
           )
         })
       },
       (txError) => {
-        console.error(txError)
         reject(txError)
       },
       () => {
-        console.log('end transaction',queryId)
-        // if(errors.length){
-        //   reject(errors)
-        //   return
-        // }
         resolve(results)
       }
     )
@@ -160,7 +144,5 @@ async function queryFile(filepath, data){
 function sqliteResult(result){
   return result[0].rows._array
 }
-
-// init()
 
 export default {init, queryFile}
