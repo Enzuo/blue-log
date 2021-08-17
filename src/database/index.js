@@ -1,36 +1,53 @@
-import 'react-native-get-random-values'
-import { v4 as uuidv4 } from 'uuid'
-import * as SQLite from 'expo-sqlite'
+import moduleon from 'sql-moduleon'
 
-import loader from '../assets/loader'
+
+// import 'react-native-get-random-values'
+import { v4 as uuidv4 } from 'uuid'
+// import * as SQLite from 'expo-sqlite'
+
+// import loader from '../assets/loader'
 import * as utils from './utils'
 
-import {loadMigrations} from './migrations'
-import {loadQueries} from './queries'
+// import {loadMigrations} from './migrations'
+// import {loadQueries} from './queries'
 
 
 let db
 let queries
 
-async function init (){
-  const randomNum = new Date().getTime();
-  const dbName = `${randomNum}.db`;
-  let name = await loader.loadDb('../../prisma/dev.db', dbName)
+/**
+ *
+ * @param {{openDatabase:any}} SQLite websql driver
+ * @param {string} name database name
+ * @param {{name:string, content:string}[]} migrations list of database migrations
+ * @param {{name:string, content:string}[]} queriesList list of queries
+ */
+async function init (SQLite, name, migrations, queriesList){
+  // const randomNum = new Date().getTime();
+  // const dbName = `${randomNum}.db`;
+  // let name = await loader.loadDb('../../prisma/dev.db', dbName)
   db = SQLite.openDatabase(name)
 
-  await migrate()
+  await migrate(migrations)
 
-  queries = await loadQueries()
+  // Prepare query functions
+  queries = queriesList.map(q => {
+    let statements = utils.splitStatements(q.content)
+    let sttFns = statements.map(stt => moduleon(stt))
+    return {name : q.name, content : q.content, sttFns}
+  })
 }
 
-async function migrate () {
+async function migrate (migrations) {
   // define current version
   // pick needed migrations
   let result = await querySql('SELECT "migration_name" FROM "_prisma_migrations"')
   let executedMigrationsNames = sqliteResult(result).map(a => a.migration_name)
+  let migrationsToApply = migrations.filter(m => executedMigrationsNames.findIndex(name => name === m.name) === -1)
+
 
   // load migrations assets
-  let migrationsToApply = await loadMigrations(executedMigrationsNames)
+  // let migrationsToApply = await loadMigrations(executedMigrationsNames)
 
   // execute migrations
   migrationsToApply.forEach(async (migration) => {
@@ -122,6 +139,6 @@ function sqliteResult(result){
   return result[0].rows._array
 }
 
-init()
+// init()
 
-export default {queryFile}
+export default {init, queryFile}

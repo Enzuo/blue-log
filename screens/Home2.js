@@ -8,7 +8,8 @@ import { View, Button, StyleSheet } from 'react-native'
 // import * as SQLite from 'expo-sqlite'
 // const db = SQLite.openDatabase('dev');
 
-import database from '../src/database/index'
+import database from '../src/database/database.rn'
+database.init()
 
 
 Home2.propTypes = {

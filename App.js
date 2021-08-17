@@ -8,7 +8,7 @@ import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import { store } from './redux/store';
-import database from './database';
+// import database from './database';
 import Home2 from './screens/Home2';
 import SearchProduct from './screens/SearchProduct';
 import ProductLogEdit from './screens/ProductLogEdit';
@@ -28,7 +28,7 @@ function MyStack() {
   );
 }
 
-database.init();
+// database.init();
 
 
 // const AppContainer = createAppContainer();
