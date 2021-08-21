@@ -8,11 +8,29 @@ CREATE TABLE "Log" (
 );
 
 -- CreateTable
-CREATE TABLE "JournalLog" (
+CREATE TABLE "WritingLog" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "comment" TEXT NOT NULL,
     "logId" INTEGER NOT NULL,
     FOREIGN KEY ("logId") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ExpenseLog" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "amount" REAL NOT NULL,
+    "typeId" INTEGER NOT NULL,
+    "comment" TEXT NOT NULL,
+    "currencyId" INTEGER NOT NULL,
+    "logId" INTEGER NOT NULL,
+    FOREIGN KEY ("logId") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY ("typeId") REFERENCES "ExpenseType" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ExpenseType" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL
 );
 
 -- CreateTable

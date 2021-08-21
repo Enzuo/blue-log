@@ -18,7 +18,7 @@ model Log {
   date      DateTime
   type      Int
 
-  journals  JournalLog[]
+  writing   WritingLog[]
   expenses  ExpenseLog[]
   movies    MovieLog[]
   books     BookLog[]
@@ -26,7 +26,7 @@ model Log {
   foods     FoodLog[]
 }
 
-model JournalLog {
+model WritingLog {
   id      Int      @default(autoincrement()) @id
   comment String
 
