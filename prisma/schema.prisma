@@ -11,29 +11,123 @@ generator client {
 }
 
 
-model Post {
-  id        Int      @default(autoincrement()) @id
+model Log {
+  id        Int @default(autoincrement()) @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+  date      DateTime
+  type      Int
+
+  journals  JournalLog[]
+  expenses  ExpenseLog[]
+  movies    MovieLog[]
+  books     BookLog[]
+  photos    PhotoLog[]
+  foods     FoodLog[]
 }
 
-model Profile {
-  id     Int     @default(autoincrement()) @id
-  bio    String?
-  desc   String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
-}
-
-model User {
+model JournalLog {
   id      Int      @default(autoincrement()) @id
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+  comment String
+
+  log    Log      @relation(fields: [logId], references: [id])
+  logId  Int
+}
+
+model ExpenseLog {
+  id         Int      @default(autoincrement()) @id
+  amount     Float
+  typeId     Int
+  comment    String
+  currencyId Int
+
+  log    Log      @relation(fields: [logId], references: [id])
+  logId  Int
+
+  type   ExpenseType  @relation(fields: [typeId], references: [id])
+}
+
+model ExpenseType {
+  id      Int      @default(autoincrement()) @id
+  name    String
+
+  expenses ExpenseLog[]
+}
+
+model MovieLog {
+  id      Int      @default(autoincrement()) @id
+  title   String
+  comment String
+  rating  Int
+
+  log    Log      @relation(fields: [logId], references: [id])
+  logId  Int
+}
+
+model BookLog {
+  id      Int      @default(autoincrement()) @id
+  title   String
+  comment String
+  rating  Int
+
+  log    Log      @relation(fields: [logId], references: [id])
+  logId  Int
+}
+
+model PhotoLog {
+  id       Int      @default(autoincrement()) @id
+  comment  String
+  iso      Int
+  aperture Float
+  speed    Float
+  film     String?
+
+  log    Log      @relation(fields: [logId], references: [id])
+  logId  Int
+}
+
+model FoodLog {
+  id     Int      @default(autoincrement()) @id
+
+  qty       Int
+  name      String
+  code      Int
+
+  energy        Int
+  fat           Int
+  saturated     Int
+  carbohydrates Int
+  sugar         Int
+  fiber         Int
+  proteins      Int
+  salt          Int
+  serving       Int
+  isIncomplete  Boolean
+
+  log    Log      @relation(fields: [logId], references: [id])
+  logId  Int
+
+  foods  FoodLogProduct[]
+}
+
+model FoodLogProduct {
+  id        Int     @default(autoincrement()) @id
+
+  qty       Int
+  name      String
+  code      Int
+
+  energy        Int
+  fat           Int
+  saturated     Int
+  carbohydrates Int
+  sugar         Int
+  fiber         Int
+  proteins      Int
+  salt          Int
+  serving       Int
+  isIncomplete  Boolean
+
+  foodLog    FoodLog @relation(fields: [foodLogId], references: [id])
+  foodLogId  Int
 }

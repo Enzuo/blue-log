@@ -12,7 +12,7 @@ const migrations = prismaMigrations.map(m => {
   return text
 })
 
-const queriesPath = 'database/queries'
+const queriesPath = 'src/logic/queries'
 const queriesDirectory = fs.readdirSync(queriesPath, {withFileTypes: true})
 const queriesFolders = queriesDirectory.filter(dirent => dirent.isDirectory() === true)
 const queriesFiles = queriesDirectory.filter(dirent => dirent.isDirectory() === false)
