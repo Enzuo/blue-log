@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import db from './database/database.rn'
 
 import Journal from './components/screens/Journal'
+import WritingLog from './components/screens/WritingLog'
 
 const Stack = createStackNavigator()
 
@@ -15,6 +16,7 @@ function MyStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Journal" component={Journal} />
+      <Stack.Screen name="WritingLog" component={WritingLog} />
     </Stack.Navigator>
   )
 }

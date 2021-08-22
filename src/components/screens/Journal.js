@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import { View, StyleSheet, Text } from 'react-native'
 
 import {listLog} from '../../logic/logs'
 
+import AddLogButton from '../presentational/AddLogButton'
 
-function Journal ({}) {
+
+function Journal ({ navigation }) {
   let [logs, setLogs] = useState()
 
   useEffect(() => {
@@ -20,6 +21,9 @@ function Journal ({}) {
   return (
     <View style={styles.container}>
       <Text>Hello world</Text>
+      <AddLogButton onPress={() => {
+        navigation.navigate('WritingLog', { name: 'Jane' })
+      }}></AddLogButton>
     </View>
   )
 }
