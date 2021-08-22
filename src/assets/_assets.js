@@ -1,7 +1,7 @@
 
 export const migrations = [
   
-  {name: '20210821201437_init', module : require('../../prisma/migrations/20210821201437_init/migration.sql')}
+  {name: '20210822090138_init', module : require('../../prisma/migrations/20210822090138_init/migration.sql')}
 ]
 
 export const queries = [

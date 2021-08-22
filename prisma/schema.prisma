@@ -30,21 +30,21 @@ model WritingLog {
   id      Int      @default(autoincrement()) @id
   comment String
 
-  log    Log      @relation(fields: [logId], references: [id])
-  logId  Int
+  log    Log      @relation(fields: [idLog], references: [id])
+  idLog  Int
 }
 
 model ExpenseLog {
   id         Int      @default(autoincrement()) @id
   amount     Float
-  typeId     Int
+  idType     Int
   comment    String
-  currencyId Int
+  idCurrency Int
 
-  log    Log      @relation(fields: [logId], references: [id])
-  logId  Int
+  log    Log      @relation(fields: [idLog], references: [id])
+  idLog  Int
 
-  type   ExpenseType  @relation(fields: [typeId], references: [id])
+  type   ExpenseType  @relation(fields: [idType], references: [id])
 }
 
 model ExpenseType {
@@ -60,8 +60,8 @@ model MovieLog {
   comment String
   rating  Int
 
-  log    Log      @relation(fields: [logId], references: [id])
-  logId  Int
+  log    Log      @relation(fields: [idLog], references: [id])
+  idLog  Int
 }
 
 model BookLog {
@@ -70,8 +70,8 @@ model BookLog {
   comment String
   rating  Int
 
-  log    Log      @relation(fields: [logId], references: [id])
-  logId  Int
+  log    Log      @relation(fields: [idLog], references: [id])
+  idLog  Int
 }
 
 model PhotoLog {
@@ -82,8 +82,8 @@ model PhotoLog {
   speed    Float
   film     String?
 
-  log    Log      @relation(fields: [logId], references: [id])
-  logId  Int
+  log    Log      @relation(fields: [idLog], references: [id])
+  idLog  Int
 }
 
 model FoodLog {
@@ -104,8 +104,8 @@ model FoodLog {
   serving       Int
   isIncomplete  Boolean
 
-  log    Log      @relation(fields: [logId], references: [id])
-  logId  Int
+  log    Log      @relation(fields: [idLog], references: [id])
+  idLog  Int
 
   foods  FoodLogProduct[]
 }
@@ -128,6 +128,6 @@ model FoodLogProduct {
   serving       Int
   isIncomplete  Boolean
 
-  foodLog    FoodLog @relation(fields: [foodLogId], references: [id])
-  foodLogId  Int
+  foodLog    FoodLog @relation(fields: [idFoodLog], references: [id])
+  idFoodLog  Int
 }

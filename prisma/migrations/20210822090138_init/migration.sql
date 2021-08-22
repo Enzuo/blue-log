@@ -11,20 +11,20 @@ CREATE TABLE "Log" (
 CREATE TABLE "WritingLog" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "comment" TEXT NOT NULL,
-    "logId" INTEGER NOT NULL,
-    FOREIGN KEY ("logId") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "idLog" INTEGER NOT NULL,
+    FOREIGN KEY ("idLog") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "ExpenseLog" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "amount" REAL NOT NULL,
-    "typeId" INTEGER NOT NULL,
+    "idType" INTEGER NOT NULL,
     "comment" TEXT NOT NULL,
-    "currencyId" INTEGER NOT NULL,
-    "logId" INTEGER NOT NULL,
-    FOREIGN KEY ("logId") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY ("typeId") REFERENCES "ExpenseType" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "idCurrency" INTEGER NOT NULL,
+    "idLog" INTEGER NOT NULL,
+    FOREIGN KEY ("idLog") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY ("idType") REFERENCES "ExpenseType" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -39,8 +39,8 @@ CREATE TABLE "MovieLog" (
     "title" TEXT NOT NULL,
     "comment" TEXT NOT NULL,
     "rating" INTEGER NOT NULL,
-    "logId" INTEGER NOT NULL,
-    FOREIGN KEY ("logId") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "idLog" INTEGER NOT NULL,
+    FOREIGN KEY ("idLog") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -49,8 +49,8 @@ CREATE TABLE "BookLog" (
     "title" TEXT NOT NULL,
     "comment" TEXT NOT NULL,
     "rating" INTEGER NOT NULL,
-    "logId" INTEGER NOT NULL,
-    FOREIGN KEY ("logId") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "idLog" INTEGER NOT NULL,
+    FOREIGN KEY ("idLog") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -61,8 +61,8 @@ CREATE TABLE "PhotoLog" (
     "aperture" REAL NOT NULL,
     "speed" REAL NOT NULL,
     "film" TEXT,
-    "logId" INTEGER NOT NULL,
-    FOREIGN KEY ("logId") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "idLog" INTEGER NOT NULL,
+    FOREIGN KEY ("idLog") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -81,8 +81,8 @@ CREATE TABLE "FoodLog" (
     "salt" INTEGER NOT NULL,
     "serving" INTEGER NOT NULL,
     "isIncomplete" BOOLEAN NOT NULL,
-    "logId" INTEGER NOT NULL,
-    FOREIGN KEY ("logId") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "idLog" INTEGER NOT NULL,
+    FOREIGN KEY ("idLog") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -101,6 +101,6 @@ CREATE TABLE "FoodLogProduct" (
     "salt" INTEGER NOT NULL,
     "serving" INTEGER NOT NULL,
     "isIncomplete" BOOLEAN NOT NULL,
-    "foodLogId" INTEGER NOT NULL,
-    FOREIGN KEY ("foodLogId") REFERENCES "FoodLog" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "idFoodLog" INTEGER NOT NULL,
+    FOREIGN KEY ("idFoodLog") REFERENCES "FoodLog" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
