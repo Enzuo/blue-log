@@ -1,15 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 
-Journal.propTypes = {
+import {listLog} from '../../logic/logs'
 
-}
 
 function Journal ({}) {
+  let [logs, setLogs] = useState()
+
+  useEffect(() => {
+    async function getLog () {
+      let logs = await listLog()
+      setLogs(logs)
+    }
+
+    getLog()
+  }, [])
 
   return (
-    <View style={styles.container}></View>
+    <View style={styles.container}>
+      <Text>Hello world</Text>
+    </View>
   )
 }
 

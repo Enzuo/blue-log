@@ -13,5 +13,5 @@ export const LOG_TYPES = [
 // }
 
 export async function listLog(){
-  return storage.call('log/list')
+  return storage.call('log/list.sql')
 }

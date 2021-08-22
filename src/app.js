@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { View, Text } from 'react-native'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
+
+import db from './database/database.rn'
 
 import Journal from './components/screens/Journal'
 
@@ -18,6 +21,19 @@ function MyStack() {
 
 
 export default function App() {
+  const [isLoaded, setLoaded] = useState(false)
+  useEffect(() => {
+    async function init() {
+      await db.init()
+      setLoaded(true)
+    }
+    init()
+  }, [])
+
+  if(!isLoaded){
+    return <View><Text>Loading...</Text></View>
+  }
+
   return (
     <PaperProvider>
       <NavigationContainer>

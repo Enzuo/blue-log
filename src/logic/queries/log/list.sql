@@ -7,11 +7,11 @@ WITH logs AS (
   FROM "Log"
   ORDER BY "date" DESC
 )
-,journal_log AS (
+,writing_log AS (
   SELECT
      logs.*
-    ,"JournalLog"."comment" AS "value"
+    ,"WritingLog"."comment" AS "value"
   FROM logs
-  INNER JOIN "JournalLog" ON "JournalLog"."idLog" = logs."id"
+  INNER JOIN "WritingLog" ON "WritingLog"."idLog" = logs."id"
 )
-SELECT * FROM journal_log
+SELECT * FROM writing_log
