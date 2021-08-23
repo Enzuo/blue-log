@@ -115,16 +115,18 @@ async function queryFns (queriesFn, data) {
 
 /**
  *
- * @param {string} filepath
+ * @param {string} name
  * @param {object} data
  * @returns
  */
-async function queryFile(filepath, data){
-  let query = queries.find(q => q.name === filepath)
+async function queryFile(name, data){
+  console.log('executing query', name)
+  let query = queries.find(q => q.name === name)
   if(!query){
-    throw  Error('query not found ' + filepath)
+    throw  Error('query not found ' + name)
   }
   let result = await queryFns(query.sttFns, data)
+  // console.log(result)
   return result
 }
 
