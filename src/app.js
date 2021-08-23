@@ -7,16 +7,18 @@ import { NavigationContainer } from '@react-navigation/native'
 import db from './database/database.rn'
 
 import Journal from './components/screens/Journal'
-import WritingLog from './components/screens/WritingLog'
+import LogWriting from './components/screens/LogWriting'
+import LogExpense from './components/screens/LogExpense'
 
 const Stack = createStackNavigator()
 
 
-function MyStack() {
+function NavigationStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Journal" component={Journal} />
-      <Stack.Screen name="WritingLog" component={WritingLog} />
+      <Stack.Screen name="LogWriting" component={LogWriting} />
+      <Stack.Screen name="LogExpense" component={LogExpense} />
     </Stack.Navigator>
   )
 }
@@ -39,7 +41,7 @@ export default function App() {
   return (
     <PaperProvider>
       <NavigationContainer>
-        <MyStack />
+        <NavigationStack />
       </NavigationContainer>
     </PaperProvider>
   )
