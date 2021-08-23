@@ -10,6 +10,7 @@ import {createWritingLog} from '../../logic/logs'
 function WritingLog ({navigation}) {
   const _inputRef = useRef(null)
 
+  let [isUpdated, setUpdated] = useState(false)
   let [comment, setComment] = useState('')
 
   useEffect(() => {
@@ -27,7 +28,13 @@ function WritingLog ({navigation}) {
 
   return (
     <View style={styles.container}>
-      <TextInput ref={_inputRef} value={comment} onChangeText={setComment} onSubmitEditing={onEditSubmit}></TextInput>
+      <TextInput ref={_inputRef} value={comment}
+        onChangeText={(text) => {
+          setUpdated(true)
+          setComment(text)
+        }}
+        onSubmitEditing={onEditSubmit}
+      ></TextInput>
     </View>
   )
 }

@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Button } from 'react-native'
 
 import {listLog, LOG_TYPES} from '../../logic/logs'
 
-import AddLogButton from '../presentational/AddLogButton'
+import ButtonAddLog from '../presentational/ButtonAddLog'
 import ListItemWriting from '../presentational/ListItemWriting'
 import ListItemExpense from '../presentational/ListItemExpense'
 
@@ -20,9 +20,16 @@ function Journal ({ navigation }) {
     setLogs(logs)
   }
 
+  // TODO might just use the log edit screen
+  const SCREEN_FOR_LOG_TYPES = {
+    1 : 'LogWriting',
+    2 : 'LogExpense',
+  }
+
   return (
     <View style={styles.container}>
       <Button title="refresh" onPress={getLog}>Refresh</Button>
+      {/* TODO Use JournalList component */}
       {logs.map(item => {
         if(item.type === 1){
           return <ListItemWriting key={item.id} item={item}></ListItemWriting>
@@ -31,9 +38,10 @@ function Journal ({ navigation }) {
           return <ListItemExpense key={item.id} item={item}></ListItemExpense>
         }
       })}
-      <AddLogButton onPress={() => {
-        navigation.navigate('WritingLog', { name: 'Jane' })
-      }}></AddLogButton>
+      <ButtonAddLog onPress={(type) => {
+        let log = { name: 'Jane' } // TEST
+        navigation.navigate(SCREEN_FOR_LOG_TYPES[type], log)
+      }}></ButtonAddLog>
     </View>
   )
 }
