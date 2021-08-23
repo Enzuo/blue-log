@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, Button } from 'react-native'
 
 import {listLog} from '../../logic/logs'
 
@@ -7,20 +7,21 @@ import AddLogButton from '../presentational/AddLogButton'
 
 
 function Journal ({ navigation }) {
-  let [logs, setLogs] = useState()
+  let [logs, setLogs] = useState([])
 
   useEffect(() => {
-    async function getLog () {
-      let logs = await listLog()
-      setLogs(logs)
-    }
-
     getLog()
   }, [])
 
+  async function getLog () {
+    let logs = await listLog()
+    setLogs(logs)
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Hello world</Text>
+      <Button title="refresh" onPress={getLog}>Refresh</Button>
+      {logs.map(a => <Text key={a.id}>{a.value}</Text>)}
       <AddLogButton onPress={() => {
         navigation.navigate('WritingLog', { name: 'Jane' })
       }}></AddLogButton>

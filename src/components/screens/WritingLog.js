@@ -1,5 +1,7 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { View, StyleSheet, Text, TextInput } from 'react-native'
+
+import {createWritingLog} from '../../logic/logs'
 
 
 /**
@@ -8,13 +10,24 @@ import { View, StyleSheet, Text, TextInput } from 'react-native'
 function WritingLog ({navigation}) {
   const _inputRef = useRef(null)
 
+  let [comment, setComment] = useState('')
+
   useEffect(() => {
     _inputRef.current.focus()
   }, []);
 
+  function onEditSubmit() {
+    console.log('submit', comment)
+    createWritingLog({
+      date: Date.now(),
+      comment,
+    })
+    navigation.navigate('Journal')
+  }
+
   return (
     <View style={styles.container}>
-      <TextInput ref={_inputRef}></TextInput>
+      <TextInput ref={_inputRef} value={comment} onChangeText={setComment} onSubmitEditing={onEditSubmit}></TextInput>
     </View>
   )
 }

@@ -6,7 +6,9 @@ export const migrations = [
 
 export const queries = [
   
-  {name: 'log/list.sql', module : require('../../src/logic/queries/log/list.sql')}
+  {name: 'log/list.sql', module : require('../../src/logic/queries/log/list.sql')},
+  {name: 'writing/create.sql', module : require('../../src/logic/queries/writing/create.sql')},
+  {name: 'writing/get.sql', module : require('../../src/logic/queries/writing/get.sql')}
 ]
 
 export default {migrations, queries}
