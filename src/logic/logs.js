@@ -37,6 +37,31 @@ export async function createWritingLog(log){
   return storage.call('writing/create.sql', payload)
 }
 
+
+/**
+ *
+ * @param {{date:number, comment:string}} log
+ * @returns
+ */
+export async function updateWritingLog(log){
+  let payload = log
+  return storage.call('writing/update.sql', payload)
+}
+
+
+/**
+ *
+ * @param {{id:number}} log
+ * @returns {Promise<{id:number, type:number, date:number, comment:string}>}
+ */
+export async function getWritingLog(log){
+  let payload = {id: log.id}
+  let result = await storage.call('writing/get.sql', payload)
+  console.log('getWritingLog', result)
+  return result[0]
+}
+
+
 export async function createExpenseLog(log){
   let type = LOG_TYPES.find(l => l.name === 'expense').type
   let payload = {...log, type}

@@ -10,7 +10,8 @@ export const queries = [
   {name: 'log/_old_cte_list.sql', module : require('../../src/logic/queries/log/_old_cte_list.sql')},
   {name: 'log/list.sql', module : require('../../src/logic/queries/log/list.sql')},
   {name: 'writing/create.sql', module : require('../../src/logic/queries/writing/create.sql')},
-  {name: 'writing/get.sql', module : require('../../src/logic/queries/writing/get.sql')}
+  {name: 'writing/get.sql', module : require('../../src/logic/queries/writing/get.sql')},
+  {name: 'writing/update.sql', module : require('../../src/logic/queries/writing/update.sql')}
 ]
 
 export default {migrations, queries}

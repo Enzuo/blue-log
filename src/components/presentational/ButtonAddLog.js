@@ -50,7 +50,7 @@ function ButtonAddLog ({defaultType, onPress, types}) {
     <FAB.Group
       open={isOpen}
       visible={true}
-      icon={isOpen ? 'calendar-today' : 'plus'}
+      icon={isOpen ? '' : 'plus'}
       actions={actions}
       onStateChange={({open}) => setOpen(open)}
       onPress={() => {

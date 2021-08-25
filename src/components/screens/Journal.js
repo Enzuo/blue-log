@@ -6,6 +6,7 @@ import {listLog, LOG_TYPES} from '../../logic/logs'
 import ButtonAddLog from '../presentational/ButtonAddLog'
 import ListItemWriting from '../presentational/ListItemWriting'
 import ListItemExpense from '../presentational/ListItemExpense'
+import JournalList from '../container/JournalList'
 
 
 function Journal ({ navigation }) {
@@ -26,21 +27,24 @@ function Journal ({ navigation }) {
     2 : 'LogExpense',
   }
 
+  function goToEdit (log) {
+    let type = log.type
+    let screenName = SCREEN_FOR_LOG_TYPES[type]
+    if(screenName){
+      navigation.navigate(screenName, {log})
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Button title="refresh" onPress={getLog}>Refresh</Button>
-      {/* TODO Use JournalList component */}
-      {logs.map(item => {
-        if(item.type === 1){
-          return <ListItemWriting key={item.id} item={item}></ListItemWriting>
-        }
-        if(item.type === 2){
-          return <ListItemExpense key={item.id} item={item}></ListItemExpense>
-        }
-      })}
+      <JournalList logs={logs} onPressLog={(log) => { goToEdit(log) }}></JournalList>
       <ButtonAddLog types={LOG_TYPES} onPress={(type) => {
         let log = { name: 'Jane' } // TEST
-        navigation.navigate(SCREEN_FOR_LOG_TYPES[type], log)
+        let screenName = SCREEN_FOR_LOG_TYPES[type]
+        if(screenName){
+          navigation.navigate(screenName, {log})
+        }
       }}></ButtonAddLog>
     </View>
   )
