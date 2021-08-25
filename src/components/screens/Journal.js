@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { View, StyleSheet, Text, Button } from 'react-native'
+import { useFocusEffect } from '@react-navigation/native'
 
 import {listLog, LOG_TYPES} from '../../logic/logs'
 
@@ -12,14 +13,17 @@ import JournalList from '../container/JournalList'
 function Journal ({ navigation }) {
   let [logs, setLogs] = useState([])
 
-  useEffect(() => {
-    getLog()
-  }, [])
 
-  async function getLog () {
-    let logs = await listLog()
-    setLogs(logs)
-  }
+  useFocusEffect(
+    useCallback(() => {
+      let getLogs = async () => {
+        let logs = await listLog()
+        setLogs(logs)
+      }
+      getLogs()
+    }, [])
+  )
+
 
   // TODO might just use the log edit screen
   const SCREEN_FOR_LOG_TYPES = {
@@ -37,7 +41,6 @@ function Journal ({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Button title="refresh" onPress={getLog}>Refresh</Button>
       <JournalList logs={logs} onPressLog={(log) => { goToEdit(log) }}></JournalList>
       <ButtonAddLog types={LOG_TYPES} onPress={(type) => {
         let log = { name: 'Jane' } // TEST

@@ -20,23 +20,6 @@ ButtonAddLog.propTypes = {
 function ButtonAddLog ({defaultType, onPress, types}) {
   const [isOpen, setOpen] = useState(false)
 
-  // console.log('types >>>>', types)
-
-  // if(!types){
-  //   console.log('no types')
-  //   return null
-  // }
-
-  // const defaultType = 1
-
-  // return (
-  //   <FAB
-  //     style={styles.fab}
-  //     icon={icon}
-  //     color={color}
-  //     onPress={() => { onPress(type) }}
-  //     accessibilityLabel="Add log"
-  //   />
   let actions = types.map(t => {
     return {
       icon : t.icon,
@@ -45,6 +28,8 @@ function ButtonAddLog ({defaultType, onPress, types}) {
       small : true,
     }
   })
+
+  console.log('actions >>>>>', actions)
 
   return (
     <FAB.Group
