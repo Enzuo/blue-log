@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { View, StyleSheet, Text, TextInput } from 'react-native'
 
-import {createWritingLog, getWritingLog, updateWritingLog} from '../../logic/logs'
+import {createOrUpdateWritingLog, getWritingLog} from '../../logic/logs'
 
 
 /**
@@ -43,17 +43,13 @@ function WritingLog ({route, navigation}) {
 
   function onEditSubmit() {
     console.log('submit', comment)
-    if(log.id){
-      updateWritingLog({
-        ...log, comment
-      })
-    }
-    else {
-      createWritingLog({
-        date: Date.now(),
-        comment,
-      })
-    }
+    let date = log.date || Date.now()
+    console.log('date', date)
+    createOrUpdateWritingLog({
+      ...log,
+      date,
+      comment
+    })
     navigation.navigate('Journal')
   }
 

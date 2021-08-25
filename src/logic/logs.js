@@ -8,10 +8,6 @@ export const LOG_TYPES = [
   {type : 5, name : 'photo'  , icon : 'camera', label : 'Photo'},
 ]
 
-// export async function createLog(log){
-//   storage.call('log/create', log)
-// }
-
 /**
  *
  * @returns {Promise<[{
@@ -26,28 +22,27 @@ export async function listLog(){
   return result
 }
 
+/****
+ *
+ * WRITING
+ *
+ */
+
 /**
  *
- * @param {{date:number, comment:string}} log
+ * @param {{id?:number, date:number, comment:string}} log
  * @returns
  */
-export async function createWritingLog(log){
+export async function createOrUpdateWritingLog(log){
+  if(log.id){
+    let payload = log
+    return storage.call('writing/update.sql', payload)
+  }
   let type = LOG_TYPES.find(l => l.name === 'writing').type
   let payload = {...log, type}
+  console.log('payload', payload)
   return storage.call('writing/create.sql', payload)
 }
-
-
-/**
- *
- * @param {{date:number, comment:string}} log
- * @returns
- */
-export async function updateWritingLog(log){
-  let payload = log
-  return storage.call('writing/update.sql', payload)
-}
-
 
 /**
  *
@@ -57,11 +52,14 @@ export async function updateWritingLog(log){
 export async function getWritingLog(log){
   let payload = {id: log.id}
   let result = await storage.call('writing/get.sql', payload)
-  console.log('getWritingLog', result)
   return result[0]
 }
 
-
+/****
+ *
+ * EXPENSES
+ *
+ */
 export async function createExpenseLog(log){
   let type = LOG_TYPES.find(l => l.name === 'expense').type
   let payload = {...log, type}

@@ -27,6 +27,7 @@ function JournalList ({logs, onPressLog}) {
       <List.Item
         key={item.id}
         title={item.id + item.value}
+        description={item.date}
         // right={props => itemElement}
         left={props => <List.Icon {...props} icon={type.icon} />}
         onPress={() => onPressLog(item)}
