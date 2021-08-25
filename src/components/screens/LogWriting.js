@@ -71,16 +71,18 @@ function WritingLog ({route, navigation}) {
   }
 
   function onEditSubmit() {
-    console.log('submit', comment)
     let date = log.date || Date.now()
-    // console.log('date', date)
     createOrUpdateWritingLog({
       ...log,
       date,
       comment
     })
     setUnsavedChange(false)
-    navigation.navigate('Journal')
+
+    // give it time for state to change
+    setTimeout(()=>{
+      navigation.navigate('Journal')
+    })
   }
 
   return (
