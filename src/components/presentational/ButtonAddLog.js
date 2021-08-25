@@ -20,8 +20,8 @@ function ButtonAddLog ({type, onPress}) {
   const [isOpen, setOpen] = useState(false)
 
   const types = [
-    {type : 1, icon : 'silverware'},
-    {type : 2, icon : 'email'},
+    {type : 1, icon : 'fountain-pen-tip', label: 'Writing'},
+    {type : 2, icon : 'cash-multiple', label: 'Expense'},
     {type : 3, icon : 'bell'},
   ]
   const defaultType = 1
@@ -34,30 +34,21 @@ function ButtonAddLog ({type, onPress}) {
   //     onPress={() => { onPress(type) }}
   //     accessibilityLabel="Add log"
   //   />
+  let actions = types.map(t => {
+    return {
+      icon : t.icon,
+      label : t.label,
+      onPress : () => onPress(t.type),
+      small : true,
+    }
+  })
+
   return (
     <FAB.Group
       open={isOpen}
       visible={true}
       icon={isOpen ? 'calendar-today' : 'plus'}
-      actions={[
-        { icon: 'plus', onPress: () => console.log('Pressed add') },
-        {
-          icon: 'star',
-          label: 'Star',
-          onPress: () => console.log('Pressed star'),
-        },
-        {
-          icon: 'email',
-          label: 'Email',
-          onPress: () => console.log('Pressed email'),
-        },
-        {
-          icon: 'bell',
-          label: 'Remind',
-          onPress: () => console.log('Pressed notifications'),
-          small: false,
-        },
-      ]}
+      actions={actions}
       onStateChange={({open}) => setOpen(open)}
       onPress={() => {
         if (isOpen) {

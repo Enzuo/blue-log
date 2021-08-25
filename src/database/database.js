@@ -127,7 +127,7 @@ async function queryFile(name, data){
   }
   let result = await queryFns(query.sttFns, data)
   // console.log(result)
-  return result
+  return sqliteResult(result)
 }
 
 
