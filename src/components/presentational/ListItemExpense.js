@@ -6,9 +6,10 @@ import { View, StyleSheet, Text } from 'react-native'
  * @param {{item:object}} props
  */
 function ListItemExpense ({item}) {
+  let amount = item.value
 
   return (
-    <Text style={styles.container}>{item.value}</Text>
+    <Text style={styles.container}>{amount} $$</Text>
   )
 }
 

@@ -35,3 +35,9 @@ export async function createWritingLog(log){
   let payload = {...log, type}
   return storage.call('writing/create.sql', payload)
 }
+
+export async function createExpenseLog(log){
+  let type = LOG_TYPES.find(l => l.name === 'expense').type
+  let payload = {...log, type}
+  return storage.call('expense/create.sql', payload)
+}

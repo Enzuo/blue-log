@@ -6,6 +6,7 @@ export const migrations = [
 
 export const queries = [
   
+  {name: 'expense/create.sql', module : require('../../src/logic/queries/expense/create.sql')},
   {name: 'log/_old_cte_list.sql', module : require('../../src/logic/queries/log/_old_cte_list.sql')},
   {name: 'log/list.sql', module : require('../../src/logic/queries/log/list.sql')},
   {name: 'writing/create.sql', module : require('../../src/logic/queries/writing/create.sql')},
