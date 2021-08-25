@@ -13,7 +13,7 @@ ButtonAddLog.propTypes = {
  *
  * @param {{
  *  defaultType?:number,
- *  onPress:function,
+ *  onPress:(type:number) => void,
  *  types:{icon:string, label:string, type:number}[]
  * }} props
  */

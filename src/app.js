@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import db from './database/database.rn'
 
 import Journal from './components/screens/Journal'
-import LogWriting from './components/screens/LogWriting'
+import LogEdit from './components/screens/LogEdit'
 import LogExpense from './components/screens/LogExpense'
 
 const Stack = createStackNavigator()
@@ -17,8 +17,7 @@ function NavigationStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Journal" component={Journal} />
-      <Stack.Screen name="LogWriting" component={LogWriting} />
-      <Stack.Screen name="LogExpense" component={LogExpense} />
+      <Stack.Screen name="LogEdit" component={LogEdit} />
     </Stack.Navigator>
   )
 }
