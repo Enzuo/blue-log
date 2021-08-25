@@ -11,20 +11,23 @@ ButtonAddLog.propTypes = {
 
 /**
  *
- * @param {{type?:number, onPress:function}} props
+ * @param {{
+ *  defaultType?:number,
+ *  onPress:function,
+ *  types:{icon:string, label:string, type:number}[]
+ * }} props
  */
-function ButtonAddLog ({type, onPress}) {
-  const icon = 'silverware'
-  const color = type === 1 ? '#00F' : null
-
+function ButtonAddLog ({defaultType, onPress, types}) {
   const [isOpen, setOpen] = useState(false)
 
-  const types = [
-    {type : 1, icon : 'fountain-pen-tip', label: 'Writing'},
-    {type : 2, icon : 'cash-multiple', label: 'Expense'},
-    {type : 3, icon : 'bell'},
-  ]
-  const defaultType = 1
+  // console.log('types >>>>', types)
+
+  // if(!types){
+  //   console.log('no types')
+  //   return null
+  // }
+
+  // const defaultType = 1
 
   // return (
   //   <FAB

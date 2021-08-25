@@ -1,11 +1,11 @@
 import * as storage from './storage'
 
 export const LOG_TYPES = [
-  {type : 1, name : 'writing'},
-  {type : 2, name : 'expense'},
-  {type : 3, name : 'movie'},
-  {type : 4, name : 'book'},
-  {type : 5, name : 'photo'},
+  {type : 1, name : 'writing', icon : 'fountain-pen-tip', label : 'Writing'},
+  {type : 2, name : 'expense', icon : 'cash-multiple', label : 'Expense'},
+  {type : 3, name : 'movie'  , icon : 'movie', label : 'Movie'},
+  {type : 4, name : 'book'   , icon : 'book', label : 'Book'},
+  {type : 5, name : 'photo'  , icon : 'camera', label : 'Photo'},
 ]
 
 // export async function createLog(log){
@@ -22,7 +22,8 @@ export const LOG_TYPES = [
  *          }]>}
  */
 export async function listLog(){
-  return storage.call('log/list.sql')
+  let result = await storage.call('log/list.sql')
+  return result
 }
 
 /**

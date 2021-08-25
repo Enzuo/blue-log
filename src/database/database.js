@@ -126,7 +126,6 @@ async function queryFile(name, data){
     throw  Error('query not found ' + name)
   }
   let result = await queryFns(query.sttFns, data)
-  // console.log(result)
   return sqliteResult(result)
 }
 

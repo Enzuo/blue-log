@@ -38,7 +38,7 @@ function Journal ({ navigation }) {
           return <ListItemExpense key={item.id} item={item}></ListItemExpense>
         }
       })}
-      <ButtonAddLog onPress={(type) => {
+      <ButtonAddLog types={LOG_TYPES} onPress={(type) => {
         let log = { name: 'Jane' } // TEST
         navigation.navigate(SCREEN_FOR_LOG_TYPES[type], log)
       }}></ButtonAddLog>
