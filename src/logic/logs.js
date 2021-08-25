@@ -34,13 +34,13 @@ export async function listLog(){
  * @returns
  */
 export async function createOrUpdateWritingLog(log){
+  let date = transformDate(log.date)
   if(log.id){
-    let payload = log
+    let payload = {...log, date}
     return storage.call('writing/update.sql', payload)
   }
   let type = LOG_TYPES.find(l => l.name === 'writing').type
-  let payload = {...log, type}
-  console.log('payload', payload)
+  let payload = {...log, date, type}
   return storage.call('writing/create.sql', payload)
 }
 
@@ -64,4 +64,13 @@ export async function createExpenseLog(log){
   let type = LOG_TYPES.find(l => l.name === 'expense').type
   let payload = {...log, type}
   return storage.call('expense/create.sql', payload)
+}
+
+
+function transformDate(date){
+  if(typeof date === 'string'){
+    let parsedDate = date.replace(' ', 'T') // old version of javascript have this strict date format
+    return new Date(parsedDate).toISOString()
+  }
+  return new Date(date).toISOString()
 }

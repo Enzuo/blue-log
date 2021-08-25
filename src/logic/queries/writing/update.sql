@@ -1,6 +1,6 @@
 UPDATE "Log" SET
    "updatedAt" = CURRENT_TIMESTAMP
-  ,"date" = {{= date }}
+  ,"date" = DATETIME({{= date }})
 WHERE "Log"."id" = {{= id }}
 ;
 

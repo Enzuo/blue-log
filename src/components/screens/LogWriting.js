@@ -44,7 +44,7 @@ function WritingLog ({route, navigation}) {
   function onEditSubmit() {
     console.log('submit', comment)
     let date = log.date || Date.now()
-    console.log('date', date)
+    // console.log('date', date)
     createOrUpdateWritingLog({
       ...log,
       date,
