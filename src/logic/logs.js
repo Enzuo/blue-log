@@ -27,6 +27,13 @@ export async function listLog(){
  * WRITING
  *
  */
+ export function initWritingLog(){
+  return {
+    date : Date.now(),
+    comment : '',
+  }
+}
+
 
 /****
  *
@@ -78,6 +85,17 @@ async function get(apiName, log){
   return result[0]
 }
 
+/**
+ *
+ * @param {string} apiName
+ * @param {{id:number}} log
+ * @returns
+ */
+async function remove(apiName, log){
+  let payload = {id: log.id}
+  return await storage.call(apiName+'/remove.sql', payload)
+}
+
 
 
 function transformDate(date){
@@ -90,13 +108,15 @@ function transformDate(date){
 
 export default {
   writing : {
-    init : initExpenseLog,
+    init : initWritingLog,
     createOrUpdate : (log) => createOrUpdate('writing', log),
-    get : (log) => get('writing', log)
+    get : (log) => get('writing', log),
+    remove : (log) => remove('writing', log),
   },
   expense : {
     init : initExpenseLog,
     createOrUpdate : (log) => createOrUpdate('expense', log),
-    get : (log) => get('expense', log)
+    get : (log) => get('expense', log),
+    remove : (log) => remove('writing', log),
   },
 }
