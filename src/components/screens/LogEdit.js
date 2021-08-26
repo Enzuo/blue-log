@@ -2,8 +2,8 @@ import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { View, StyleSheet, Alert, Button } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import logs  from '../../logic/logs'
-import LogWriting from './LogWriting'
-import LogExpense from './LogExpense'
+import LogWriting from '../presentational/LogWriting'
+import LogExpense from '../presentational/LogExpense'
 
 
 const LOG_TYPES_FUNCTIONS = {

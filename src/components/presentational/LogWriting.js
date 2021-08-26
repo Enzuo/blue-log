@@ -1,9 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { View, StyleSheet, Text, TextInput, Alert } from 'react-native'
 
-import {createOrUpdateWritingLog, getWritingLog} from '../../logic/logs'
-
-
 /**
  * @param {{log, onChange, onSubmit}} props
  */
