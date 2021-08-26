@@ -8,7 +8,9 @@ import db from './database/database.rn'
 
 import Journal from './components/screens/Journal'
 import LogEdit from './components/screens/LogEdit'
-import LogExpense from './components/screens/LogExpense'
+import Settings from './components/screens/Settings'
+
+import MainMenu from './components/container/MainMenu'
 
 const Stack = createStackNavigator()
 
@@ -16,8 +18,20 @@ const Stack = createStackNavigator()
 function NavigationStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Journal" component={Journal} />
+      <Stack.Screen
+        name="Journal"
+        component={Journal}
+        options={({ navigation }) => ({
+          // headerTitle: props => <LogoTitle {...props} />,
+          headerRight: () => MainMenu({
+            onPressSettings : () => {
+              navigation.navigate('Settings')
+            }
+          })
+        })}
+      />
       <Stack.Screen name="LogEdit" component={LogEdit} />
+      <Stack.Screen name="Settings" component={Settings} />
     </Stack.Navigator>
   )
 }
