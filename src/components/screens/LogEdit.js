@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Alert } from 'react-native'
-import { getWritingLog, createOrUpdateWritingLog, getExpenseLog, createOrUpdateExpenseLog, LOG_TYPES, initExpenseLog } from '../../logic/logs'
+import logs  from '../../logic/logs'
 import LogWriting from './LogWriting'
 import LogExpense from './LogExpense'
 
 
 const LOG_TYPES_FUNCTIONS = {
-  1 : { Component : LogWriting, init : initExpenseLog, get : getWritingLog, createOrUpdate : createOrUpdateWritingLog},
-  2 : { Component : LogExpense, init : initExpenseLog, get : getExpenseLog, createOrUpdate : createOrUpdateExpenseLog},
+  1 : { Component : LogWriting, ...logs.writing},
+  2 : { Component : LogExpense, ...logs.expense},
 }
 
 

@@ -28,33 +28,6 @@ export async function listLog(){
  *
  */
 
-/**
- *
- * @param {{id?:number, date:number, comment:string}} log
- * @returns
- */
-export async function createOrUpdateWritingLog(log){
-  let date = transformDate(log.date)
-  if(log.id){
-    let payload = {...log, date}
-    return storage.call('writing/update.sql', payload)
-  }
-  let type = LOG_TYPES.find(l => l.name === 'writing').type
-  let payload = {...log, date, type}
-  return storage.call('writing/create.sql', payload)
-}
-
-/**
- *
- * @param {{id:number}} log
- * @returns {Promise<{id:number, type:number, date:number, comment:string}>}
- */
-export async function getWritingLog(log){
-  let payload = {id: log.id}
-  let result = await storage.call('writing/get.sql', payload)
-  return result[0]
-}
-
 /****
  *
  * EXPENSES
@@ -70,27 +43,41 @@ export function initExpenseLog(){
   }
 }
 
-export async function createOrUpdateExpenseLog(log){
+/**************************************
+ *
+ *               UTILS
+ *
+ *************************************/
+
+/**
+ *
+ * @param {string} apiName
+ * @param {{id?:number, date:number}} log
+ * @returns
+ */
+ async function createOrUpdate(apiName, log){
   let date = transformDate(log.date)
   if(log.id){
     let payload = {...log, date}
-    return storage.call('expense/update.sql', payload)
+    return storage.call(apiName+'/update.sql', payload)
   }
-  let type = LOG_TYPES.find(l => l.name === 'expense').type
+  let type = LOG_TYPES.find(l => l.name === apiName).type
   let payload = {...log, date, type}
-  return storage.call('expense/create.sql', payload)
+  return storage.call(apiName+'/create.sql', payload)
 }
 
 /**
  *
+ * @param {string} apiName
  * @param {{id:number}} log
  * @returns {Promise<{id:number, type:number, date:number, amount:number}>}
  */
- export async function getExpenseLog(log){
+async function get(apiName, log){
   let payload = {id: log.id}
-  let result = await storage.call('expense/get.sql', payload)
+  let result = await storage.call(apiName+'/get.sql', payload)
   return result[0]
 }
+
 
 
 function transformDate(date){
@@ -99,4 +86,17 @@ function transformDate(date){
     return new Date(parsedDate).toISOString()
   }
   return new Date(date).toISOString()
+}
+
+export default {
+  writing : {
+    init : initExpenseLog,
+    createOrUpdate : (log) => createOrUpdate('writing', log),
+    get : (log) => get('writing', log)
+  },
+  expense : {
+    init : initExpenseLog,
+    createOrUpdate : (log) => createOrUpdate('expense', log),
+    get : (log) => get('expense', log)
+  },
 }
