@@ -37,17 +37,17 @@ model WritingLog {
 model ExpenseLog {
   id         Int      @default(autoincrement()) @id
   amount     Float
-  idType     Int
+  idCategory Int
   comment    String
   idCurrency Int
 
   log    Log      @relation(fields: [idLog], references: [id])
   idLog  Int
 
-  type   ExpenseType  @relation(fields: [idType], references: [id])
+  type   ExpenseCategory  @relation(fields: [idCategory], references: [id])
 }
 
-model ExpenseType {
+model ExpenseCategory {
   id      Int      @default(autoincrement()) @id
   name    String
 

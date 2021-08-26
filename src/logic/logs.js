@@ -65,7 +65,7 @@ export function initExpenseLog(){
     date : Date.now(),
     amount : null,
     comment : '',
-    idType : 1, // TODO idCategory to avoid confusion
+    idCategory : 1,
     idCurrency : 1,
   }
 }

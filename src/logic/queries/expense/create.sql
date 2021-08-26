@@ -6,7 +6,7 @@ INSERT INTO "Log"
 );
 
 INSERT INTO "ExpenseLog"
-  ("idLog", "amount", "idType", "comment", "idCurrency") VALUES (
+  ("idLog", "amount", "idCategory", "comment", "idCurrency") VALUES (
     last_insert_rowid()
   , {{= amount }}
   , 1
@@ -14,7 +14,7 @@ INSERT INTO "ExpenseLog"
   , 1
 );
 
--- INSERT INTO "ExpenseType"
+-- INSERT INTO "ExpenseCategory"
 --   ("id", "name") VALUES (
 --     1, 'lifestyle'
 --   );

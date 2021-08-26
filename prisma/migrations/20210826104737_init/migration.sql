@@ -19,16 +19,16 @@ CREATE TABLE "WritingLog" (
 CREATE TABLE "ExpenseLog" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "amount" REAL NOT NULL,
-    "idType" INTEGER NOT NULL,
+    "idCategory" INTEGER NOT NULL,
     "comment" TEXT NOT NULL,
     "idCurrency" INTEGER NOT NULL,
     "idLog" INTEGER NOT NULL,
     FOREIGN KEY ("idLog") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY ("idType") REFERENCES "ExpenseType" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY ("idCategory") REFERENCES "ExpenseCategory" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
-CREATE TABLE "ExpenseType" (
+CREATE TABLE "ExpenseCategory" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL
 );

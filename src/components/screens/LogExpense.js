@@ -24,6 +24,7 @@ function ExpenseLog ({log, onChange, onSubmit}) {
         onChangeText={(comment) => {
           onChange({...log, comment})
         }}
+        placeholder="comment..."
         onSubmitEditing={onSubmit}
       ></TextInput>
     </View>
