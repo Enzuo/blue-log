@@ -2,10 +2,10 @@ import * as storage from './storage'
 
 export const LOG_TYPES = [
   {type : 1, name : 'writing', icon : 'fountain-pen-tip', label : 'Writing'},
-  {type : 2, name : 'expense', icon : 'cash-multiple', label : 'Expense'},
-  {type : 3, name : 'movie'  , icon : 'movie', label : 'Movie'},
-  {type : 4, name : 'book'   , icon : 'book', label : 'Book'},
-  {type : 5, name : 'photo'  , icon : 'camera', label : 'Photo'},
+  {type : 2, name : 'expense', icon : 'cash-multiple'   , label : 'Expense'},
+  {type : 3, name : 'movie'  , icon : 'movie'           , label : 'Movie'},
+  {type : 4, name : 'book'   , icon : 'book'            , label : 'Book'},
+  {type : 5, name : 'photo'  , icon : 'camera'          , label : 'Photo'},
 ]
 
 /**
@@ -60,10 +60,26 @@ export async function getWritingLog(log){
  * EXPENSES
  *
  */
-export async function createExpenseLog(log){
+export async function createOrUpdateExpenseLog(log){
+  let date = transformDate(log.date)
+  if(log.id){
+    let payload = {...log, date}
+    return storage.call('expense/update.sql', payload)
+  }
   let type = LOG_TYPES.find(l => l.name === 'expense').type
   let payload = {...log, type}
   return storage.call('expense/create.sql', payload)
+}
+
+/**
+ *
+ * @param {{id:number}} log
+ * @returns {Promise<{id:number, type:number, date:number, amount:number}>}
+ */
+ export async function getExpenseLog(log){
+  let payload = {id: log.id}
+  let result = await storage.call('expense/get.sql', payload)
+  return result[0]
 }
 
 

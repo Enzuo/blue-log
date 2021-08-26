@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Alert } from 'react-native'
-import { getWritingLog, createOrUpdateWritingLog } from '../../logic/logs'
+import { getWritingLog, createOrUpdateWritingLog, getExpenseLog, createOrUpdateExpenseLog, LOG_TYPES } from '../../logic/logs'
 import LogWriting from './LogWriting'
+import LogExpense from './LogExpense'
+
+
+const LOG_TYPES_FUNCTIONS = {
+  1 : { Component : LogWriting, get : getWritingLog, createOrUpdate : createOrUpdateWritingLog},
+  2 : { Component : LogExpense, get : getExpenseLog, createOrUpdate : createOrUpdateExpenseLog},
+}
 
 
 /**
+ * Log details & edit screen
+ * - handle retrieving of log details and save
+ *
  * @param {{route, navigation}} props
  */
 function LogEdit ({route, navigation}) {
@@ -12,6 +22,8 @@ function LogEdit ({route, navigation}) {
 
   let [editedLog, setEditedLog] = useState(log)
   let [hasUnsavedChanges, setUnsavedChange] = useState(false)
+
+  let logFns = LOG_TYPES_FUNCTIONS[log.type]
 
   useEffect(() => {
     if(log.id){
@@ -22,39 +34,27 @@ function LogEdit ({route, navigation}) {
     }
   }, [log.id])
 
-  useEffect(
-    () =>
-      // return navigation listener unsuscribe, it will remove listener when useEffect get destructed
-      navigation.addListener('beforeRemove', (e) => {
-        if (!hasUnsavedChanges) {
-          // If we don't have unsaved changes, then we don't need to do anything
-          return;
-        }
-
-        // Prevent default behavior of leaving the screen
-        e.preventDefault();
-
-        // Prompt the user before leaving the screen
-        Alert.alert(
-          'Discard changes?',
-          'You have unsaved changes. Are you sure to discard them and leave the screen?',
-          [
-            { text: "Don't leave", style: 'cancel', onPress: () => {} },
-            {
-              text: 'Discard',
-              style: 'destructive',
-              // If the user confirmed, then we dispatch the action we blocked earlier
-              // This will continue the action that had triggered the removal of the screen
-              onPress: () => navigation.dispatch(e.data.action),
-            },
-          ]
-        );
-      }),
-    [navigation, hasUnsavedChanges]
-  );
+  useEffect(() => navigation.addListener('beforeRemove', (e) => {
+    if (!hasUnsavedChanges) {
+      return
+    }
+    e.preventDefault()
+    Alert.alert(
+      'Discard changes?',
+      'You have unsaved changes. Are you sure to discard them and leave the screen?',
+      [
+        { text: "Don't leave", style: 'cancel', onPress: () => {} },
+        {
+          text: 'Discard',
+          style: 'destructive',
+          onPress: () => navigation.dispatch(e.data.action),
+        },
+      ]
+    );
+  }), [navigation, hasUnsavedChanges])
 
   async function getLog(log) {
-    let log_details = await getWritingLog(log)
+    let log_details = await logFns.get(log)
     setEditedLog(log_details)
   }
 
@@ -69,7 +69,7 @@ function LogEdit ({route, navigation}) {
   }
 
   const handleSubmit = () => {
-    createOrUpdateWritingLog(editedLog)
+    logFns.createOrUpdate(editedLog)
     setUnsavedChange(false)
 
     // give it time for state to change
@@ -79,7 +79,7 @@ function LogEdit ({route, navigation}) {
   }
 
   return (
-    <LogWriting log={editedLog} onChange={handleChange} onSubmit={handleSubmit}></LogWriting>
+    <logFns.Component log={editedLog} onChange={handleChange} onSubmit={handleSubmit}></logFns.Component>
   )
 }
 

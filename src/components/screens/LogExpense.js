@@ -1,14 +1,32 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, {useRef, useEffect} from 'react'
+import { View, StyleSheet, TextInput } from 'react-native'
 
 
 /**
- * @param {{}} props
+ * @param {{log, onChange, onSubmit}} props
  */
-function ExpenseLog ({}) {
+function ExpenseLog ({log, onChange, onSubmit}) {
 
   return (
-    <View style={styles.container}></View>
+    <View style={styles.container}>
+      <TextInput
+        autoFocus={true}
+        value={log.amount ? log.amount+'' : ''}
+        keyboardType="numeric"
+        onChangeText={(text) => {
+          let amount = parseInt(text)
+          onChange({...log, amount})
+        }}
+        onSubmitEditing={onSubmit}
+      ></TextInput>
+      <TextInput
+        value={log.comment}
+        onChangeText={(comment) => {
+          onChange({...log, comment})
+        }}
+        onSubmitEditing={onSubmit}
+      ></TextInput>
+    </View>
   )
 }
 
