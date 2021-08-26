@@ -29,8 +29,6 @@ function ButtonAddLog ({defaultType, onPress, types}) {
     }
   })
 
-  console.log('actions >>>>>', actions)
-
   return (
     <FAB.Group
       open={isOpen}

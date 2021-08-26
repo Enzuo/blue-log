@@ -60,6 +60,16 @@ export async function getWritingLog(log){
  * EXPENSES
  *
  */
+export function initExpenseLog(){
+  return {
+    date : Date.now(),
+    amount : null,
+    comment : '',
+    idType : 1, // TODO idCategory to avoid confusion
+    idCurrency : 1,
+  }
+}
+
 export async function createOrUpdateExpenseLog(log){
   let date = transformDate(log.date)
   if(log.id){
@@ -67,7 +77,7 @@ export async function createOrUpdateExpenseLog(log){
     return storage.call('expense/update.sql', payload)
   }
   let type = LOG_TYPES.find(l => l.name === 'expense').type
-  let payload = {...log, type}
+  let payload = {...log, date, type}
   return storage.call('expense/create.sql', payload)
 }
 

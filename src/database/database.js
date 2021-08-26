@@ -85,6 +85,10 @@ async function query (statements) {
               results.push(result)
             },
             (tx, error) => {
+              console.error(stt.sql, stt.values, error)
+              if(error.message.indexOf('SQLITE_OK') >= 0){
+                return false
+              }
               return true // rollback tx & call tx error callback
             }
           )

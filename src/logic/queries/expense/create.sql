@@ -1,6 +1,6 @@
 INSERT INTO "Log"
   ("date", "type", "updatedAt") VALUES (
-    {{= date }}
+    DATETIME({{= date }})
   , {{= type }}
   , CURRENT_TIMESTAMP
 );
