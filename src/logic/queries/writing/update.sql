@@ -4,7 +4,7 @@ UPDATE "Log" SET
 WHERE "Log"."id" = {{= id }}
 ;
 
-UPDATE "WritingLog" SET
+UPDATE "LogWriting" SET
   "comment" = {{= comment }}
 WHERE "idLog" = {{= id }}
 ;

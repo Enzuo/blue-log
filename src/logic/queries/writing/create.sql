@@ -5,7 +5,7 @@ INSERT INTO "Log"
   , CURRENT_TIMESTAMP
 );
 
-INSERT INTO "WritingLog"
+INSERT INTO "LogWriting"
   ("idLog", "comment") VALUES (
     last_insert_rowid()
   , {{= comment }}

@@ -18,64 +18,65 @@ model Log {
   date      DateTime
   type      Int
 
-  writing   WritingLog[]
-  expenses  ExpenseLog[]
-  movies    MovieLog[]
-  books     BookLog[]
-  photos    PhotoLog[]
-  foods     FoodLog[]
+  writing   LogWriting[]
+  expenses  LogExpense[]
+  movies    LogMovie[]
+  books     LogBook[]
+  photos    LogPhoto[]
+  foods     LogFood[]
 }
 
-model WritingLog {
+model LogWriting {
   id      Int      @default(autoincrement()) @id
+  idLog   Int
   comment String
 
   log    Log      @relation(fields: [idLog], references: [id])
-  idLog  Int
 }
 
-model ExpenseLog {
+model LogExpense {
   id         Int      @default(autoincrement()) @id
+  idLog      Int
   amount     Float
   idCategory Int
   comment    String
   idCurrency Int
 
-  log    Log      @relation(fields: [idLog], references: [id])
-  idLog  Int
-
-  type   ExpenseCategory  @relation(fields: [idCategory], references: [id])
+  log      Log      @relation(fields: [idLog], references: [id])
+  category ExpenseCategory  @relation(fields: [idCategory], references: [id])
 }
 
 model ExpenseCategory {
   id      Int      @default(autoincrement()) @id
   name    String
+  icon    String
 
-  expenses ExpenseLog[]
+  expenses LogExpense[]
 }
 
-model MovieLog {
+model LogMovie {
   id      Int      @default(autoincrement()) @id
+  idLog   Int
   title   String
   comment String
   rating  Int
 
-  log    Log      @relation(fields: [idLog], references: [id])
-  idLog  Int
+  log     Log      @relation(fields: [idLog], references: [id])
 }
 
-model BookLog {
+model LogBook {
   id      Int      @default(autoincrement()) @id
+  idLog   Int
   title   String
   comment String
   rating  Int
 
-  log    Log      @relation(fields: [idLog], references: [id])
-  idLog  Int
+  log     Log      @relation(fields: [idLog], references: [id])
 }
 
-model PhotoLog {
+model LogPhoto {
   id       Int      @default(autoincrement()) @id
+  idLog    Int
   comment  String
   iso      Int
   aperture Float
@@ -83,11 +84,11 @@ model PhotoLog {
   film     String?
 
   log    Log      @relation(fields: [idLog], references: [id])
-  idLog  Int
 }
 
-model FoodLog {
-  id     Int      @default(autoincrement()) @id
+model LogFood {
+  id        Int      @default(autoincrement()) @id
+  idLog     Int
 
   qty       Int
   name      String
@@ -105,13 +106,12 @@ model FoodLog {
   isIncomplete  Boolean
 
   log    Log      @relation(fields: [idLog], references: [id])
-  idLog  Int
-
-  foods  FoodLogProduct[]
+  foods  Product[]
 }
 
-model FoodLogProduct {
+model Product {
   id        Int     @default(autoincrement()) @id
+  idFoodLog Int
 
   qty       Int
   name      String
@@ -128,6 +128,5 @@ model FoodLogProduct {
   serving       Int
   isIncomplete  Boolean
 
-  foodLog    FoodLog @relation(fields: [idFoodLog], references: [id])
-  idFoodLog  Int
+  foodLog    LogFood @relation(fields: [idFoodLog], references: [id])
 }

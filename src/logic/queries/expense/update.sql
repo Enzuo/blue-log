@@ -4,7 +4,7 @@ UPDATE "Log" SET
 WHERE "Log"."id" = {{= id }}
 ;
 
-UPDATE "ExpenseLog" SET
+UPDATE "LogExpense" SET
    "amount" = {{= amount }}
   ,"comment" = {{= comment }}
 WHERE "idLog" = {{= id }}

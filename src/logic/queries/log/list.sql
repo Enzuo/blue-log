@@ -2,9 +2,9 @@ SELECT
    "Log"."id"
   ,"Log"."date"
   ,"Log"."type"
-  ,"WritingLog"."comment" AS "value"
+  ,"LogWriting"."comment" AS "value"
 FROM "Log"
-INNER JOIN "WritingLog" ON "WritingLog"."idLog" = "Log"."id"
+INNER JOIN "LogWriting" ON "LogWriting"."idLog" = "Log"."id"
 
 UNION ALL
 
@@ -12,8 +12,8 @@ SELECT
    "Log"."id"
   ,"Log"."date"
   ,"Log"."type"
-  ,"ExpenseLog"."amount" AS "value"
+  ,"LogExpense"."amount" AS "value"
 FROM "Log"
-INNER JOIN "ExpenseLog" ON "ExpenseLog"."idLog" = "Log"."id"
+INNER JOIN "LogExpense" ON "LogExpense"."idLog" = "Log"."id"
 
 ORDER BY "date" DESC

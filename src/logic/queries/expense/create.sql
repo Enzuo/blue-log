@@ -5,7 +5,7 @@ INSERT INTO "Log"
   , CURRENT_TIMESTAMP
 );
 
-INSERT INTO "ExpenseLog"
+INSERT INTO "LogExpense"
   ("idLog", "amount", "idCategory", "comment", "idCurrency") VALUES (
     last_insert_rowid()
   , {{= amount }}
