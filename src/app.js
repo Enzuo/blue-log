@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import { Provider as PaperProvider } from 'react-native-paper'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
 
 import db from './database/database.rn'
@@ -12,7 +12,7 @@ import Settings from './components/screens/Settings'
 
 import MainMenu from './components/container/MainMenu'
 
-const Stack = createStackNavigator()
+const Stack = createNativeStackNavigator()
 
 
 function NavigationStack() {

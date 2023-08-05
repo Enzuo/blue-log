@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Animated, FlatList, Easing, ScrollView } from 'react-native';
-import { Surface, Colors, List, TouchableRipple } from 'react-native-paper';
+import { Surface, MD2Colors , List, TouchableRipple } from 'react-native-paper';
 
 /* StyleSheet
 ============================================================================= */
@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
 function getColorForSource(sourceType) {
   switch (sourceType) {
     case 1: // previous logs
-      return Colors.blue500;
+      return MD2Colors.blue500;
     case 2: // ingredient base
-      return Colors.orange500;
+      return MD2Colors.orange500;
     case 3: // recipes
-      return Colors.green500;
+      return MD2Colors.green500;
     default:
       return null;
   }
