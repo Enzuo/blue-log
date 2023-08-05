@@ -23,7 +23,7 @@ let queries
  * @param {{name:string, content:string}[]} queriesList list of queries
  */
 async function init (SQLite, name, migrations, queriesList){
-  console.log('>>> db:init')
+  console.log('>>> db:init', name)
   db = SQLite.openDatabase(name, '1.0', 'description', 1)
 
   await migrate(migrations)

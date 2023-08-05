@@ -4,7 +4,7 @@ import { Provider as PaperProvider } from 'react-native-paper'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
 
-import db from './database/database.rn'
+import db from './database/database'
 
 import Journal from './components/screens/Journal'
 import LogEdit from './components/screens/LogEdit'

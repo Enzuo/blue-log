@@ -1,7 +1,7 @@
 import openDatabase from 'websql'
 
 
-import database from './database'
+import database from './db'
 
 import {migrations, queries} from '../assets/_assets'
 

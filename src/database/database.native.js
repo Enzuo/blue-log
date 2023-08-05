@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite'
 
-import database from './database'
+import database from './db'
 
 import {migrations, queries} from '../assets/_assets'
 import loader from '../assets/loader'
@@ -8,8 +8,10 @@ import loader from '../assets/loader'
 
 async function init(){
 
-  const randomNum = new Date().getTime();
-  const dbName = `${randomNum}.db`;
+  const randomNum = new Date().getTime()
+  // const dbName = `${randomNum}.db`
+  const dbName = 'my2.db'
+
 
   let name = await loader.loadDb('../../prisma/dev.db', dbName)
   let migrations = await loadMigrations()
@@ -41,5 +43,8 @@ export async function loadQueries(){
 
 
 export default {
-  init
+  init,
+  queryFile : database.queryFile,
+  querySql : database.querySql,
 }
+
