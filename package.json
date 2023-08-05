@@ -56,11 +56,5 @@
     "redux-mock-store": "^1.5.4",
     "websql": "^2.0.3"
   },
-  "jest": {
-    "preset": "jest-expo",
-    "transform": {
-      "\\.(jpg|sql)$": "<rootDir>/test/fileTransformer.js"
-    }
-  },
   "private": true
 }
