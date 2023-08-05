@@ -104,6 +104,12 @@ async function query (statements) {
   })
 }
 
+/**
+ *
+ * @param {string} sql
+ * @param {array} data
+ * @returns
+ */
 async function querySql (sql, data=[]) {
   let statementsSql = utils.splitStatements(sql)
   let statements = statementsSql.map(stt => { return {sql:stt, values: data}})
@@ -150,4 +156,4 @@ function sqliteResult(result){
   return result[0].rows._array
 }
 
-export default {init, queryFile}
+export default {init, queryFile, querySql}
