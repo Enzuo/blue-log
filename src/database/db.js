@@ -17,14 +17,14 @@ let queries
 
 /**
  *
- * @param {{openDatabase:any}} SQLite websql driver
+ * @param {function} openDatabase websql openDatabase
  * @param {string} name database name
  * @param {{name:string, content:string}[]} migrations list of database migrations
  * @param {{name:string, content:string}[]} queriesList list of queries
  */
-async function init (SQLite, name, migrations, queriesList){
+async function init (openDatabase, name, migrations, queriesList){
   console.log('>>> db:init', name)
-  db = SQLite.openDatabase(name, '1.0', 'description', 1)
+  db = openDatabase(name, '1.0', 'description', 1)
 
   await migrate(migrations)
 
@@ -39,14 +39,21 @@ async function init (SQLite, name, migrations, queriesList){
 async function migrate (migrations) {
   // define current version
   // pick needed migrations
-  let result = await querySql('SELECT "migration_name" FROM "_prisma_migrations"')
-  let executedMigrationsNames = sqliteResult(result).map(a => a.migration_name)
-  let migrationsToApply = migrations.filter(m => executedMigrationsNames.findIndex(name => name === m.name) === -1)
+  let migrationsToApply = migrations
+  try {
+    let result = await querySql('SELECT "migration_name" FROM "_prisma_migrations"')
+    let executedMigrationsNames = sqliteResult(result).map(a => a.migration_name)
+    migrationsToApply = migrations.filter(m => executedMigrationsNames.findIndex(name => name === m.name) === -1)
+  }
+  catch(e){
+    console.error(e)
+    console.log(migrations)
+  }
 
   // execute migrations
   let migrationsToApplyQueue = migrationsToApply.map((migration) => {
     return async () => {
-      console.log('>>> db:applying migration', migration.name)
+      console.log('>>> db:applying migration', migration.name, migration.content)
       await querySql(migration.content)
 
       // Simulate prisma migration log

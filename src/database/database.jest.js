@@ -12,7 +12,7 @@ async function init(){
   let migrationsList = migrations.map(a => {return {name : a.name, content : a.module}})
   let queriesList = queries.map(a => {return {name : a.name, content : a.module}})
 
-  await database.init({openDatabase}, name, migrationsList, queriesList)
+  await database.init(openDatabase, name, migrationsList, queriesList)
 }
 
 export default {

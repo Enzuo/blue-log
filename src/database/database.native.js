@@ -17,7 +17,7 @@ async function init(){
   let migrations = await loadMigrations()
   let queries = await loadQueries()
 
-  await database.init(SQLite, name, migrations, queries)
+  await database.init(SQLite.openDatabase, name, migrations, queries)
 }
 
 
